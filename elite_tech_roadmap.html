@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELITE TECH MASTERY — Complete Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070711;--surf:#0d0d1f;--surf2:#121230;--surf3:#17173c;
+  --border:#1e1e45;--border2:#2d2d60;
+  --text:#dddcf5;--muted:#7070a0;--dim:#3a3a65;
+  --ai:#a78bfa;--ai-glow:rgba(167,139,250,0.15);--ai-dim:#2d2060;--ai-border:#4c3a9e;
+  --net:#34d399;--net-glow:rgba(52,211,153,0.12);--net-dim:#0d3d28;--net-border:#1a7a55;
+  --hack:#f87171;--hack-glow:rgba(248,113,113,0.12);--hack-dim:#3d1010;--hack-border:#7a2020;
+  --soft:#60a5fa;--soft-glow:rgba(96,165,250,0.12);--soft-dim:#0d2560;--soft-border:#1a4a9e;
+  --radius:4px;--active-area:ai;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* HEADER */
+.site-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:54px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg);flex-shrink:0;
+  position:relative;z-index:10;
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;
+  color:var(--text);
+}
+.logo span{color:var(--muted)}
+.nav-pills{display:flex;gap:6px}
+.npill{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:1px;
+  padding:6px 16px;border-radius:2px;border:1px solid var(--border2);
+  background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;text-transform:uppercase;
+}
+.npill:hover{border-color:var(--dim);color:var(--text)}
+.npill[data-area="ai"].active{background:var(--ai-dim);border-color:var(--ai-border);color:var(--ai)}
+.npill[data-area="net"].active{background:var(--net-dim);border-color:var(--net-border);color:var(--net)}
+.npill[data-area="hack"].active{background:var(--hack-dim);border-color:var(--hack-border);color:var(--hack)}
+.npill[data-area="soft"].active{background:var(--soft-dim);border-color:var(--soft-border);color:var(--soft)}
+.site-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)}
+
+/* LAYOUT */
+.layout{display:flex;flex:1;overflow:hidden}
+
+/* LEFT SIDEBAR */
+.sidebar{
+  width:220px;flex-shrink:0;border-right:1px solid var(--border);
+  background:var(--surf);overflow-y:auto;padding:16px 0;
+  display:flex;flex-direction:column;gap:2px;
+}
+.sidebar-section{padding:8px 16px 4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.phase-nav-item{
+  display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;
+  font-size:12px;color:var(--muted);transition:all .15s;border-left:2px solid transparent;
+}
+.phase-nav-item:hover{color:var(--text);background:var(--surf2)}
+.phase-nav-item.active-phase{color:var(--text);background:var(--surf2)}
+.phase-nav-item .ph-num{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  width:20px;height:20px;border-radius:2px;display:flex;align-items:center;justify-content:center;
+  background:var(--surf3);color:var(--muted);flex-shrink:0;font-weight:500;
+}
+[data-current="ai"] .phase-nav-item.active-phase{border-left-color:var(--ai)}
+[data-current="ai"] .phase-nav-item.active-phase .ph-num{background:var(--ai-dim);color:var(--ai)}
+[data-current="net"] .phase-nav-item.active-phase{border-left-color:var(--net)}
+[data-current="net"] .phase-nav-item.active-phase .ph-num{background:var(--net-dim);color:var(--net)}
+[data-current="hack"] .phase-nav-item.active-phase{border-left-color:var(--hack)}
+[data-current="hack"] .phase-nav-item.active-phase .ph-num{background:var(--hack-dim);color:var(--hack)}
+[data-current="soft"] .phase-nav-item.active-phase{border-left-color:var(--soft)}
+[data-current="soft"] .phase-nav-item.active-phase .ph-num{background:var(--soft-dim);color:var(--soft)}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;scroll-behavior:smooth}
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-track{background:var(--surf)}
+.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* DISCIPLINE HERO */
+.disc-hero{
+  padding:36px 40px 24px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:5;background:var(--bg);
+}
+.disc-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.disc-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:4px;line-height:1;margin-bottom:8px}
+.disc-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:620px;margin-bottom:16px}
+.disc-stats{display:flex;gap:24px}
+.stat{text-align:left}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+[data-current="ai"] .disc-eyebrow,[data-current="ai"] .disc-title,[data-current="ai"] .stat-val{color:var(--ai)}
+[data-current="net"] .disc-eyebrow,[data-current="net"] .disc-title,[data-current="net"] .stat-val{color:var(--net)}
+[data-current="hack"] .disc-eyebrow,[data-current="hack"] .disc-title,[data-current="hack"] .stat-val{color:var(--hack)}
+[data-current="soft"] .disc-eyebrow,[data-current="soft"] .disc-title,[data-current="soft"] .stat-val{color:var(--soft)}
+
+/* PHASES */
+.phases{padding:24px 40px 60px}
+.phase-block{margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius)}
+.phase-block.open{border-color:var(--border2)}
+.phase-header{
+  display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;
+  transition:background .15s;border-radius:var(--radius);
+}
+.phase-header:hover{background:var(--surf)}
+.phase-num{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;
+  width:36px;height:36px;border-radius:2px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;border:1px solid var(--border2);color:var(--muted);
+  transition:all .2s;
+}
+.phase-block.open .phase-num{border-color:transparent}
+[data-current="ai"] .phase-block.open .phase-num{background:var(--ai-dim);color:var(--ai)}
+[data-current="net"] .phase-block.open .phase-num{background:var(--net-dim);color:var(--net)}
+[data-current="hack"] .phase-block.open .phase-num{background:var(--hack-dim);color:var(--hack)}
+[data-current="soft"] .phase-block.open .phase-num{background:var(--soft-dim);color:var(--soft)}
+.phase-info{flex:1}
+.phase-name{font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;margin-bottom:2px}
+.phase-tagline{font-size:12px;color:var(--muted)}
+.phase-meta{display:flex;align-items:center;gap:8px}
+.level-badge{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;border:1px solid;
+}
+.lv-foundation{border-color:#3d3d6a;color:#7070a0}
+.lv-intermediate{border-color:#2a5a3a;color:#34d399}
+.lv-advanced{border-color:#5a3a0d;color:#f5a623}
+.lv-expert{border-color:#5a0d0d;color:#f87171}
+.phase-chevron{color:var(--dim);transition:transform .2s;font-size:12px;margin-left:auto}
+.phase-block.open .phase-chevron{transform:rotate(90deg)}
+
+.phase-body{display:none;padding:0 18px 18px}
+.phase-block.open .phase-body{display:block}
+.phase-desc{font-size:13px;color:var(--muted);line-height:1.7;padding:10px 0 16px;border-bottom:1px solid var(--border);margin-bottom:16px}
+
+/* TOPICS GRID */
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.topic-card{
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surf);cursor:pointer;transition:border-color .15s;overflow:hidden;
+}
+.topic-card:hover{border-color:var(--border2)}
+.topic-card.open{border-color:var(--border2)}
+[data-current="ai"] .topic-card.open{border-color:var(--ai-border)}
+[data-current="net"] .topic-card.open{border-color:var(--net-border)}
+[data-current="hack"] .topic-card.open{border-color:var(--hack-border)}
+[data-current="soft"] .topic-card.open{border-color:var(--soft-border)}
+
+.topic-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;gap:8px}
+.topic-name{font-size:13px;font-weight:500;line-height:1.4;flex:1}
+.topic-tag{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.5px;
+  padding:2px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0;
+}
+.tt-core{background:#1a1a3a;color:#7070a0}
+.tt-theory{background:#1a2535;color:#60a5fa}
+.tt-hands-on{background:#0d3028;color:#34d399}
+.tt-tools{background:#2a1a10;color:#f5a623}
+.tt-advanced{background:#2a0d0d;color:#f87171}
+.tt-research{background:#1a0d2a;color:#a78bfa}
+
+.topic-body-inner{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.topic-card.open .topic-body-inner{display:block}
+.topic-section{margin-top:12px}
+.topic-section-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--dim);margin-bottom:6px;
+}
+.topic-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.topic-desc p{margin-bottom:6px}
+.master-list{list-style:none;display:flex;flex-direction:column;gap:3px}
+.master-list li{
+  font-size:11px;color:var(--muted);padding:3px 0 3px 14px;position:relative;line-height:1.5;
+}
+.master-list li::before{content:'→';position:absolute;left:0;color:var(--dim)}
+.res-list{display:flex;flex-wrap:wrap;gap:5px}
+.res-chip{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:3px 9px;border-radius:2px;background:var(--surf2);
+  border:1px solid var(--border);color:var(--muted);
+}
+
+/* Transitions */
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.phase-body,.topic-body-inner{animation:fadeIn .15s ease}
+
+/* Scrollbar sidebar */
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{width:160px}
+  .disc-hero{padding:24px 24px 16px}
+  .phases{padding:16px 24px 40px}
+  .disc-title{font-size:32px}
+}
+@media(max-width:640px){
+  .sidebar{display:none}
+  .nav-pills{gap:4px}
+  .npill{padding:5px 10px;font-size:10px}
+  .disc-hero{padding:16px}
+  .phases{padding:12px 16px 40px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">ELITE<span>TECH</span> MASTERY</div>
+  <div class="nav-pills">
+    <button class="npill active" data-area="ai" onclick="switchArea('ai')">◈ AI / ML</button>
+    <button class="npill" data-area="net" onclick="switchArea('net')">⬡ Networking</button>
+    <button class="npill" data-area="hack" onclick="switchArea('hack')">⚡ Hacking</button>
+    <button class="npill" data-area="soft" onclick="switchArea('soft')">⎄ Software</button>
+  </div>
+  <div class="site-meta">4 DISCIPLINES · 32 PHASES · 180+ TOPICS</div>
+</header>
+
+<div class="layout" id="layout" data-current="ai">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+const DATA = {
+
+ai: {
+  name:"ARTIFICIAL INTELLIGENCE",
+  area:"ai",
+  eyebrow:"Machine Intelligence · Deep Learning · Research",
+  sub:"From first-principles mathematics to frontier research. The path to building, training, and understanding intelligent systems at a level that lets you push the field forward.",
+  phases:[
+    { name:"Mathematical Bedrock", level:"foundation", tagline:"The language all of AI is written in",
+      desc:"No shortcut exists here. Every technique in machine learning is applied mathematics. You need fluency — not familiarity — in linear algebra, calculus, probability, and optimization before any framework makes deep sense.",
+      topics:[
+        { name:"Linear Algebra for ML", tag:"core",
+          desc:"Vectors, matrices, tensor operations. Master eigendecomposition, SVD, PCA from scratch. Understand the geometric interpretation of every operation — matrix multiplication as transformation, eigenvectors as axes of stretching.",
+          master:["Implement SVD from scratch in numpy","Derive PCA from covariance matrix","Understand column space, null space, rank","Implement least-squares via normal equations","Visualize linear transformations in 2D/3D"],
+          res:["Linear Algebra (Gilbert Strang — MIT OCW free)","Essence of Linear Algebra (3Blue1Brown)","Matrix Cookbook (Petersen — free PDF)","Numerical Linear Algebra (Trefethen)"] },
+        { name:"Multivariable Calculus & Optimization", tag:"core",
+          desc:"Chain rule is the soul of backpropagation. Partial derivatives, Jacobians, Hessians, gradient, divergence. Convex optimization: KKT conditions, Lagrange multipliers, duality. Non-convex landscapes and saddle points.",
+          master:["Derive backprop from chain rule manually","Implement gradient descent + momentum + Adam from scratch","Understand KKT conditions and constrained optimization","Hessian-based second-order methods (Newton's method)","Understand why non-convex optimization usually works in practice"],
+          res:["Calculus (MIT 18.01/18.02 OCW)","Convex Optimization (Boyd & Vandenberghe — free PDF)","Numerical Optimization (Nocedal & Wright)","Mathematics for ML (Deisenroth — free PDF)"] },
+        { name:"Probability & Statistics", tag:"core",
+          desc:"Probability theory: measure-theoretic foundations, random variables, expectation, variance. Distributions: Gaussian, Bernoulli, Categorical, Beta, Dirichlet, exponential family. MLE, MAP, Bayesian inference, conjugate priors, MCMC basics.",
+          master:["Derive MLE for Gaussian, Bernoulli, softmax","Understand KL divergence and cross-entropy relationship","Implement Metropolis-Hastings MCMC","Hypothesis testing, p-values, confidence intervals","Understand sufficiency, exponential family, Fisher information"],
+          res:["All of Statistics (Wasserman)","Pattern Recognition and Machine Learning (Bishop — free PDF)","Bayesian Data Analysis (Gelman — free PDF)","Introduction to Probability (Blitzstein & Hwang — free)"] },
+        { name:"Information Theory", tag:"theory",
+          desc:"Shannon entropy, mutual information, KL divergence, cross-entropy — these are not just formulas, they are the fundamental quantities of learning. Deep understanding here unlocks variational methods, compression, and communication.",
+          master:["Derive cross-entropy loss from MLE perspective","Understand mutual information and its estimation","Implement lossless compression (Huffman coding)","Understand channel capacity and the noisy channel coding theorem","Connect information theory to generalization bounds"],
+          res:["Elements of Information Theory (Cover & Thomas)","Information Theory, Inference, and Learning Algorithms (MacKay — free PDF)","Claude Shannon's 1948 paper — read the original"] }
+      ]
+    },
+    { name:"Python & Data Ecosystem", level:"foundation", tagline:"Build the tools you'll use for years",
+      desc:"Master the scientific Python stack so deeply that data manipulation becomes automatic. Every inefficiency here compounds across thousands of experiments.",
+      topics:[
+        { name:"NumPy — Deep Mastery", tag:"hands-on",
+          desc:"Broadcasting rules, memory layout (C vs Fortran order), strides, advanced indexing, vectorized operations. Understand why vectorized code is fast — cache coherence, SIMD, avoiding Python loop overhead.",
+          master:["Understand broadcasting without looking it up","Implement convolution using stride tricks","Profile and optimize a naive loop into vectorized form","Understand view vs copy semantics","Implement a neural network using only NumPy"],
+          res:["NumPy docs — read from start","100 NumPy Exercises (GitHub)","From Python to NumPy (Rougier — free PDF)"] },
+        { name:"Pandas & Data Engineering", tag:"hands-on",
+          desc:"GroupBy internals, merge strategies, time series, multi-indexing, window functions, memory optimization (categorical dtypes, chunking). Data cleaning pipelines for real-world messy datasets.",
+          master:["Handle 10M+ row datasets without OOM","Implement complex GroupBy + transform operations","Write efficient merge/join operations understanding complexity","Time series resampling, rolling windows, lag features","Build reusable data cleaning pipelines"],
+          res:["Python for Data Analysis (Wes McKinney — Pandas author)","Pandas docs: Group By user guide","Effective Pandas (Matt Harrison)"] },
+        { name:"Visualization & EDA", tag:"hands-on",
+          desc:"Matplotlib internals (Figure/Axes/Artist hierarchy), Seaborn for statistical plots, Plotly for interactive. The goal: exploratory data analysis as a discipline — forming hypotheses, finding anomalies, communicating insights.",
+          master:["Create publication-quality figures","Build interactive dashboards with Plotly","Statistical visualization: violin plots, correlation matrices, pair plots","Spatial visualization (geopandas, folium)","Animation of training dynamics"],
+          res:["Fundamentals of Data Visualization (Wilke — free online)","Matplotlib docs — especially the tutorials","Python Graph Gallery"] },
+        { name:"SQL for ML Engineering", tag:"hands-on",
+          desc:"Window functions, CTEs, recursive queries, query planning and indexes, partitioning. Modern SQL for analytics: dbt, BigQuery, duckdb. Feature engineering in SQL at scale — this is how production ML pipelines work.",
+          master:["Window functions: RANK, LAG, LEAD, running totals","Write self-joins and recursive CTEs","Read EXPLAIN ANALYZE output and optimize slow queries","Implement time-series feature engineering in SQL","Use DuckDB for fast local analytics on Parquet files"],
+          res:["PostgreSQL docs","Mode Analytics SQL Tutorial","Designing Data-Intensive Applications (Kleppmann) — Chapter 2"] }
+      ]
+    },
+    { name:"Classical Machine Learning", level:"intermediate", tagline:"Algorithms that still dominate production",
+      desc:"Before deep learning — and alongside it — classical ML methods solve most real-world problems. Master them at the algorithmic level, not just the sklearn API level.",
+      topics:[
+        { name:"Supervised Learning — Core Algorithms", tag:"core",
+          desc:"Linear and logistic regression (derive gradient, implement from scratch). Decision trees (information gain, Gini, pruning). SVMs (the geometric intuition, kernel trick, soft margin). Ridge, Lasso, ElasticNet regularization and why they work.",
+          master:["Derive logistic regression gradient and implement","Implement decision tree from scratch with pruning","Understand SVM dual formulation and kernel trick","Derive Ridge regression closed-form solution","Understand bias-variance tradeoff geometrically"],
+          res:["Pattern Recognition and ML (Bishop)","ESL — Elements of Statistical Learning (free PDF)","Hands-On ML with Scikit-Learn (Géron)"] },
+        { name:"Ensemble Methods", tag:"advanced",
+          desc:"Bagging (variance reduction), boosting (bias reduction). Random Forests internals (feature importance, OOB error). Gradient Boosting (XGBoost, LightGBM, CatBoost) — the tree split math, regularization, shrinkage. These dominate tabular data competitions.",
+          master:["Understand why bagging reduces variance","Implement AdaBoost from scratch","Tune XGBoost hyperparameters systematically (not randomly)","Interpret SHAP values for any tree model","When to use gradient boosting vs neural networks for tabular data"],
+          res:["XGBoost paper (Chen & Guestrin)","LightGBM paper (Microsoft)","SHAP docs and papers","Kaggle winning solutions (tabular competitions)"] },
+        { name:"Unsupervised Learning", tag:"core",
+          desc:"K-Means (Lloyd's algorithm, k-means++, limitations). DBSCAN (density-based, handles non-convex clusters, noise). Gaussian Mixture Models (EM algorithm from scratch). Hierarchical clustering. Dimensionality reduction: t-SNE, UMAP (understand the math, not just the output).",
+          master:["Implement K-Means from scratch","Implement EM for GMMs from scratch","Understand UMAP's topological foundations at a high level","Choose the right clustering algorithm for a given dataset","Evaluate clustering quality without ground truth labels"],
+          res:["sklearn clustering user guide","UMAP paper (McInnes et al.)","Pattern Recognition and ML — Chapter 9"] },
+        { name:"Feature Engineering & Model Evaluation", tag:"hands-on",
+          desc:"Feature engineering is an art: encoding (target encoding, embeddings for categoricals), scaling, polynomial features, interaction terms. Model evaluation: proper cross-validation, stratification, time-series splits, ROC/AUC, PR curves, calibration.",
+          master:["Implement nested cross-validation to avoid selection bias","Build automated feature engineering pipeline","Understand when AUC is misleading (imbalanced data)","Calibrate probability outputs (Platt scaling, isotonic regression)","Handle data leakage systematically"],
+          res:["Feature Engineering and Selection (Kuhn & Johnson — free)","scikit-learn model evaluation docs","Winning Kaggle competitions — read winning solution writeups"] }
+      ]
+    },
+    { name:"Deep Learning Fundamentals", level:"intermediate", tagline:"Build neural networks from the ground up",
+      desc:"Implement everything from scratch before using frameworks. Understanding backpropagation at the code level — not just the equation level — is the dividing line between a practitioner and an engineer.",
+      topics:[
+        { name:"Backpropagation from Scratch", tag:"core",
+          desc:"Forward pass, loss computation, backward pass. Computational graph, chain rule, gradient accumulation. Implement a full autograd engine (like micrograd). Understand numerically: verify gradients with finite differences.",
+          master:["Implement a working autograd engine in pure Python","Train a MLP on MNIST with your autograd engine","Understand gradient flow through non-linearities","Debug vanishing/exploding gradients analytically","Implement gradient clipping and understand why it helps"],
+          res:["Andrej Karpathy — micrograd (YouTube walkthrough)","Deep Learning (Goodfellow, Bengio, Courville — free PDF)","CS231n backprop notes (Stanford — free)"] },
+        { name:"Convolutional Neural Networks", tag:"core",
+          desc:"Convolution as linear operation, receptive field, stride, padding, dilation. Pooling. Batch normalization (derive the gradient). Architectures: LeNet, VGG, ResNet (understand residual connections deeply), EfficientNet (compound scaling).",
+          master:["Implement conv2d using matrix multiplication (im2col)","Implement BatchNorm forward and backward pass","Understand why ResNets train so much deeper","Read and implement the ResNet paper from scratch","Implement efficient inference optimizations (fused ops)"],
+          res:["CS231n — Convolutional Neural Networks (Stanford, free)","ResNet paper (He et al. 2015)","EfficientNet paper","PyTorch official tutorials"] },
+        { name:"Sequence Models & Attention", tag:"core",
+          desc:"RNNs (vanishing gradient problem, BPTT). LSTMs and GRUs — the gate math. Encoder-decoder architecture, seq2seq. Attention mechanism (Bahdanau attention). The transition from RNNs to Transformers.",
+          master:["Implement LSTM cell from scratch with BPTT","Understand why LSTMs mitigate vanishing gradients","Implement Bahdanau attention from scratch","Build a seq2seq translation model","Understand beam search decoding"],
+          res:["Understanding LSTMs (Olah blog — colah.github.io)","Neural Machine Translation by Jointly Learning to Align (Bahdanau 2014)","The Unreasonable Effectiveness of RNNs (Karpathy)"] },
+        { name:"Training Techniques & Optimization", tag:"advanced",
+          desc:"SGD, momentum, Adam, AdaGrad, AdamW — derive each and understand their failure modes. Learning rate schedules: cosine annealing, warmup, cyclical. Regularization: dropout (at test time too), weight decay, label smoothing. Mixed precision (FP16/BF16).",
+          master:["Understand Adam's bias correction and why it matters","Implement cosine annealing with warmup","Understand the difference between weight decay and L2 regularization (they differ with Adam!)","Profile GPU memory and compute utilization","Implement gradient accumulation for large effective batch sizes"],
+          res:["Decoupled Weight Decay Regularization (AdamW paper)","Cyclical Learning Rates paper (Smith)","PyTorch AMP docs","Tim Dettmers' blog on training large models"] }
+      ]
+    },
+    { name:"Advanced Architectures", level:"advanced", tagline:"The Transformer era and beyond",
+      desc:"The Transformer architecture rewrote the field. Understanding it at the implementation level — every matrix multiplication, every attention head, every layer norm — is essential for working at the frontier.",
+      topics:[
+        { name:"Transformers — Full Implementation", tag:"core",
+          desc:"Multi-head self-attention (derive QKV projection, scaled dot-product, causal masking). Positional encodings (sinusoidal and learned). Feed-forward sublayers, layer norm, residual connections. Encoder-only (BERT), decoder-only (GPT), encoder-decoder (T5).",
+          master:["Implement a complete Transformer from scratch (PyTorch, no nn.Transformer)","Understand why scaled dot-product attention uses √dk","Implement rotary positional embeddings (RoPE)","Build a character-level GPT and train it","Profile attention memory: understand the O(n²) problem"],
+          res:["Attention Is All You Need (Vaswani et al. 2017)","Andrej Karpathy — nanoGPT (study the codebase)","The Illustrated Transformer (Jay Alammar)","Formal Algorithms for Transformers (DeepMind)"] },
+        { name:"Diffusion Models", tag:"advanced",
+          desc:"DDPM (denoising diffusion probabilistic models) — the forward noising process (ELBO derivation), the reverse denoising network (U-Net), training objective. Score-based models. DDIM for faster sampling. Latent diffusion (Stable Diffusion architecture).",
+          master:["Derive the DDPM ELBO objective from scratch","Implement a small DDPM on MNIST","Understand score matching connection to diffusion","Understand how classifier-free guidance works","Understand latent diffusion and the VAE bottleneck"],
+          res:["Denoising Diffusion Probabilistic Models (Ho et al. 2020)","Score-Based Generative Modeling (Song)","Annotated Diffusion Model (Hugging Face blog)","Stable Diffusion architecture diagram + codebase"] },
+        { name:"Generative Adversarial Networks", tag:"advanced",
+          desc:"GAN minimax game (derive the optimal discriminator and generator loss). Training instability: mode collapse, vanishing gradients. Solutions: Wasserstein GAN (Earth Mover distance, Lipschitz constraint, gradient penalty), spectral normalization. StyleGAN2/3.",
+          master:["Implement DCGAN from scratch","Understand WGAN-GP loss derivation","Diagnose mode collapse and training instability","Implement progressive growing of GANs concept","Understand why diffusion models beat GANs in diversity"],
+          res:["GAN paper (Goodfellow et al. 2014)","WGAN paper (Arjovsky et al.)","StyleGAN2 paper and code","GAN Hacks (Soumith Chintala)"] },
+        { name:"Graph Neural Networks", tag:"advanced",
+          desc:"Graph representation, message passing framework (MPNN). GCN (spectral convolution, Laplacian), GraphSAGE (inductive learning), GAT (attention over neighbors), GIN (expressive power, Weisfeiler-Leman test). Applications: molecular property prediction, recommendation.",
+          master:["Implement GCN from scratch using adjacency matrix","Understand the expressiveness hierarchy of GNNs","Apply GNN to molecular graphs (drug discovery)","Implement heterogeneous graph attention network","Understand oversmoothing and depth limitations of GNNs"],
+          res:["Graph Representation Learning (Hamilton — free PDF)","PyTorch Geometric documentation","How Powerful are GNNs? (Xu et al.)","Stanford CS224W (free course)"] }
+      ]
+    },
+    { name:"Large Language Models & GenAI", level:"advanced", tagline:"The present frontier of AI",
+      desc:"LLMs are the most important technology of the decade. Understanding them at depth — from pre-training at scale to RLHF alignment to deployment — is where elite ML engineers operate.",
+      topics:[
+        { name:"Pre-training at Scale", tag:"advanced",
+          desc:"Data curation pipelines (Common Crawl filtering, deduplication). Tokenization (BPE, unigram LM, SentencePiece). Scaling laws (Chinchilla — compute-optimal training). Distributed pre-training: tensor parallelism, pipeline parallelism, data parallelism, sequence parallelism (Megatron-LM).",
+          master:["Implement BPE tokenizer from scratch","Understand Chinchilla scaling laws and their implications","Read the GPT-3, PaLM, Llama papers deeply","Understand how FP16 precision affects training stability","Profile distributed training communication overhead"],
+          res:["Scaling Laws for NLMs (Kaplan et al.)","Chinchilla paper (Hoffmann et al.)","Megatron-LM paper","Language Model Pre-training Review (Bommasani et al.)","TinyLlama codebase — study it"] },
+        { name:"Fine-tuning & Alignment", tag:"advanced",
+          desc:"Supervised fine-tuning (SFT) on instruction data. RLHF: reward model training, PPO for LLMs. DPO (Direct Preference Optimization — understand why it bypasses RL). PEFT methods: LoRA (low-rank decomposition intuition), QLoRA (4-bit quantization + LoRA).",
+          master:["Fine-tune a 7B model with QLoRA on a single GPU","Understand why LoRA works: low intrinsic dimensionality hypothesis","Implement a reward model from a pretrained LLM","Understand PPO in the RLHF context (clip ratio, value function)","Compare SFT vs RLHF vs DPO on a small benchmark"],
+          res:["InstructGPT paper (Ouyang et al.)","DPO paper (Rafailov et al.)","LoRA paper (Hu et al.)","Axolotl / llama.cpp / unsloth — study the code"] },
+        { name:"Retrieval-Augmented Generation (RAG)", tag:"hands-on",
+          desc:"RAG architecture: document ingestion, chunking strategies, embedding models (dense retrieval), vector databases (FAISS, Chroma, Weaviate, Pinecone). Hybrid search (BM25 + dense). Reranking (cross-encoders). Advanced: HyDE, RAPTOR, multi-hop RAG.",
+          master:["Build a production RAG pipeline from scratch","Understand dense vs sparse retrieval tradeoffs","Implement hybrid search with RRF (Reciprocal Rank Fusion)","Evaluate RAG quality (RAGAS framework)","Understand when RAG is better vs fine-tuning"],
+          res:["RAG paper (Lewis et al.)","LangChain and LlamaIndex docs","RAGAS evaluation framework","Practical RAG (various Hugging Face blog posts)"] },
+        { name:"LLM Inference & Quantization", tag:"advanced",
+          desc:"Inference optimization: KV cache, speculative decoding, continuous batching. Quantization: post-training quantization (PTQ), GPTQ, AWQ, GGUF format. Pruning and distillation for LLMs. vLLM paged attention. Serving at scale: throughput vs latency tradeoffs.",
+          master:["Understand KV cache mechanics and memory implications","Deploy a quantized model with vLLM","Understand paged attention (vLLM's core innovation)","Profile LLM inference: identify compute vs memory bound ops","Understand how speculative decoding speeds up inference 2-3x"],
+          res:["vLLM paper — paged attention","GPTQ paper","AWQ paper","Efficient Transformers: A Survey"] }
+      ]
+    },
+    { name:"MLOps & Production AI", level:"advanced", tagline:"Real systems that serve real users",
+      desc:"Models in notebooks are demos. Production ML requires engineering discipline: reproducibility, monitoring, versioning, serving, and failure recovery at scale.",
+      topics:[
+        { name:"Experiment Tracking & Reproducibility", tag:"hands-on",
+          desc:"MLflow (tracking server, model registry, projects). Weights & Biases (sweeps, artifacts, reports). DVC for data versioning. Hydra for config management. Reproducibility: seeding, deterministic ops, Docker for training environments.",
+          master:["Set up MLflow tracking server with artifact store","Run hyperparameter sweeps with W&B","Version datasets with DVC and reproduce experiments exactly","Build a full experiment pipeline with Hydra configs","Understand non-determinism sources in GPU training"],
+          res:["MLflow docs","Weights & Biases docs","DVC docs","Practical MLOps (Gift & Behrman)"] },
+        { name:"Model Serving & Deployment", tag:"hands-on",
+          desc:"FastAPI for custom inference endpoints. ONNX for framework-agnostic export. TorchServe, Triton Inference Server (concurrent model execution, dynamic batching). BentoML. Serverless inference (AWS Lambda, Modal). Latency optimization: compile (torch.compile, TensorRT).",
+          master:["Deploy a model with Triton and benchmark throughput","Export PyTorch model to ONNX and TensorRT","Implement dynamic batching for high-throughput serving","Build A/B testing infrastructure for model comparison","Profile inference bottlenecks with CUDA Nsight"],
+          res:["Triton Inference Server docs","ONNX Runtime docs","Designing ML Systems (Huyen)","Stanford MLSys seminar (YouTube)"] },
+        { name:"Training Infrastructure", tag:"advanced",
+          desc:"Distributed training: DDP (gradient synchronization), FSDP (sharding states), DeepSpeed ZeRO stages 1/2/3. Pipeline parallelism. Cloud training: spot instances with checkpointing. Kubernetes for ML workloads. Kubeflow Pipelines.",
+          master:["Train a model with FSDP across multiple GPUs","Implement gradient checkpointing to trade compute for memory","Set up automatic checkpointing with spot instance recovery","Build a Kubeflow pipeline for training + evaluation + deployment","Profile distributed training communication with NCCL"],
+          res:["DeepSpeed docs and ZeRO paper","PyTorch FSDP tutorial","Kubeflow Pipelines docs","Efficient Large Scale Language Modeling with Megatron"] },
+        { name:"Monitoring & ML Observability", tag:"hands-on",
+          desc:"Production monitoring: data drift (PSI, KL divergence on feature distributions), concept drift (model degradation over time). Tools: Evidently AI, WhyLogs, Arize. Shadow deployment, canary releases. Retraining triggers. Feedback loops and training data flywheels.",
+          master:["Set up data drift monitoring with Evidently AI","Implement a retraining trigger based on drift thresholds","Build a data flywheel (production logs → training data)","Implement shadow mode for safe model updates","Understand the different types of distribution shift"],
+          res:["Evidently AI docs","Designing ML Systems — Monitoring chapter","Made With ML (MLOps section)","The ML Test Score (Breck et al.)"] }
+      ]
+    },
+    { name:"Research Frontier", level:"expert", tagline:"Push the field forward",
+      desc:"This is where you stop consuming and start contributing. Read papers before they're famous, implement ideas before they're in libraries, and publish your own findings.",
+      topics:[
+        { name:"Paper Reading & Implementation", tag:"research",
+          desc:"Speed-reading arxiv: abstract, intro, figures, conclusion — then decide if full read is worth it. Implement every paper you want to understand. Annotate papers in Semantic Scholar. Follow specific researchers on Twitter/X. Use Papers With Code for reproductions.",
+          master:["Read and implement one paper per week","Build a paper implementation that matches the reported results","Contribute a reproduction to Papers With Code","Write a blog post explaining a paper to a non-expert","Identify the core contribution vs incremental improvement in papers"],
+          res:["Arxiv.org — cs.LG, cs.CL, cs.CV","Papers With Code","Yannic Kilcher — paper walkthroughs (YouTube)","The Batch (Andrew Ng newsletter)"] },
+        { name:"Mechanistic Interpretability", tag:"research",
+          desc:"Reverse-engineering what neural networks compute. Circuit analysis (Elhage et al.). Superposition hypothesis. Sparse autoencoders for feature extraction. Activation patching, causal tracing. Tools: TransformerLens (Neel Nanda). This is the fastest-growing subfield.",
+          master:["Run activation patching on GPT-2 to identify factual recall circuits","Train a sparse autoencoder on MLP activations","Reproduce the IOI (Indirect Object Identification) circuit analysis","Understand the superposition hypothesis and its implications","Contribute to the open mechanistic interpretability research agenda"],
+          res:["A Mathematical Framework for Transformer Circuits (Elhage et al.)","TransformerLens docs (Neel Nanda)","Anthropic's interpretability research blog","200 Concrete Open Problems in Mechanistic Interpretability"] },
+        { name:"Efficient ML & Hardware Awareness", tag:"advanced",
+          desc:"Neural architecture search (DARTS). Knowledge distillation (how teachers teach students). Structured vs unstructured pruning. Flash Attention (IO-aware algorithm — study the kernel). Custom CUDA kernels (Triton language). Hardware: GPU memory hierarchy, tensor cores.",
+          master:["Write a custom Triton kernel that outperforms PyTorch","Implement flash attention in Python (understand the tiling strategy)","Distill a large model into a 10x smaller one with <2% performance drop","Profile a model with PyTorch profiler and find the bottleneck","Understand how tensor cores work and when they're utilized"],
+          res:["FlashAttention paper (Dao et al.)","Triton language tutorials","Making Deep Learning Go Brrrr from First Principles","GPU Puzzles (Sasha Rush — free interactive)"] }
+      ]
+    }
+  ]
+},
+
+net: {
+  name:"NETWORK ENGINEERING",
+  area:"net",
+  eyebrow:"Protocols · Infrastructure · Security · Programming",
+  sub:"The complete path from Ethernet fundamentals to building production-grade network infrastructure, writing protocol implementations from scratch, and automating everything at scale.",
+  phases:[
+    { name:"Physical & Data Link Layer", level:"foundation", tagline:"Where bits become frames",
+      desc:"Foundations many engineers skip but that distinguish architects from button-pushers. Every abstraction above depends on this layer working correctly. Understand what actually happens on the wire.",
+      topics:[
+        { name:"Physical Layer & Ethernet", tag:"core",
+          desc:"Ethernet standards: 10BASE-T through 400GbE. Cable categories (Cat5e/Cat6/Cat6a/Cat8), fiber types (single-mode vs multi-mode), optical transceivers (SFP/SFP+/QSFP). Line coding (Manchester, 8b10b, PAM4). TDR (time-domain reflectometry) for cable diagnosis.",
+          master:["Calculate cable length from TDR reflection","Identify fiber vs copper tradeoffs for a given scenario","Understand why PAM4 enables 400GbE","Read optical transceiver specs: budget, wavelength, reach","Capture raw frames with a network tap"],
+          res:["Ethernet: The Definitive Guide (Spurgeon)","IEEE 802.3 standard (skim structure, deep-dive specific clauses)","Wireshark Ethernet capture analysis"] },
+        { name:"Switching & MAC Learning", tag:"core",
+          desc:"Ethernet frame format (preamble, SFD, MACs, EtherType, FCS). MAC address learning (CAM table), aging, flooding, forwarding. Cut-through vs store-and-forward. Switch buffer management. TCAM for hardware forwarding. Wireshark at the frame level.",
+          master:["Explain CAM table exhaustion attack and mitigation","Trace a frame through a multi-switch topology","Understand TCAM vs DRAM tradeoffs for forwarding tables","Diagnose runt frames and giant frames","Analyze frame captures to identify retransmissions"],
+          res:["Cisco Nexus Architecture guides","Wireshark master class (free YouTube)","Packet Pushers podcast — switching fundamentals"] },
+        { name:"STP, RSTP, MSTP", tag:"advanced",
+          desc:"Spanning Tree Problem (loops and broadcast storms). STP (802.1D): root bridge election, port roles/states, BPDU format and timers. RSTP (802.1w): rapid convergence mechanisms, proposal/agreement. MSTP (802.1s): multiple instances. STP hardening: PortFast, BPDU Guard/Filter, Root Guard, Loop Guard.",
+          master:["Manually predict STP root bridge and port roles for a topology","Diagnose a spanning tree loop from symptom to cause","Configure and verify RSTP rapid convergence","Design STP hardening for an access layer","Understand why BPDU Guard + PortFast combination is critical"],
+          res:["802.1D and 802.1w IEEE standards","Cisco STP troubleshooting guide","Network Warrior (Donahue)"] },
+        { name:"VLANs, Trunking & EtherChannel", tag:"hands-on",
+          desc:"VLAN segmentation rationale and 802.1Q trunking (tag format, native VLAN). VTP (avoid VTP transparent mode pitfalls). Inter-VLAN routing: router-on-a-stick vs L3 switch SVIs. EtherChannel: LACP (802.3ad) vs PAgP vs static, hashing algorithms, troubleshooting.",
+          master:["Configure VLANs and trunks on a Cisco/Arista switch","Design inter-VLAN routing with SVIs on a multilayer switch","Configure LACP EtherChannel and verify with LACP PDUs","Diagnose native VLAN mismatch from a Wireshark capture","Design VLAN architecture for a 500-user enterprise campus"],
+          res:["Cisco VLAN configuration guides","EtherChannel design guide","EVE-NG or GNS3 for lab practice"] }
+      ]
+    },
+    { name:"IP Networking & Addressing", level:"foundation", tagline:"Master the internet layer completely",
+      desc:"IPv4 and IPv6 at the implementation level. Subnetting by eye. Understand every field in every packet header and why it exists.",
+      topics:[
+        { name:"IPv4 Deep Dive & Subnetting", tag:"core",
+          desc:"IPv4 header fields (TTL, flags, fragment offset, protocol, checksum). Subnetting: VLSM, CIDR aggregation. Private ranges, special addresses (loopback, APIPA, broadcast, multicast ranges). ARP (request/reply, gratuitous ARP, ARP cache poisoning). Fragmentation and PMTUD.",
+          master:["Subnet any /8 through /30 mentally in under 30 seconds","Calculate usable hosts, network, broadcast for any subnet","Read a full IPv4 header in Wireshark and explain every field","Trace an ARP resolution through a multi-switch topology","Diagnose an MTU black hole from symptoms"],
+          res:["TCP/IP Illustrated Vol 1 (Stevens) — the Bible","Subnetting practice: subnettingpractice.com","RFC 791 — IPv4 specification"] },
+        { name:"IPv6 — Full Mastery", tag:"advanced",
+          desc:"IPv6 header simplifications vs IPv4. Address types: unicast (GUA, LLA, ULA), anycast, multicast (scope). SLAAC, DHCPv6, NDP (replaces ARP). Dual-stack, 6to4, ISATAP, NAT64/DNS64. IPv6 security differences (NDP spoofing, RA guard).",
+          master:["Configure full dual-stack on a router and troubleshoot","Implement IPv6 SLAAC and verify EUI-64 address construction","Configure and verify DHCPv6 stateless and stateful","Understand NDP message types (RS, RA, NS, NA, Redirect)","Design an IPv6 addressing plan for an enterprise"],
+          res:["IPv6 Fundamentals (Graziani)","RFC 4291 — IPv6 Addressing Architecture","IPv6 Security (Hogg & Vyncke)"] },
+        { name:"Static Routing & Route Selection", tag:"core",
+          desc:"Routing table structure (destination, mask, next-hop, egress interface, AD, metric). CEF (Cisco Express Forwarding): FIB and adjacency table. Administrative distance. Floating static routes. Policy-based routing (route-map + ip policy). Recursive lookup and its pitfalls.",
+          master:["Explain CEF FIB and adjacency table lookup process","Configure PBR to send specific traffic out a different interface","Debug routing issues using 'show ip route', 'debug ip routing'","Understand recursive routing and when it causes issues","Design a static routing hierarchy for a multi-site WAN"],
+          res:["Routing TCP/IP Vol 1 (Doyle)","Cisco IOS documentation","Packet Tracer/EVE-NG labs"] },
+        { name:"OSPF — Complete Mastery", tag:"advanced",
+          desc:"Link-state routing, LSA types (1-7, 9-11 for TE). OSPF packet types (Hello, DBD, LSR, LSU, LSAck). Neighbor formation and DR/BDR election. Area types: backbone, standard, stub, NSSA, totally stubby. SPF algorithm and computation. OSPFv3 for IPv6. Authentication (MD5, SHA). Virtual links.",
+          master:["Explain OSPF neighbor states from Down to Full","Manually predict DR/BDR election outcome","Configure multi-area OSPF with route filtering between areas","Implement OSPF summarization at ABR and ASBR","Diagnose OSPF adjacency failure from debug output"],
+          res:["OSPF: Anatomy of an Internet Protocol (Moy)","RFC 2328 — OSPFv2","OSPF Design Guide (Cisco)"] }
+      ]
+    },
+    { name:"Advanced Routing Protocols", level:"intermediate", tagline:"BGP is the internet. Master it.",
+      desc:"BGP runs the internet. EIGRP and MPLS run enterprise WANs. This is where network engineers become network architects.",
+      topics:[
+        { name:"BGP — From Basics to Expert", tag:"advanced",
+          desc:"iBGP vs eBGP. BGP attributes: WEIGHT, LOCAL_PREF, AS_PATH, ORIGIN, MED, COMMUNITY, NEXT_HOP. Best path selection (memorize the order and rationale for each step). Route reflectors and confederation. BGP peering: EBGP multihop, MD5 auth, update-source. Prefix filtering: prefix-lists, AS-path ACLs, route-maps. BGP communities (standard, extended, large). RPKI for route origin validation.",
+          master:["Design a BGP topology with route reflectors for an AS of 100 routers","Implement traffic engineering using LOCAL_PREF and MED","Write BGP filters to accept only specific prefixes from a peer","Implement BGP communities for traffic steering","Configure RPKI validation and test with an invalid prefix"],
+          res:["BGP Design and Implementation (Zhang & Bartell)","Practical BGP (Halabi)","RFC 4271 — BGP-4","BGP Looking Glass servers for real-world analysis","RIPE NCC BGP routing security resources"] },
+        { name:"MPLS & Traffic Engineering", tag:"advanced",
+          desc:"MPLS label stack (PUSH/SWAP/POP operations). Label distribution: LDP (label binding, discovery, label space). MPLS VPN: L3VPN (VRFs, RD, RT, MP-BGP), L2VPN (pseudowires). MPLS-TE: RSVP-TE signaling, explicit paths, Fast ReRoute (FRR). Segment Routing (SR-MPLS, SRv6).",
+          master:["Trace a packet through an MPLS label-switched path","Configure a full L3VPN between two CE routers","Understand RD vs RT and their different roles","Configure MPLS-TE with RSVP and verify the tunnel","Understand how Segment Routing simplifies MPLS"],
+          res:["MPLS-Enabled Applications (Minei & Lucek)","RFC 3031 — MPLS Architecture","Segment Routing (Filsfils et al.)"] },
+        { name:"EIGRP & Redistribution", tag:"intermediate",
+          desc:"DUAL algorithm (feasibility condition, feasible successor). EIGRP packet types. Metric calculation (bandwidth, delay, reliability, load, MTU). Named mode EIGRP vs classic. Stuck in Active (SIA) and prevention. Route redistribution between OSPF, EIGRP, BGP — seed metrics, filtering, loop prevention.",
+          master:["Manually calculate EIGRP composite metric","Explain the DUAL algorithm feasibility condition","Configure mutual redistribution between OSPF and EIGRP safely","Diagnose a routing loop caused by redistribution","Understand when SIA occurs and how to prevent it"],
+          res:["EIGRP Network Design Solutions (Cisco Press)","RFC 7868 — EIGRP","Routing TCP/IP Vol 1 (Doyle)"] },
+        { name:"QoS — End to End", tag:"advanced",
+          desc:"QoS models: IntServ (RSVP), DiffServ (DSCP marking, per-hop behaviors). Queuing: FIFO, WFQ, CBWFQ, LLQ. Congestion avoidance: WRED, tail drop. Traffic shaping vs policing (token bucket). Classification and marking tools: NBAR, ACL-based, DSCP remarking at trust boundaries.",
+          master:["Design a QoS policy for a UC (VoIP + video) enterprise","Configure LLQ for VoIP and CBWFQ for data classes","Implement traffic shaping with a burst tolerance","Diagnose jitter and packet loss for VoIP from QoS statistics","Map DSCP values to 802.1p CoS for campus QoS end-to-end"],
+          res:["End-to-End QoS Network Design (Cisco Press)","RFC 2474 — DiffServ","Cisco QoS Exam Certification Guide"] }
+      ]
+    },
+    { name:"Transport & Application Layers", level:"intermediate", tagline:"TCP is the most important protocol ever written",
+      desc:"A deep reading of TCP — not just the concepts, but the state machine, the algorithms, the failure modes — is what separates a real network engineer from someone who just configures boxes.",
+      topics:[
+        { name:"TCP — Full Deep Dive", tag:"core",
+          desc:"TCP header fields (all of them). 3-way and 4-way handshake. State machine (all 11 states, especially TIME_WAIT). Sliding window, flow control (rwnd), Nagle's algorithm. Congestion control: slow start, congestion avoidance, fast retransmit, fast recovery. CUBIC, BBR. TCP options: SACK, timestamps, window scaling, MSS.",
+          master:["Read a full TCP stream in Wireshark and identify every event","Explain TCP TIME_WAIT and why 2MSL matters in production","Diagnose a retransmission storm from a pcap","Understand how BBR differs from CUBIC fundamentally","Implement a simple TCP echo server in C using raw sockets"],
+          res:["TCP/IP Illustrated Vol 1 (Stevens) — chapters on TCP","RFC 9293 — TCP (the updated RFC)","TCP Puzzlers (Wireshark challenges)","The Linux Kernel Networking (Rosen)"] },
+        { name:"DNS — Inside Out", tag:"core",
+          desc:"DNS message format (all sections, all record types: A, AAAA, CNAME, MX, NS, SOA, TXT, PTR, SRV, CAA). Recursion vs iteration. Zone transfers (AXFR/IXFR). DNSSEC (DNSKEY, RRSIG, NSEC/NSEC3, DS records, chain of trust). DNS over TLS/HTTPS. Split-horizon DNS. DNS amplification attack mechanics.",
+          master:["Manually decode a DNS packet in Wireshark byte by byte","Configure DNSSEC signing for a zone and verify the chain of trust","Set up split-horizon DNS and test from internal/external","Implement a basic DNS resolver in Python using raw UDP","Diagnose a DNS amplification attack and implement BCP38 mitigation"],
+          res:["DNS and BIND (Albitz & Liu)","RFC 1034/1035 — DNS","PowerDNS and BIND9 documentation","DNSSEC: The Basics (ICANN)"] },
+        { name:"HTTP/2, HTTP/3 & QUIC", tag:"advanced",
+          desc:"HTTP/1.1 limitations (head-of-line blocking, no compression). HTTP/2: binary framing, multiplexing, header compression (HPACK), server push, stream prioritization. HTTP/3 over QUIC: UDP-based, 0-RTT handshake, connection migration, independent stream multiplexing (no HOL blocking). TLS 1.3 integration.",
+          master:["Analyze an HTTP/2 stream in Wireshark identifying frames","Explain QUIC's advantage over TCP+TLS from first principles","Profile web page load time improvement from HTTP/1.1 to HTTP/3","Understand HPACK static and dynamic tables","Implement a simple QUIC client using a library"],
+          res:["HTTP: The Definitive Guide","RFC 9000 — QUIC","HTTP/3 Explained (Daniel Stenberg — free online)","Chrome Network Internals (chrome://net-internals)"] },
+        { name:"Network Monitoring & Telemetry", tag:"hands-on",
+          desc:"SNMP v2c vs v3 (USM, VACM). OID walk and MIB parsing. NetFlow v5/v9/IPFIX — flow record format, collector setup, analysis. sFlow sampling. Streaming telemetry with gRPC/gNMI. Protocol analyzers: Wireshark filters (BPF syntax), tshark scripting, ntopng.",
+          master:["Write SNMP walk scripts that extract specific OIDs","Set up a NetFlow collector and visualize top talkers","Configure gNMI streaming telemetry from a switch","Write BPF filter expressions for specific traffic capture","Build a network baseline using telemetry data"],
+          res:["SNMP MIB Browser tools","ntopng documentation","gNMI/OpenConfig model documentation","Network Warrior — monitoring chapters"] }
+      ]
+    },
+    { name:"Network Security Architecture", level:"advanced", tagline:"Harden at every layer",
+      desc:"Security is not a feature you add — it's an architecture you design from the start. This phase covers enterprise security from the packet level to the zero trust model.",
+      topics:[
+        { name:"Firewall & NGFW Architecture", tag:"advanced",
+          desc:"Stateful vs stateless packet filtering. Zone-based firewall (ZFW) design. NGFW capabilities: app-id, user-id, SSL inspection (full proxy vs SNI inspection). Palo Alto PAN-OS, Cisco FTD, Fortinet — understand the packet processing pipeline of each. Security policy design (least privilege). Asymmetric routing and stateful inspection failures.",
+          master:["Design a zone-based firewall policy for a DMZ","Explain how SSL inspection works and its privacy implications","Diagnose asymmetric routing causing dropped connections","Write firewall policy that blocks specific applications not IPs","Analyze firewall logs to identify exfiltration attempt"],
+          res:["Palo Alto PCNSA/PCNSE study materials","Cisco FMC/FTD documentation","Network Security Assessment (McNab)"] },
+        { name:"VPN Technologies", tag:"advanced",
+          desc:"IPsec: IKEv1 vs IKEv2 (CHILD_SA, DPD), ESP vs AH, transform sets, phase 1/2 negotiations. Site-to-site vs remote access VPN. SSL VPN (TLS tunnel mode). WireGuard: modern cryptography (ChaCha20-Poly1305, Curve25519), kernel integration, performance. DMVPN: NHRP, spoke-to-spoke tunnels.",
+          master:["Debug an IKEv2 negotiation failure using debug crypto","Configure DMVPN Phase 3 with OSPF over the tunnel","Compare WireGuard vs OpenVPN vs IPsec performance","Implement split tunneling and understand its security implications","Analyze IKEv2 exchange in Wireshark identifying every message"],
+          res:["IPSec VPN Design (Bollapragada)","WireGuard whitepaper (Donenfeld)","RFC 7296 — IKEv2"] },
+        { name:"IDS/IPS & Network Detection", tag:"hands-on",
+          desc:"Signature-based vs anomaly-based detection. Snort 3 rules: rule header, options, detection options. Suricata: multi-threading, eve.json logging, rule management. Zeek (Bro): protocol analysis, log generation, scripting language for custom detection. Bricata, Security Onion platform.",
+          master:["Write a Snort rule detecting a specific exploit payload","Write a Zeek script to log DNS queries above a threshold","Set up Security Onion and hunt for C2 beaconing","Tune IPS rules to reduce false positives by 90%","Correlate Zeek conn.log with Suricata alerts for full context"],
+          res:["Snort 3 documentation","Zeek scripting docs","The Practice of Network Security Monitoring (Bejtlich)","Security Onion documentation"] },
+        { name:"Zero Trust Architecture", tag:"advanced",
+          desc:"BeyondCorp model (Google's foundational paper). Identity-based access: device trust, user identity, continuous validation. Microsegmentation (east-west traffic control). SASE (Secure Access Service Edge): SD-WAN + cloud-delivered security. Service mesh mTLS (Istio/Envoy). ZTNA vs VPN.",
+          master:["Design a ZTA for a 1000-person organization migrating from VPN","Understand BeyondCorp's device inventory and trust signal collection","Implement microsegmentation with firewall rules or service mesh policies","Explain how SASE components interact (CASB, SWG, ZTNA, FWaaS)","Evaluate a vendor's ZTA claims against NIST SP 800-207"],
+          res:["BeyondCorp paper (Google, 2014)","NIST SP 800-207 — Zero Trust Architecture","SASE and SSE: Security Everywhere (Gartner/Analyst reports)","Istio documentation"] }
+      ]
+    },
+    { name:"Network Automation & Programmability", level:"advanced", tagline:"Manual configs don't scale. Code does.",
+      desc:"The future network engineer is a programmer. Network automation is not optional — it's the difference between managing 10 devices and managing 10,000.",
+      topics:[
+        { name:"Python for Network Engineering", tag:"hands-on",
+          desc:"Netmiko (multi-vendor SSH automation). NAPALM (network abstraction layer — getters and setters). Nornir (concurrent task framework — faster than Ansible). TextFSM/TTP for parsing unstructured CLI output. Pyats + Genie for automated testing. Scapy for packet crafting and protocol testing.",
+          master:["Write a Nornir script that audits 100 devices concurrently","Parse 'show bgp summary' from 5 different vendors with TextFSM","Implement automated configuration backup with NAPALM","Write a Scapy script that discovers all hosts on a subnet","Build a change management script that validates pre/post state"],
+          res:["Network Programmability and Automation (Lowe)","Nornir documentation","Netmiko GitHub — read the source","Scapy documentation"] },
+        { name:"Ansible for Network Infrastructure", tag:"hands-on",
+          desc:"Ansible network modules (cisco.ios, arista.eos, juniper.junos). Connection plugins: network_cli, netconf, httpapi. Roles and collections for network. Idempotent configuration management. Jinja2 templating for device configs. Playbook design: inventory management, group_vars, host_vars.",
+          master:["Deploy a complete VLAN configuration to 20 switches with Ansible","Use Jinja2 to generate device configs from a YAML source of truth","Write an Ansible playbook that validates routing table state","Implement network testing with assert module post-deployment","Integrate Ansible with a CMDB (NetBox) as the source of truth"],
+          res:["Ansible Network Automation (O'Reilly)","Ansible for Network Automation (Red Hat)","NetBox documentation (as source of truth)"] },
+        { name:"NETCONF, YANG & RESTCONF", tag:"advanced",
+          desc:"NETCONF protocol (RFC 6241): capabilities exchange, operations (get-config, edit-config, copy-config, commit, lock). YANG data models: modules, containers, lists, leafs, RPCs. OpenConfig vendor-neutral models. RESTCONF (RFC 8040) for REST-based management. Tools: pyang, yanglint, ncclient.",
+          master:["Use ncclient to retrieve running config from a device","Validate a YANG model with pyang and generate a tree diagram","Make RESTCONF calls to configure an interface","Understand the difference between OpenConfig and native models","Write a YANG module for a simple custom configuration"],
+          res:["RFC 6241 — NETCONF","RFC 7950 — YANG","Network Programmability with Yang (Claise et al.)","OpenConfig GitHub models"] },
+        { name:"Infrastructure as Code for Networks", tag:"hands-on",
+          desc:"Terraform for cloud network resources (VPCs, subnets, peering, TGW). Pulumi for Python-native IaC. Git workflows for network configurations (GitOps). CI/CD pipelines for network changes: automated testing (pyats), peer review (Batfish static analysis), staged rollout. Source of truth: NetBox as SSOT.",
+          master:["Manage AWS VPC and networking with Terraform","Build a GitOps pipeline that validates and deploys network configs","Use Batfish to validate a routing policy change before deployment","Implement network unit tests with Batfish and pytest","Design a source-of-truth workflow with NetBox and Git"],
+          res:["Terraform: Up and Running (Brikman)","Batfish documentation","NetBox documentation","Intentionet blog — network automation and testing"] }
+      ]
+    },
+    { name:"Data Center & Cloud Networking", level:"advanced", tagline:"Where scale breaks assumptions",
+      desc:"Modern data centers run on leaf-spine Clos fabric with VXLAN BGP EVPN. Cloud networking is its own discipline. This is where millions of servers talk to each other.",
+      topics:[
+        { name:"Leaf-Spine & Clos Fabric", tag:"advanced",
+          desc:"Clos network theory (Charles Clos, 1952). Leaf-spine topology: ECMP, equal-cost multipath, IP fabric. Oversubscription ratios. VXLAN (Virtual Extensible LAN): encapsulation format, VTEP operation, underlay vs overlay. BGP EVPN control plane (type 2, 3, 5 routes). Multi-site DCI (Data Center Interconnect).",
+          master:["Design a leaf-spine fabric for 2000 servers with full redundancy","Explain VXLAN BGP EVPN type-2 route and what it carries","Configure ECMP hashing and verify load distribution","Diagnose a silent host issue in a VXLAN BGP EVPN fabric","Design a stretched L2 DCI between two data centers"],
+          res:["VXLAN BGP EVPN (Krattiger et al. — Cisco Press)","RFC 7348 — VXLAN","RFC 7432 — BGP EVPN","Arista Design Guide — VXLAN EVPN"] },
+        { name:"AWS Networking — Deep Dive", tag:"hands-on",
+          desc:"VPC internals: ENI, security groups (stateful) vs NACLs (stateless). Routing: route tables, VPC peering (non-transitive), Transit Gateway (hub-and-spoke, inter-region peering). PrivateLink vs VPC endpoints. Direct Connect (DX): virtual interfaces (public, private, transit). Route 53 DNS (advanced routing policies). Global Accelerator.",
+          master:["Design a multi-account, multi-region AWS network with Transit Gateway","Implement PrivateLink for a service that must not cross the internet","Configure Direct Connect with BGP and failover to VPN","Troubleshoot asymmetric routing in a Transit Gateway topology","Audit security group rules programmatically for compliance"],
+          res:["AWS Networking Fundamentals (AWS whitepaper)","AWS Advanced Networking Specialty exam guide","AWS re:Invent networking sessions (YouTube)"] },
+        { name:"Service Mesh & Container Networking", tag:"advanced",
+          desc:"Kubernetes CNI (Container Network Interface): how pods get IP addresses, overlay networks (Flannel VXLAN, Calico BGP, Cilium eBPF). kube-proxy vs eBPF-based service routing. Istio service mesh: Envoy proxy data plane, control plane (istiod), mTLS between services, traffic management, observability.",
+          master:["Explain how a packet travels from pod A to pod B across nodes","Debug a CNI misconfiguration causing pod-to-pod connectivity failure","Implement Istio mTLS and verify with Kiali","Configure Istio traffic shifting for a canary deployment","Implement Cilium NetworkPolicy and verify enforcement"],
+          res:["Kubernetes Networking (Hnaien)","Cilium documentation","Istio documentation","Life of a Packet in Kubernetes (KubeCon talk)"] },
+        { name:"Network Observability at Scale", tag:"advanced",
+          desc:"Streaming telemetry: gRPC/gNMI vs SNMP. Time-series databases: InfluxDB, Victoria Metrics, Prometheus. Visualization: Grafana network dashboards. Flow analysis at scale: ElastiFlow, ntopng Enterprise. BGP monitoring: route leaks, hijacks (BGPmon, RIPE RIS). Synthetic monitoring (Kentik, ThousandEyes).",
+          master:["Build a streaming telemetry pipeline: device → gNMI → Telegraf → InfluxDB → Grafana","Detect a BGP route hijack from real-time feed","Create a network baseline and alert on deviation","Build a flow analysis dashboard identifying top applications","Implement synthetic monitoring for critical paths"],
+          res:["InfluxDB and Telegraf documentation","Grafana network plugin ecosystem","BGPmon alerts","ThousandEyes documentation"] }
+      ]
+    },
+    { name:"Network Programming from Scratch", level:"expert", tagline:"Build the protocols, not just use them",
+      desc:"The truly dangerous network engineer writes the tools everyone else uses. Raw sockets, kernel networking, eBPF, P4. This is where deep protocol knowledge meets software engineering.",
+      topics:[
+        { name:"Raw Sockets in C", tag:"hands-on",
+          desc:"SOCK_RAW sockets. Craft Ethernet frames, IP packets, TCP/UDP segments from scratch. Implement ARP, ping, traceroute from raw sockets. Parse incoming packets byte by byte. Understand the Linux networking stack: socket → protocol handler → netfilter → driver. Privilege escalation through network programming.",
+          master:["Implement ping using ICMP raw sockets","Write a SYN scanner (like nmap -sS) from raw sockets","Implement ARP spoofer from scratch","Parse a TCP stream from a raw socket capture","Write a minimal DNS client using UDP raw sockets"],
+          res:["Beej's Guide to Network Programming (free)","Unix Network Programming (Stevens)","Linux Kernel Networking (Rosen)","Raw socket tutorials: LWN.net"] },
+        { name:"eBPF & XDP for Networking", tag:"expert",
+          desc:"eBPF primer: programs, maps, verifier, JIT compiler. XDP (eXpress Data Path): hook before kernel networking stack, near line-rate packet processing. TC (Traffic Control) programs. Socket filtering (BPF). Building high-performance tools: packet counters, load balancers, DDoS mitigators. Cilium internals.",
+          master:["Write a BPF program that counts packets per IP","Build an XDP load balancer from scratch","Implement rate limiting in XDP at line rate","Write a tc BPF program for traffic marking","Read Cilium source code and understand how it replaces kube-proxy"],
+          res:["BPF Performance Tools (Gregg)","The BPF Book (O'Reilly, Gregg)","Linux Foundation eBPF documentation","XDP tutorial (GitHub: xdp-project)"] },
+        { name:"Scapy & Protocol Fuzzing", tag:"hands-on",
+          desc:"Scapy as a protocol laboratory: craft any packet at any layer, sniff and filter traffic, build custom protocols. Protocol fuzzing: mutating fields, testing implementation robustness. Implement custom protocols. Build network scanners, spoofers, tunnel tools. MITM frameworks.",
+          master:["Build a custom protocol implementation with Scapy","Write a Scapy-based protocol fuzzer for a network service","Implement a port scanner with OS fingerprinting","Build ARP cache poisoning tool with MITM capability","Write a Scapy script that implements TCP connection splicing"],
+          res:["Scapy documentation (scapy.net)","Violent Python (O'Brien)","Black Hat Python (Seitz)","Penetration Testing with Scapy"] },
+        { name:"P4 — Programmable Data Planes", tag:"expert",
+          desc:"P4 language: match-action tables, parsers, deparsers. P4 architecture models (V1Model, PSA, PNA). Software targets: BMv2 simple_switch. Implementing custom protocols in P4: custom headers, custom forwarding, in-band network telemetry (INT). P4 for DDoS mitigation, load balancing. P4Runtime API.",
+          master:["Write a P4 program that implements basic L2 switching","Add a custom header and process it in P4","Implement in-band telemetry (INT) to collect hop latency","Use P4Runtime to dynamically install table entries","Understand the gap between software and hardware P4 targets"],
+          res:["P4 Language Specification","P4 tutorials (GitHub: p4lang)","Programming Protocol-Independent Packet Processors (P4 paper)","P4.org technical documentation"] }
+      ]
+    }
+  ]
+},
+
+hack: {
+  name:"OFFENSIVE SECURITY",
+  area:"hack",
+  eyebrow:"Red Team · Exploitation · Malware · Research",
+  sub:"The complete attacker's curriculum. From recon to 0-day research. Every tool you run, you should be able to write. Every technique you execute, you should understand at the binary level.",
+  phases:[
+    { name:"Foundations & Lab Architecture", level:"foundation", tagline:"Build your environment. Understand your tools.",
+      desc:"The hacker who can't explain what their tool is doing is a dangerous liability. Build everything from scratch, understand it at the protocol and OS level before you run anything automated.",
+      topics:[
+        { name:"Networking & OS Internals for Hackers", tag:"core",
+          desc:"TCP/IP stack: every header field and how attackers abuse them. Linux: process model, namespaces, capabilities, syscall table (read the man pages). Windows: Win32 API, PE format, registry, service architecture, LSASS role. Kernel architecture of both.",
+          master:["Read a packet capture and identify every protocol interaction","Explain the Windows logon process from boot to desktop","Navigate /proc/[pid] to understand a running process","Understand capability bits and how they replace root in Linux","Read PE format headers with PE-bear"],
+          res:["TCP/IP Illustrated Vol 1 (Stevens)","Windows Internals Part 1 (Yosifovich)","The Linux Programming Interface (Kerrisk)","Practical Binary Analysis (Andriesse)"] },
+        { name:"Lab Setup & Homelab Architecture", tag:"hands-on",
+          desc:"Proxmox or VMware ESXi hypervisor. Isolated lab network with pfSense. AD domain with vulnerable configs (Game of AD, GOAD). Vulnerable VMs: Metasploitable, VulnHub, DVWA. Kali/Parrot OS setup. Traffic capture infrastructure. Cloud lab (AWS free tier for target practice).",
+          master:["Build a full AD lab with multiple Windows hosts and a DC","Set up a C2 infrastructure in your lab (Havoc or Sliver)","Configure a full packet capture solution for your lab network","Deploy Elastic SIEM in your lab to practice detection evasion","Build an automated vulnerable VM deployment with Vagrant/Terraform"],
+          res:["GOAD (Game of Active Directory) — GitHub","Proxmox documentation","VulnHub.com","HackTheBox Pro Labs"] },
+        { name:"Scripting for Attackers", tag:"hands-on",
+          desc:"Python: socket programming, raw HTTP requests, ctypes for calling Win32 APIs, struct module for binary parsing, subprocess for process interaction. Bash: one-liners that do the work of tools. PowerShell: execution policies, AMSI, transcript logging, .NET access. Writing tools instead of running them.",
+          master:["Write a port scanner in Python without using nmap","Write a Python exploit for a buffer overflow without using pwntools","Automate subdomain enumeration in Bash","Write a PowerShell download cradle that avoids common detections","Implement a basic TCP reverse shell in C"],
+          res:["Violent Python (O'Brien)","Black Hat Python (Seitz)","PowerShell for Sysadmins (Hicks)","Offensive Security scripting exercises"] },
+        { name:"Cryptography for Attackers", tag:"theory",
+          desc:"TLS handshake internals and how to downgrade/intercept. Password hashing (NTLM, NTLMv2, bcrypt, MD5crypt) and cracking. Encryption pitfalls attackers exploit: ECB mode, predictable IVs, hardcoded keys. JWT attacks (none alg, HS256 vs RS256 confusion). Certificate attacks.",
+          master:["Crack NTLMv2 hashes with hashcat using relevant rulesets","Identify ECB mode encryption from ciphertext patterns","Perform a JWT algorithm confusion attack","Set up MITM SSL inspection and analyze the handshake","Identify hardcoded cryptographic keys in binary analysis"],
+          res:["Cryptopals challenges (all 8 sets)","JWT_Tool documentation","Hashcat wiki","Applied Cryptography (Schneier)"] }
+      ]
+    },
+    { name:"Reconnaissance & OSINT", level:"intermediate", tagline:"Intelligence before exploitation",
+      desc:"The attack surface you find determines what's exploitable. Elite recon is methodical, quiet, and thorough. You should find things about a target that they don't know about themselves.",
+      topics:[
+        { name:"Passive Recon & OSINT", tag:"hands-on",
+          desc:"WHOIS, DNS history (SecurityTrails, PassiveTotal). Certificate Transparency logs (crt.sh). Shodan, Censys, FOFA for internet-wide scanning. Google dorks (filetype, site, inurl, intitle combinations). LinkedIn/GitHub org recon. Wayback Machine for deleted endpoints. Employee OSINT (Hunter.io, Phonebook.cz). breached credential databases.",
+          master:["Build a complete asset inventory for a target using only passive sources","Find credentials in GitHub commits for a target organization","Discover shadow IT infrastructure not in the official scope","Find forgotten subdomains via certificate transparency","Extract employee data and build a phishing target list"],
+          res:["OSINT Framework (osintframework.com)","Maltego Community Edition","Recon-ng walkthrough","The OSINT Handbook (Intel Techniques)"] },
+        { name:"Active Recon & Enumeration", tag:"hands-on",
+          desc:"Nmap: TCP SYN scan, UDP scan, version detection (-sV), OS fingerprinting (-O), NSE scripts (vulners, http-headers, smb-security-mode). Masscan for internet-scale. Service enumeration: enum4linux-ng (SMB), ldapsearch (LDAP), smbclient, rpcclient. Subdomain bruting (puredns, massdns). Virtual host fuzzing (ffuf). DNS zone transfer attempts.",
+          master:["Enumerate a full AD environment with only network access","Use NSE scripts to extract service version and config details","Find hidden vhosts on a web server with ffuf","Conduct an SMB null session attack and enumerate shares","Build a target map from nmap output using automated parsing"],
+          res:["Nmap Network Scanning (Fyodor)","Hack Tricks — Pentesting methodology","PentestMonkey cheat sheets","Active Directory Recon (GitHub resources)"] },
+        { name:"Web Recon & Attack Surface Mapping", tag:"hands-on",
+          desc:"Web crawling (katana, gospider). API discovery (apifuzzer, kiterunner). JavaScript analysis (linkfinder, secretfinder — API keys, endpoints, tokens in JS). Technology fingerprinting (WhatWeb, Wappalyzer). Parameter discovery (arjun). Directory/file busting (feroxbuster, gobuster with SecLists). Third-party integrations as attack surface.",
+          master:["Find hidden API endpoints in JavaScript bundles","Discover sensitive files with targeted wordlists","Map all third-party integrations and identify attack chains","Extract API keys from public JavaScript and test their scope","Build an automated recon pipeline with Amass + subfinder + httpx"],
+          res:["Bug Bounty Bootcamp (Vickie Li)","SecLists (Daniel Miessler — GitHub)","Amass documentation","Jason Haddix recon methodology (YouTube/conferences)"] }
+      ]
+    },
+    { name:"Web Application Exploitation", level:"intermediate", tagline:"Every input is an attack surface",
+      desc:"Web vulns are the most consistently exploitable class of bugs in existence. Master each class at the source code level — understand why the bug exists, not just how to trigger it.",
+      topics:[
+        { name:"SQL Injection — Complete Mastery", tag:"advanced",
+          desc:"In-band: UNION-based (column count, data type matching). Blind: boolean-based (response differences), time-based (SLEEP/WAITFOR/pg_sleep). Out-of-band: DNS/HTTP exfiltration. Second-order SQLi. NoSQL injection (MongoDB operator injection). WAF bypass: encoding, comment variations, whitespace alternatives, HTTP parameter pollution.",
+          master:["Manually exploit a blind time-based SQLi without sqlmap","Bypass a WAF to exploit a UNION-based injection","Exploit second-order SQLi in a stored injection scenario","Extract the entire database schema and sensitive data manually","Write a custom SQLi payload for a PostgreSQL target"],
+          res:["PortSwigger SQL Injection labs (all)","PayloadsAllTheThings — SQLi section","HackTricks — SQLi","SQLMap source code — understand what it does"] },
+        { name:"XSS, CSRF, SSRF, XXE", tag:"advanced",
+          desc:"Stored/Reflected/DOM XSS — source and sink analysis. CSP bypass techniques (JSONP, angular, unsafe-eval, unsafe-inline). XSS to account takeover chains. CSRF (SameSite bypass). SSRF: cloud metadata exploitation (IMDS 169.254.169.254), internal service access, protocol smuggling (gopher://, dict://). XXE: file read, SSRF, blind (OOB via DNS).",
+          master:["Bypass a strict CSP using an allowed JSONP endpoint","Chain a DOM XSS to steal a user's session and pivot","Exploit SSRF to reach EC2 instance metadata and extract IAM credentials","Exploit XXE to read /etc/passwd and then perform SSRF","Bypass SameSite Strict CSRF protection using a subdomain takeover"],
+          res:["PortSwigger Academy — XSS, SSRF, XXE, CSRF labs","HackTricks Web techniques","The Web Application Hacker's Handbook (Ch 12-14)"] },
+        { name:"Advanced Web Vulnerabilities", tag:"advanced",
+          desc:"HTTP request smuggling (CL.TE, TE.CL, TE.TE). Deserialization (Java gadget chains with ysoserial, Python pickle, PHP object injection). Server-Side Template Injection (Jinja2, Twig, FreeMarker, Smarty — RCE paths). OAuth flaws (implicit flow, state param missing, redirect_uri bypass, token leakage). JWT attacks (alg:none, RS256 to HS256, weak secret cracking).",
+          master:["Exploit HTTP request smuggling to poison the back-end cache","Exploit Java deserialization using an existing gadget chain","Achieve RCE via SSTI in a Jinja2 template","Exploit OAuth redirect_uri bypass to steal access tokens","Crack a JWT secret and forge admin tokens"],
+          res:["PortSwigger Web Security Academy (all labs + expert challenges)","ysoserial GitHub","PayloadsAllTheThings — SSTI section","OAuth 2.0 Security (RFC 6749 + OAuth Security BCP)"] },
+        { name:"API & Mobile Security Testing", tag:"advanced",
+          desc:"REST API testing: verb tampering, IDOR at the object level, mass assignment, rate limit bypass. GraphQL: introspection, batching attacks, field suggestions, injection. Mobile: intercepting SSL-pinned apps (Frida, Objection), decompiling APKs (jadx), iOS binary analysis (class-dump, Hopper).",
+          master:["Find and exploit an IDOR in a GraphQL API via batching","Bypass SSL pinning on an Android app with Frida","Decompile an APK and extract hardcoded API credentials","Find a mass assignment vulnerability in a REST API","Perform a GraphQL introspection attack and enumerate schema"],
+          res:["OWASP API Security Top 10","GraphQL hacking (HackTricks)","Mobile Security Testing Guide (OWASP — free)","Frida documentation"] }
+      ]
+    },
+    { name:"Network & Infrastructure Attacks", level:"intermediate", tagline:"Own the wire, own the network",
+      desc:"Network attacks bridge recon and exploitation. Understanding the protocols at the implementation level lets you craft attacks that tools don't automate.",
+      topics:[
+        { name:"Network Service Exploitation", tag:"advanced",
+          desc:"Service enumeration to exploitation: SSH (weak keys, username enum), FTP (anonymous, version vulns), SMTP (open relay, user enum), RDP (BlueKeep, DejaBlue — understand the bug classes), WinRM, MSSQL (xp_cmdshell), Redis (unauthenticated RCE), Elasticsearch (unauthenticated access).",
+          master:["Exploit an unauthenticated Redis instance for RCE","Use MSSQL xp_cmdshell to execute OS commands","Pivot through an SMTP server using open relay misconfiguration","Exploit an exposed Kubernetes API server","Chain service misconfigurations for privilege escalation"],
+          res:["HackTricks — Network Services","ExploitDB — search for version-specific exploits","Rapid7 Vulnerability DB","Metasploit Framework docs"] },
+        { name:"Man-in-the-Middle & Protocol Attacks", tag:"hands-on",
+          desc:"ARP cache poisoning (Bettercap). DNS spoofing. LLMNR/NBT-NS poisoning (Responder — understand the protocol flow). SSL stripping. IPv6 attacks: rogue RA, DHCPv6 takeover (mitm6). MITM6 + NTLMRelayx for credential relay. Downgrade attacks (NTLM downgrade).",
+          master:["Capture NTLMv2 hashes using Responder and relay them with ntlmrelayx","Perform MITM6 attack against an IPv6-unaware Windows network","Conduct SSL stripping on HTTP traffic","Build an ARP poisoning tool without using arpspoof","Implement LLMNR poisoning to credential collection pipeline"],
+          res:["Responder GitHub — read the source","mitm6 GitHub + blog post","Bettercap documentation","Network Security Assessment (McNab)"] },
+        { name:"Pivoting & Tunneling", tag:"advanced",
+          desc:"SSH port forwarding (local, remote, dynamic -D SOCKS). Chisel (HTTP-based TCP tunnel). ligolo-ng (tun interface approach — cleaner than SOCKS). socat relay. Proxychains configuration. Double pivot through multiple networks. DNS tunneling (dnscat2, iodine). ICMP tunneling. Covert channels for data exfiltration.",
+          master:["Set up a double pivot through two compromised hosts","Tunnel C2 traffic over DNS to bypass egress filtering","Build a SOCKS proxy chain through 3 hosts","Exfiltrate data via ICMP echo tunneling","Implement a covert channel that bypasses DLP inspection"],
+          res:["ligolo-ng GitHub (study the code)","Chisel GitHub","Tunneling for dummies (various blog posts)","The Hacker Playbook 3"] }
+      ]
+    },
+    { name:"Active Directory & Windows Internals", level:"advanced", tagline:"Where enterprise attackers live",
+      desc:"Active Directory is the crown jewel of every enterprise. Full domain compromise is the ultimate objective of most red team engagements. Master every attack path.",
+      topics:[
+        { name:"AD Enumeration & Attack Vectors", tag:"advanced",
+          desc:"AD structure: domains, trusts, OUs, GPOs, sites. Enumeration: BloodHound (SharpHound collection, Cypher queries for attack paths), ldapsearch, PowerView, ADSearch. Object permissions: ACL abuse — WriteDACL, GenericAll, GenericWrite, ForceChangePassword, AddMember chains. GPO abuse: ComputerRestricted and User scoped GPOs.",
+          master:["Run BloodHound and identify the shortest path to DA from a standard user","Exploit GenericWrite on a user to Kerberoast them","Abuse a GPO with no-logon-script filtering to execute code","Enumerate all domain trusts and identify trust attacks","Find ACL misconfigurations programmatically with BloodHound Cypher"],
+          res:["The Hacker Recipes — Active Directory","SpecterOps blog (BloodHound development team)","Attacking Active Directory (TCM Security course)","BloodHound documentation"] },
+        { name:"Kerberos Attacks", tag:"advanced",
+          desc:"Kerberos protocol flow (AS-REQ, AS-REP, TGS-REQ, TGS-REP). Kerberoasting: SPNs, TGS ticket cracking (RC4 vs AES). AS-REP Roasting: accounts without pre-auth. Pass-the-Ticket: extracting and injecting TGTs. Golden Ticket: forged TGT with KRBTGT hash. Silver Ticket: forged TGS for specific service. Unconstrained/constrained/resource-based constrained delegation.",
+          master:["Perform Kerberoasting and crack a service account hash offline","Forge a Golden Ticket and authenticate as any user","Exploit unconstrained delegation to capture a DC's TGT","Perform a resource-based constrained delegation attack end-to-end","Identify AES vs RC4 downgrade opportunities for Kerberoasting"],
+          res:["Kerberoasting (Tim Medin — original research)","Golden Ticket attack (Benjamin Delpy)","Elad Shamir's delegation research posts","Mimikatz source code — study what each command does"] },
+        { name:"Credential Access & Lateral Movement", tag:"advanced",
+          desc:"LSASS dumping: Mimikatz sekurlsa::logonpasswords, PPL bypass, comsvcs.dll minidump, custom LSASS dumper. Pass-the-Hash (PtH) with secretsdump/evil-winrm/impacket. DCSync attack (replication rights). SAM and LSA secrets dumping. Credential Guard bypass techniques. WMI, WinRM, SCM, scheduled tasks, DCOM for lateral movement.",
+          master:["Dump LSASS without triggering Windows Defender","Perform DCSync attack from a compromised DA account","Move laterally using WMI without dropping an executable","Extract credentials from DPAPI (offline via masterkey theft)","Dump cached domain credentials from a non-domain-joined workstation"],
+          res:["Mimikatz GitHub (read every module)","Impacket (secretsdump.py source code)","DPAPI exploitation posts (Jean-Baptiste Bédrune)","Windows Credential Internals (various SpecterOps posts)"] },
+        { name:"Domain Persistence & Privilege Escalation", tag:"expert",
+          desc:"Domain persistence: KRBTGT hash (Golden Ticket), AdminSDHolder abuse, ACL backdoors, SID history injection, Skeleton Key, DSRMAdministrator backdoor. Local privilege escalation: token impersonation (SeImpersonatePrivilege — Potato exploits), DLL hijacking, service misconfigurations, unquoted paths, scheduled tasks.",
+          master:["Plant an ACL backdoor that survives a password reset","Exploit SeImpersonatePrivilege with a Potato exploit","Find and exploit a DLL hijacking opportunity in a custom application","Use SID history injection to access resources in a trusted domain","Implant a Golden Ticket backdoor that lasts beyond a full password reset"],
+          res:["Abusing Active Directory ACLs (SpecterOps)","The Potato exploits (GitHub)","PowerUp.ps1 for privesc enumeration","AD Security blog (Sean Metcalf)"] }
+      ]
+    },
+    { name:"Binary Exploitation", level:"advanced", tagline:"Bend memory to your will",
+      desc:"Binary exploitation requires understanding what the compiler, OS, and hardware are actually doing. Every mitigation has a bypass. Every bypass has a technique. Master them all.",
+      topics:[
+        { name:"Stack-Based Exploitation", tag:"advanced",
+          desc:"Stack layout: return address, saved frame pointer, local variables, function arguments. Buffer overflow: smashing the stack, controlling EIP/RIP. Finding offsets (cyclic patterns). NX/DEP bypass: ret2libc, ret2plt. ASLR bypass: information leaks, brute force, partial overwrites. Stack canary bypass: leak or brute. ROP (Return-Oriented Programming): gadget finding, chain construction, ROP to syscall.",
+          master:["Exploit a 64-bit buffer overflow with ASLR + NX bypass","Build a ROP chain that calls execve('/bin/sh') without a stack leak","Bypass a stack canary using a format string information leak","Write a 32-bit ret2libc exploit from scratch without pwntools","Find ROP gadgets manually before using ROPgadget/ropper"],
+          res:["Hacking: The Art of Exploitation (Erickson)","pwn.college — all pwn modules","how2heap (shellphish GitHub)","ROPemporium (ropemporium.com)"] },
+        { name:"Heap Exploitation", tag:"expert",
+          desc:"glibc heap internals: malloc/free, bins (tcache, fastbin, unsorted, small, large), chunk structure (prev_size, size, fd, bk). Heap attacks: tcache poisoning, fastbin dup, house of force, house of einherjar, house of orange, unsorted bin attack, file structure exploitation (FSOP). Heap spray and grooming techniques.",
+          master:["Exploit a use-after-free using tcache poisoning to get code exec","Implement House of Orange to get a shell via FSOP","Debug a heap exploit step by step in GDB with pwndbg","Identify a heap vulnerability from source code","Construct a heap layout that achieves arbitrary write"],
+          res:["how2heap (shellphish — every technique with explanation)","Malloc internals (glibc wiki)","Heap Exploitation CTF challenges — pwn.college advanced","Azeria Labs — heap exploitation"] },
+        { name:"Format String Exploitation", tag:"advanced",
+          desc:"printf internals and format string vulnerability mechanics. Reading from the stack (%p, %x). Writing to arbitrary addresses (%n, %hn, %hhn). Direct parameter access (%N$p). Computing offsets to target addresses. Writing shellcode pointer, GOT overwrite, return address overwrite. Blind format strings.",
+          master:["Leak stack canary and return address using %p format strings","Overwrite GOT entry using %n to redirect execution","Exploit a format string to read /etc/passwd from a network service","Combine format string leak with ROP chain","Exploit a blind format string (output not visible to attacker)"],
+          res:["Format String Exploit Primer (various CTF writeups)","Pwndbg cheat sheet for format strings","CTFtime.org — writeups tagged format-string"] },
+        { name:"Kernel Exploitation", tag:"expert",
+          desc:"Linux kernel attack surface: syscall interface, kernel modules, device drivers. Common bug classes: UAF, race conditions, type confusion, uninitialized memory. Techniques: ret2usr (disabled by SMEP/SMAP), ROP in kernel space, KASLR bypass, kernel heap spraying, credential structure overwrite (token stealing). Privilege escalation to root via kernel exploit.",
+          master:["Write a kernel module with a deliberate UAF vulnerability","Exploit a kernel UAF to escalate from user to root","Bypass SMEP/SMAP with a kernel ROP chain","Find and exploit a race condition in a kernel module","Read the exploit code for a real CVE (e.g., Dirty Pipe, DirtyC0W)"],
+          res:["Linux Kernel Exploitation (ptr-yudai — GitHub)","Phrack — kernel exploitation articles","lkml.org — read actual kernel patches","kernel.org security advisories + exploit PoCs"] }
+      ]
+    },
+    { name:"Malware Development & EDR Evasion", level:"expert", tagline:"Write what defenders fear",
+      desc:"Every AV bypass, every EDR evasion technique is a study in operating system internals. Understanding detection mechanisms is prerequisite to evading them.",
+      topics:[
+        { name:"C2 Frameworks & Infrastructure", tag:"advanced",
+          desc:"C2 architecture: listeners, beacons, teamservers. Sliver: build implants, configure MTLS/HTTP/DNS listeners, execute BOFs. Havoc Framework: Agent, Teamserver, client. Cobalt Strike concepts (even without a license: understand malleable C2 profiles, sleep masks, process injection techniques). Infrastructure: redirectors (Apache mod_rewrite, Nginx), CDN fronting, domain reputation.",
+          master:["Build a full C2 infrastructure with redirectors and TLS","Generate and stage a Sliver implant with DNS C2","Write a malleable C2 profile that mimics legitimate software","Implement operational security: no direct C2 IPs in implants","Detect your own C2 traffic using network analysis — then improve the profile"],
+          res:["Sliver C2 documentation","Havoc Framework GitHub","C2 Matrix (thec2matrix.com)","Red Team Development and Operations (Joe Vest)"] },
+        { name:"Process Injection & Shellcode", tag:"expert",
+          desc:"Windows process injection techniques: VirtualAllocEx + WriteProcessMemory + CreateRemoteThread (classic). DLL injection (LoadLibrary). Reflective DLL injection (load without touching disk). Process hollowing (replace process memory). Thread execution hijacking. Process doppelgänging. Shellcode: writing position-independent code, calling Win32 APIs without imports, API hashing.",
+          master:["Write a reflective DLL loader from scratch in C","Implement process hollowing of a signed binary","Write shellcode that walks PEB to find kernel32 and calls WinExec","Implement thread execution hijacking in a running process","Verify your injection works against a sandboxed analysis environment"],
+          res:["Offensive Security's PEN-300 (Evasion Techniques and Breaching Defenses)","Sektor7 malware development courses","Malware Analyst's Cookbook","VX-underground code samples (study, not copy)"] },
+        { name:"AV/EDR Evasion", tag:"expert",
+          desc:"How AV works: static (signature, YARA-like rules, entropy), dynamic (sandbox behavior). How EDR works: kernel callbacks (PsSetCreateProcessNotifyRoutine), ETW providers, API hooking (userland hooks in ntdll). Evasion: AMSI bypass (patching AmsiScanBuffer), ETW patch (NtTraceControl), direct syscalls (bypassing userland hooks), sleep masking, early-bird APC injection.",
+          master:["Bypass Windows Defender with a custom shellcode loader","Patch AMSI in memory to bypass PowerShell script scanning","Implement direct syscalls using SysWhispers3","Build a shellcode encryptor that decrypts at runtime","Detect EDR hooks in ntdll.dll and use direct syscalls to bypass them"],
+          res:["SysWhispers GitHub","AMSI bypass techniques (various blogs — S3cur3Th1sSh1t)","MDSec blog — EDR evasion research","Windows Internals — security subsystem chapters"] },
+        { name:"Persistence & Defense Evasion", tag:"advanced",
+          desc:"Windows persistence: registry run keys, scheduled tasks (XML format, SYSTEM-level), services, COM object hijacking, WMI subscriptions (filter + consumer + binding), DLL side-loading, bootkit/UEFI implants. Linux persistence: cron, systemd units, shared object injection, SSH authorized_keys, PAM backdoors. Timestomping, log deletion, event log clearing.",
+          master:["Implement WMI event subscription persistence that survives reboots","Plant a COM object hijack in a user-writable COM server path","Implement DLL side-loading with a legitimate signed binary","Clear Windows event logs without triggering common detections","Detect all your persistence mechanisms with a blue team tool — then improve"],
+          res:["MITRE ATT&CK — Persistence techniques","PowerSploit persistence modules (study the code)","Offensive WMI (posts by Matt Graeber)","Living Off The Land Binaries (LOLBAS project)"] }
+      ]
+    },
+    { name:"Red Team Operations", level:"expert", tagline:"Full kill chain from zero to domain admin",
+      desc:"Red teaming is not just running tools — it's adversary simulation with defined objectives, OPSEC, and reporting that drives real security improvements.",
+      topics:[
+        { name:"Initial Access Techniques", tag:"advanced",
+          desc:"Phishing: evilginx3 (real credential harvest with 2FA bypass), GoPhish, crafted lure documents (macro-free: CVE-based, ISO/LNK, HTML smuggling, .one files). External attack surface exploitation: VPN vulnerabilities (Citrix, Pulse, Fortinet CVEs), exposed management interfaces, password spraying (lock-out aware), credential stuffing from breached databases.",
+          master:["Build an evilginx3 phishing campaign with 2FA bypass","Create a macro-free malicious document using HTML smuggling","Implement password spraying with lock-out threshold detection","Exploit a published VPN CVE for initial access in a lab","Build a phishing infrastructure that passes email security controls (SPF/DKIM/DMARC)"],
+          res:["evilginx3 documentation and tutorials","Red Team Phishing Infrastructure Guide","o365spray / Sprayhound for spraying","GreatSCT for AV-evading payloads"] },
+        { name:"OPSEC for Red Teams", tag:"expert",
+          desc:"Operational security: C2 infrastructure that doesn't fingerprint. Domain categorization, domain aging, SSL certs (avoid Let's Encrypt for sensitive ops). Traffic blending (mimicking real software's traffic patterns). Avoid leaving artifacts: memory-only tools, timestomping, log management. Counter-forensics. Compartmentalization of team infrastructure.",
+          master:["Build a C2 infrastructure that passes common threat intel lookups","Design a redirector that blocks automated scanners but allows implants","Implement traffic shaping to match legitimate software patterns","Plan an operation that leaves zero disk artifacts on compromised hosts","Understand what forensic artifacts each of your tools leaves"],
+          res:["Red Team Infrastructure Wiki (GitHub: bluscreeen)","OPSEC Considerations for Beacon Commands (Cobalt Strike blog)","Advanced Threat Tactics (Raphael Mudge)","Cobalt Strike Aggressor Script documentation"] },
+        { name:"Reporting & Impact Demonstration", tag:"hands-on",
+          desc:"Red team reporting is a skill. Executive summary (business impact, not technical jargon). Technical narrative (attack path with evidence). Risk scoring (CVSS + business context). Remediation recommendations (specific and prioritized). Purple team exercises. Demonstrating breach impact: what data could be accessed, what systems could be disrupted.",
+          master:["Write an executive report on a simulated breach that a CEO would understand","Map your attack path to MITRE ATT&CK techniques","Prioritize findings by exploitability AND business impact","Facilitate a purple team exercise with the blue team","Create a detection gap analysis from your red team findings"],
+          res:["MITRE ATT&CK Navigator for attack path mapping","Red Team Report Template (various GitHub resources)","The Art of Intrusion (Mitnick) — real attack narratives"] }
+      ]
+    },
+    { name:"Vulnerability Research & 0-Day", level:"expert", tagline:"Find what nobody else found",
+      desc:"Vulnerability research is the apex of offensive security. You are finding bugs that do not exist in any database. This requires creativity, patience, and deep technical knowledge.",
+      topics:[
+        { name:"Fuzzing", tag:"research",
+          desc:"Coverage-guided fuzzing: AFL++ (instrumenting targets, custom mutators, persistent mode). libFuzzer (LLVM-integrated, in-process). Structure-aware fuzzing: protobuf mutation, grammar-based fuzzing (Nautilus). Network fuzzing: Boofuzz. Differential fuzzing (compare two implementations). Corpus minimization. Sanitizers: ASan, UBSan, MemorySanitizer.",
+          master:["Fuzz a real open source project and find a new crash","Write a custom AFL++ mutator for a binary protocol","Use ASan to catch a use-after-free in a complex program","Minimize a corpus to maximize coverage without redundancy","Fuzz a network protocol server using Boofuzz with a custom model"],
+          res:["AFL++ documentation","The Fuzzing Book (free online)","libFuzzer tutorial","Google OSS-Fuzz — look at bug reports for methodology"] },
+        { name:"Code Auditing", tag:"expert",
+          desc:"C/C++ audit patterns: buffer overflows, integer overflows (check for signed/unsigned issues, truncation), format strings, use-after-free, double free, uninitialized memory, TOCTOU races, off-by-one errors. Tools: CodeQL for automated pattern finding, Semgrep, Coverity. Diff-based auditing (patch diffing for 1-day research). Variant analysis (one bug pattern applied across a codebase).",
+          master:["Write a CodeQL query that finds all format string vulnerabilities in a codebase","Find a 1-day vulnerability by analyzing a security patch","Identify a complete vulnerability class across a target codebase","Audit the authentication code of an open source project","Read a CVE writeup and find the variant in a similar project"],
+          res:["The Art of Software Security Assessment (Dowd)","CodeQL documentation","Project Zero blog — especially the root cause analysis posts","Chromium security bug tracker — study closed bugs"] },
+        { name:"Exploit Development & PoC", tag:"expert",
+          desc:"From crash to PoC to weaponized exploit. Determining exploitability from a crash. Heap spray strategies. JIT spraying. Browser exploitation: type confusion, JIT compiler bugs. Kernel exploitation primitives: arbitrary read/write, code execution. Weaponizing a PoC responsibly. Responsible disclosure process and CVE assignment.",
+          master:["Turn a fuzzer-found crash into a working PoC exploit","Write a root cause analysis for a vulnerability you found","Submit a bug to a vendor through their security program","Determine exploitability of a UAF crash without symbols","Develop a reliable exploit that works despite ASLR"],
+          res:["Phrack magazine — all issues (especially exploitation techniques)","Project Zero — read full bug reports with exploits","Pwn2Own writeups — every year","Full Disclosure mailing list"] }
+      ]
+    }
+  ]
+},
+
+soft: {
+  name:"SOFTWARE ENGINEERING",
+  area:"soft",
+  eyebrow:"Systems · Architecture · Distributed Systems · Mastery",
+  sub:"From computer science fundamentals to distributed systems at the scale of Google and Amazon. The path to building software that handles millions of users, runs for years without failure, and is understood by the engineers who come after you.",
+  phases:[
+    { name:"Computer Science Foundations", level:"foundation", tagline:"What school teaches. What most forget.",
+      desc:"Computer science fundamentals age better than any framework. An engineer who understands computation, architecture, and formal reasoning can learn any technology stack in weeks.",
+      topics:[
+        { name:"Computation Theory", tag:"theory",
+          desc:"Finite automata and regular languages. Context-free grammars (PDA, CYK algorithm). Turing machines (halting problem, undecidability). Complexity classes: P, NP, NP-complete, NP-hard. Reductions (Cook-Levin theorem). Rice's theorem. Approximation algorithms for NP-hard problems.",
+          master:["Prove a problem is NP-complete via reduction from 3-SAT","Understand why the halting problem is undecidable (self-reference)","Write a CFG for a given language and derive a PDA from it","Identify NP-hard problems in real engineering decisions","Understand what undecidable properties Rice's theorem covers"],
+          res:["Introduction to the Theory of Computation (Sipser — the standard)","Computers and Intractability (Garey & Johnson)","MIT 6.045J — Automata, Computability, Complexity (OCW)"] },
+        { name:"Computer Architecture", tag:"core",
+          desc:"CPU pipeline: fetch, decode, execute, memory, writeback. Hazards: data (RAW, WAW, WAR), control, structural. Cache hierarchy (L1/L2/L3, cache lines, associativity, replacement policies, MESI coherence protocol). Memory: DRAM, virtual memory (page tables, TLB, huge pages). SIMD (SSE, AVX). Branch prediction internals.",
+          master:["Explain why cache-friendly code is orders of magnitude faster","Understand false sharing and eliminate it in a concurrent program","Write code that maximally utilizes SIMD instructions","Explain the MESI cache coherence protocol and its performance implications","Read a CPU perf counter report and identify the bottleneck"],
+          res:["Computer Architecture: A Quantitative Approach (Hennessy & Patterson)","What Every Programmer Should Know About Memory (Drepper — free PDF)","Computer Systems: A Programmer's Perspective (CS:APP — Bryant & O'Hallaron)"] },
+        { name:"Compilers & Language Runtimes", tag:"advanced",
+          desc:"Lexing (DFAs, regex NFA→DFA). Parsing: LL, LR, LALR grammars. AST design. Semantic analysis (type checking, symbol tables). IR (three-address code, SSA form). Optimizations: constant folding, dead code elimination, loop invariant code motion, inlining. Code generation (register allocation — graph coloring). JIT compilation (tracing JIT, method JIT).",
+          master:["Write a lexer and recursive-descent parser for a simple language","Implement a basic AST-walking interpreter","Generate code from a simple IR","Understand what SSA form is and why optimizers use it","Explain how a JIT compiler decides what to compile"],
+          res:["Crafting Interpreters (Nystrom — free online, extremely practical)","Engineering a Compiler (Cooper & Torczon)","LLVM Tutorial — writing a JIT compiler"] },
+        { name:"Operating Systems — Deep Dive", tag:"core",
+          desc:"Process management: scheduling algorithms (CFS internals — red-black tree, vruntime), context switching, signals. Memory management: virtual address spaces, page fault handling, copy-on-write, memory-mapped files, OOM killer. File systems: VFS layer, ext4 structure (inode, extent tree), journaling (data=ordered vs writeback vs journal). IPC: pipes, semaphores, shared memory, message queues. cgroups and namespaces (container foundation).",
+          master:["Explain CFS scheduling and why it uses a red-black tree","Implement a thread pool in C with work stealing","Explain the Linux OOM killer algorithm and tuning","Write a simple file system using FUSE","Implement shared memory communication between processes"],
+          res:["Operating Systems: Three Easy Pieces (OSTEP — free)","The Linux Programming Interface (Kerrisk)","xv6 source code — read every file","Linux Kernel Development (Love)"] }
+      ]
+    },
+    { name:"Data Structures & Algorithms", level:"foundation", tagline:"The vocabulary of efficient thinking",
+      desc:"DSA is not about interview prep. It's about having a vocabulary for trade-offs. When you see a problem, you should immediately see the data structure and algorithm that solves it optimally.",
+      topics:[
+        { name:"Core Data Structures", tag:"core",
+          desc:"Arrays (cache-efficient, amortized doubling). Linked lists (cache-unfriendly — understand why). Hash tables: separate chaining vs open addressing, load factor, dynamic resizing, consistent hashing. Trees: BST, AVL (rotations), Red-Black (Linux epoll uses this), B-tree (database index). Heaps and priority queues. Tries. Skip lists (Redis uses these).",
+          master:["Implement a hash map from scratch with open addressing","Implement an AVL tree with rotations","Implement a B-tree of order 4 that supports split and merge","Explain why Red-Black trees are preferred over AVL in practice","Implement a skip list with probabilistic balancing"],
+          res:["Introduction to Algorithms (CLRS — the reference)","Algorithms (Sedgewick — more accessible)","Visualgo.net for visual understanding","Redis source code — study the data structure implementations"] },
+        { name:"Graph Algorithms", tag:"core",
+          desc:"BFS (shortest path in unweighted), DFS (topological sort, SCCs). Dijkstra (heap-based), Bellman-Ford (negative weights), Floyd-Warshall (all pairs). MST: Prim and Kruskal. Network flow: Ford-Fulkerson, Edmonds-Karp. Strongly Connected Components (Tarjan's, Kosaraju's). Articulation points and bridges.",
+          master:["Implement Dijkstra with a priority queue from scratch","Find all SCCs in a directed graph using Tarjan's algorithm","Implement Kruskal's with a Union-Find data structure","Solve a max-flow problem and model a real-world scenario as flow","Topologically sort a dependency graph and detect cycles"],
+          res:["CLRS — graph algorithms chapters","Competitive Programmer's Handbook (Laaksonen — free PDF)","Graph theory problems on Codeforces/AtCoder"] },
+        { name:"Dynamic Programming & Divide-and-Conquer", tag:"advanced",
+          desc:"DP fundamentals: optimal substructure, overlapping subproblems. Memoization vs tabulation. Classic DP: knapsack variants, LCS, LIS, edit distance, matrix chain multiplication, optimal BST. D&C: merge sort, quickselect. Advanced DP: DP on trees, bitmask DP, DP with segment trees. Monge array optimizations.",
+          master:["Solve LCS, edit distance, and LIS from first principles — no looking up the recurrence","Implement a DP on a tree (e.g., max independent set on a tree)","Solve a bitmask DP problem (travelling salesman on small N)","Identify and apply the convex hull trick optimization","Explain the time/space trade-off for memoization vs tabulation"],
+          res:["CLRS — DP chapters","Atcoder DP Contest (26 problems — comprehensive DP training)","CF EDU — DP section","MIT 6.006 — Algorithm lectures (OCW free)"] },
+        { name:"Algorithm Analysis & Complexity", tag:"theory",
+          desc:"Asymptotic notation: O, Θ, Ω. Amortized analysis: aggregate, accounting, potential methods (vector doubling, disjoint set union). Randomized algorithms: randomized quicksort, universal hashing, Bloom filters. Approximation algorithms: greedy for vertex cover, PTAS. Streaming algorithms: count-min sketch, HyperLogLog.",
+          master:["Prove the amortized O(1) cost of dynamic array push","Analyze the expected time of randomized quicksort","Implement a count-min sketch from scratch","Implement HyperLogLog and explain its error guarantee","Determine whether a problem has a polynomial approximation scheme"],
+          res:["Algorithm Design (Kleinberg & Tardos)","Randomized Algorithms (Motwani & Raghavan)","Streaming Algorithms (surveys on arxiv)"] }
+      ]
+    },
+    { name:"Systems Programming", level:"intermediate", tagline:"Write code that controls hardware",
+      desc:"Systems programmers understand the contract between their code and the machine. Memory, concurrency, and performance are not mysteries — they are engineering problems with precise solutions.",
+      topics:[
+        { name:"C & Memory Management", tag:"core",
+          desc:"C memory model: stack, heap, BSS, data segment, text segment. malloc internals (glibc ptmalloc, jemalloc, tcmalloc — compare strategies). Custom allocators (slab allocators, arena allocators). Undefined behavior: signed overflow, pointer arithmetic, strict aliasing, sequence points. Valgrind, AddressSanitizer, memcheck.",
+          master:["Implement a slab allocator from scratch","Find and fix a memory leak using Valgrind massif","Trigger specific undefined behaviors and observe the compiler's optimization","Write a memory pool for a game/embedded context","Implement reference counting garbage collection in C"],
+          res:["The C Programming Language (K&R — second edition)","Computer Systems: A Programmer's Perspective","Effective C (Seacord)","Ptmalloc source + glibc malloc internals wiki"] },
+        { name:"Concurrency & Parallelism", tag:"advanced",
+          desc:"Thread primitives: pthread_mutex, rwlocks, semaphores, condition variables. C++ memory model: happens-before, sequentially consistent, release-acquire, relaxed. Lock-free data structures: atomic operations, CAS loops, ABA problem. Hazard pointers and epoch-based reclamation. Lock-free stack, queue (Michael-Scott queue). Work stealing (like Go's scheduler, Java ForkJoinPool).",
+          master:["Implement a lock-free queue using CAS without undefined behavior","Debug a data race using ThreadSanitizer","Implement a scalable reader-writer lock","Demonstrate and fix the ABA problem in a lock-free stack","Implement epoch-based garbage collection for a lock-free data structure"],
+          res:["The Art of Multiprocessor Programming (Herlihy & Shavit)","C++ Concurrency in Action (Williams)","C11 memory model (N1570 spec — read the relevant sections)","Paul E. McKenney — memory barriers (LWN.net)"] },
+        { name:"High-Performance I/O", tag:"advanced",
+          desc:"Blocking vs non-blocking I/O. Event loops: select (O(n)), poll (O(n)), epoll (O(1) for ready events, level vs edge triggered). io_uring: submission/completion ring buffers, zero-copy I/O, fixed buffers. Zero-copy networking: sendfile(), splice(), mmap(). DPDK for kernel-bypass. Write a high-performance HTTP server from scratch.",
+          master:["Write an HTTP/1.1 server using epoll that handles 50k connections","Benchmark select vs epoll — measure the O(n) degradation","Implement zero-copy file transfer using sendfile()","Write an io_uring program that reads files with zero syscall overhead","Profile and optimize a network server to find the bottleneck"],
+          res:["The Linux Programming Interface — I/O chapters","io_uring documentation (kernel.dk)","High Performance Browser Networking (Grigorik — free online)","nginx source code — study the event loop implementation"] },
+        { name:"Rust for Systems", tag:"advanced",
+          desc:"Ownership system (move semantics, Copy trait). Borrowing: immutable and mutable references, lifetime annotations. Traits and generics (monomorphization vs dynamic dispatch). Async/await and the Tokio runtime (executor, reactor, waker mechanism). Unsafe Rust: raw pointers, FFI, implementing lock-free structures safely. Writing Linux kernel modules in Rust.",
+          master:["Implement a lock-free data structure in safe Rust using atomics","Write an async TCP server using Tokio with backpressure","Implement a custom smart pointer with reference counting","Write FFI bindings to a C library","Write a simple Linux kernel module in Rust"],
+          res:["The Rust Programming Language (free online)","Programming Rust (Blandy & Orendorff)","Tokio tutorial and documentation","Jon Gjengset — Rust streams on YouTube"] }
+      ]
+    },
+    { name:"Software Architecture & Design", level:"intermediate", tagline:"Code that outlives its author",
+      desc:"Architecture is the decisions that are expensive to change. Getting them right requires understanding trade-offs, not following rules. Design patterns are vocabulary, not recipes.",
+      topics:[
+        { name:"Design Patterns & SOLID", tag:"core",
+          desc:"Gang of Four patterns with real use cases (not toy examples). Creational: Abstract Factory (plugin systems), Builder (SQL query builders), Singleton (why it's usually wrong). Structural: Adapter (legacy system integration), Decorator (middleware chains), Proxy (lazy loading, caching). Behavioral: Observer (event systems), Strategy (algorithm selection at runtime), Command (undo/redo). SOLID applied to real systems.",
+          master:["Identify which patterns are used in Django's ORM, Flask's Blueprints, Express.js middleware","Replace inheritance with composition in a real codebase","Implement an Observer pattern that doesn't leak memory","Identify and refactor a God Object into SOLID-compliant components","Explain why Singleton is almost always the wrong answer"],
+          res:["Design Patterns (Gang of Four — original)","Head First Design Patterns (more accessible)","Refactoring (Martin Fowler)","SourceMaking.com"] },
+        { name:"API Design — REST, GraphQL, gRPC", tag:"hands-on",
+          desc:"REST: Richardson Maturity Model, HATEOAS, versioning strategies, pagination (cursor vs offset), rate limiting design, idempotency keys. GraphQL: schema design, N+1 problem and DataLoader, subscriptions, federation. gRPC: Protocol Buffers (field evolution, backward compatibility), streaming RPCs (server, client, bidirectional), error handling, interceptors.",
+          master:["Design a REST API that handles breaking changes gracefully","Solve the N+1 query problem in a GraphQL schema with DataLoader","Design a gRPC service that's backward compatible after 5 iterations","Implement idempotency keys for a payment API","Design a pagination API that works correctly for rapidly changing data"],
+          res:["REST API Design Rulebook (Masse)","Production Ready GraphQL (Bahr)","gRPC documentation — design patterns","Google API Design Guide (free online)"] },
+        { name:"Architectural Patterns", tag:"advanced",
+          desc:"Layered architecture (hexagonal/ports-and-adapters — isolate business logic from infrastructure). Event-driven: event sourcing (append-only log as source of truth), CQRS (separate read and write models). Saga pattern for distributed transactions. Microservices: decomposition strategies (by subdomain/DDD, by team, by data ownership). Service mesh for cross-cutting concerns.",
+          master:["Implement event sourcing for a bank account with full audit trail","Design a CQRS system with separate read/write databases","Implement a Saga for an e-commerce order flow with compensation transactions","Identify bounded contexts in a complex domain","Design a migration path from monolith to microservices without big-bang rewrite"],
+          res:["Designing Data-Intensive Applications (Kleppmann — mandatory read)","Domain-Driven Design (Evans — DDD Blue Book)","Building Microservices (Newman)","Microservices Patterns (Richardson)"] },
+        { name:"Domain-Driven Design", tag:"advanced",
+          desc:"Strategic DDD: bounded contexts, context mapping (partnership, customer-supplier, conformist, anti-corruption layer, shared kernel). Ubiquitous language. Aggregate design (invariants, transactional boundaries, aggregate roots). Value objects vs entities. Domain events. Repository pattern. Application services vs domain services.",
+          master:["Identify bounded contexts in a complex domain from stakeholder interviews","Design aggregates that enforce all business invariants","Implement an anti-corruption layer between two bounded contexts","Apply domain events to decouple bounded contexts asynchronously","Evaluate whether a microservice boundary aligns with a bounded context"],
+          res:["Domain-Driven Design (Evans)","Implementing Domain-Driven Design (Vernon)","DDD Reference (Evans — free PDF)","Architecture Patterns with Python (Percival & Gregory)"] }
+      ]
+    },
+    { name:"Databases & Storage", level:"intermediate", tagline:"Data is the product. Storage is the foundation.",
+      desc:"Databases are the most misused component in software. Most performance problems, most correctness bugs, most scaling failures trace back to misunderstanding storage semantics.",
+      topics:[
+        { name:"Relational Databases — Internals", tag:"advanced",
+          desc:"ACID properties at implementation level: atomicity (WAL), consistency (constraint checking), isolation (locking vs MVCC), durability (fsync). Isolation levels: read uncommitted, read committed, repeatable read, serializable — and the anomalies each permits (dirty read, non-repeatable read, phantom, write skew, lost update). B-tree index internals (page splits, fill factor, index bloat). VACUUM in PostgreSQL. Query planning (EXPLAIN ANALYZE, seq scan vs index scan, join algorithms: nested loop, hash join, merge join).",
+          master:["Reproduce a write skew anomaly in PostgreSQL under read committed","Force a specific join algorithm in PostgreSQL and measure the difference","Diagnose table bloat and implement a VACUUM strategy","Write a query that uses an index-only scan","Identify and fix an N+1 query problem using EXPLAIN ANALYZE"],
+          res:["Designing Data-Intensive Applications (Kleppmann) — storage chapter","PostgreSQL documentation — MVCC, VACUUM, query planning","Use the Index, Luke! (free online — SQL indexing guide)","Database Internals (Petrov)"] },
+        { name:"NoSQL — Picking the Right Tool", tag:"core",
+          desc:"Key-value: Redis internals (event loop, persistence options AOF/RDB, data structures, Lua scripting, Redis Cluster hashing). Document: MongoDB (aggregation pipeline, indexing strategies, change streams, transactions). Wide-column: Cassandra (consistent hashing, gossip, tunable consistency, compaction strategies). Graph: Neo4j (Cypher, graph algorithms). Time-series: TimescaleDB, InfluxDB.",
+          master:["Design a Redis Cluster for a session store with failover","Implement a MongoDB aggregation pipeline for analytics","Design a Cassandra data model for a time-series workload (query-first design)","Find a 3-hop connection in a social graph with Neo4j Cypher","Choose the correct NoSQL database for 5 different real-world scenarios"],
+          res:["Redis documentation (redis.io/docs)","MongoDB: The Definitive Guide","Cassandra: The Definitive Guide","Graph Databases (Robinson, Webber — free PDF)"] },
+        { name:"Query Optimization & Indexing", tag:"advanced",
+          desc:"Index types: B-tree, hash, GiST, GIN, BRIN (understand use cases). Partial indexes, expression indexes, covering indexes. Query planning: statistics (pg_statistic), planner cost model, join reordering, subquery flattening. Common performance patterns: pagination (keyset vs offset), avoiding sequential scans, index-only scans. Connection pooling (PgBouncer).",
+          master:["Rewrite a slow query to reduce execution time by 10x using indexes","Design a covering index that eliminates table heap access","Write a partial index that speeds up a filtered query","Configure PgBouncer for a high-connection-count workload","Analyze pg_stat_statements to find the top 5 worst queries"],
+          res:["PostgreSQL query optimization documentation","pganalyze blog — query optimization articles","Use the Index, Luke! (free)","PgBouncer documentation"] },
+        { name:"Distributed Databases & CAP", tag:"advanced",
+          desc:"CAP theorem (and its nuances — why it's often misapplied). PACELC as a more complete model. Replication: single-primary vs multi-primary, synchronous vs asynchronous, replication lag and read-your-writes consistency. Consensus: Paxos (single-decree) and Raft (implementation focus). Spanner (TrueTime, external consistency). CockroachDB and YugabyteDB. Vitess for MySQL horizontal scaling.",
+          master:["Explain why CAP is not a simple 3-way choice","Configure PostgreSQL streaming replication with automatic failover","Explain Raft leader election and log replication from memory","Identify which guarantee is violated in a specific distributed scenario","Design a global database topology using Google Spanner concepts"],
+          res:["Designing Data-Intensive Applications (Kleppmann — distributed data chapters)","Raft paper (Ongaro & Ousterhout)","Spanner paper (Google)","CockroachDB technical blog"] }
+      ]
+    },
+    { name:"Distributed Systems", level:"advanced", tagline:"The hardest problems in engineering",
+      desc:"Distributed systems are hard because partial failure is normal. Networks drop packets. Clocks drift. Processes crash. Building correct and performant systems despite this requires deep theoretical and practical knowledge.",
+      topics:[
+        { name:"Consensus & Coordination", tag:"advanced",
+          desc:"The distributed systems impossibility results (FLP — no deterministic consensus in async system with one fault). Paxos: single-decree paxos, multi-paxos. Raft: leader election, log replication, safety properties, membership changes, log compaction (snapshotting). ZooKeeper: znodes, watches, sequential znodes, recipes (leader election, distributed lock, barrier). etcd internals.",
+          master:["Implement single-decree Paxos from scratch","Implement a distributed lock using ZooKeeper sequential ephemeral nodes","Read the Raft paper and implement a key-value store backed by Raft","Explain why Raft's log matching property ensures safety","Test your consensus implementation under network partition using chaos engineering"],
+          res:["Raft paper (original — read multiple times)","In Search of an Understandable Consensus Algorithm","ZooKeeper: Wait-free coordination (original paper)","etcd documentation — how etcd uses Raft"] },
+        { name:"Distributed Storage & Replication", tag:"advanced",
+          desc:"Consistent hashing: virtual nodes, chord ring, token-based (Cassandra). Quorum reads/writes (R+W>N for strong consistency). Vector clocks and version vectors (causality tracking). CRDT (Conflict-free Replicated Data Types): G-counter, PN-counter, LWW-register, OR-Set. LSM-tree (log-structured merge): write path (memtable + SSTable), compaction strategies (leveled, tiered, FIFO). Bloom filters in storage systems.",
+          master:["Implement consistent hashing with virtual nodes","Design a replication strategy using quorums for a given consistency/availability requirement","Implement a G-counter CRDT that converges correctly under concurrent updates","Trace a write through an LSM-tree from memtable to SSTable","Explain the space amplification trade-off of different compaction strategies"],
+          res:["Amazon Dynamo paper","Designing Data-Intensive Applications — replication and partitioning chapters","An Introduction to CRDTs (various blog posts)","LevelDB source code — study the LSM-tree implementation"] },
+        { name:"Message Queues & Stream Processing", tag:"hands-on",
+          desc:"Kafka internals: partitions, consumer groups, offset management, log compaction, exactly-once semantics (idempotent producer + transactional API). Kafka Streams and KSQL. RabbitMQ: AMQP, exchange types (direct, fanout, topic, headers), DLX. Comparison: when Kafka vs when RabbitMQ. Stream processing: Flink (exactly-once checkpointing with Chandy-Lamport algorithm, windowing).",
+          master:["Design a Kafka topic schema that handles consumer group lag gracefully","Implement exactly-once semantics end-to-end with the Kafka transactional API","Build a stream processing pipeline with Kafka Streams","Explain Chandy-Lamport snapshots for exactly-once in Flink","Diagnose and resolve Kafka consumer group rebalancing storms"],
+          res:["Kafka: The Definitive Guide (free online)","Kafka Streams documentation","Apache Flink documentation","KSQL documentation"] },
+        { name:"Large-Scale System Design", tag:"expert",
+          desc:"Read the papers: Google Bigtable, Amazon Dynamo, Google Spanner, Facebook TAO, LinkedIn Kafka, Google MapReduce, Google GFS. System design for scale: URL shortener (billions of URLs), Twitter timeline (fan-out on write vs read), search typeahead (trie vs prefix hash), rate limiter (token bucket, sliding window, distributed rate limiting with Redis).",
+          master:["Design Twitter's timeline at 100M DAU: justify every architectural decision","Design a global rate limiter that is accurate to within 5%","Read the Bigtable paper and explain how the three-layer hierarchy works","Design a search autocomplete system that updates in real time","Identify the consistency model of DynamoDB and why it was chosen"],
+          res:["Designing Data-Intensive Applications (Kleppmann — read twice)","Google Bigtable paper","Amazon Dynamo paper","System Design Interview Vol 1 & 2 (Xu)","High Scalability blog (highscalability.com)"] }
+      ]
+    },
+    { name:"DevOps & Platform Engineering", level:"intermediate", tagline:"Build the systems that build the systems",
+      desc:"Modern software delivery is automated, observable, and resilient. Platform engineering is the discipline of building the internal tools and infrastructure that let other engineers move fast safely.",
+      topics:[
+        { name:"Containers & Kubernetes Internals", tag:"hands-on",
+          desc:"Docker internals: Linux namespaces (pid, net, mnt, uts, ipc, user), cgroups v2 (resource limiting), overlayfs (layer system), OCI image spec. Kubernetes architecture: etcd (state), API server (validation, admission controllers), scheduler (predicates + priorities, bin packing), kubelet (pod lifecycle, CRI), controller manager. CNI, CSI, CRI interfaces. Writing a Kubernetes operator with controller-runtime.",
+          master:["Create a container from scratch using Linux namespaces without Docker","Write a custom Kubernetes admission webhook that enforces a policy","Build a Kubernetes operator that manages a custom resource","Diagnose a pod that won't schedule (resource constraints, taints, affinity)","Implement a custom Kubernetes scheduler for a specific workload type"],
+          res:["Kubernetes in Action (Luksa)","Container Security (Rani)","Programming Kubernetes (Hausenblas & Schimanski)","Kubernetes source code — start with the scheduler"] },
+        { name:"Observability — Metrics, Traces, Logs", tag:"hands-on",
+          desc:"Three pillars of observability. Metrics: Prometheus data model (labels, metric types — counter, gauge, histogram, summary), PromQL advanced queries (rate, histogram_quantile, recording rules), alerting rules and Alertmanager. Distributed tracing: OpenTelemetry (trace context propagation, instrumentation), Jaeger, Tempo. Structured logging: correlation IDs, log aggregation (Loki, Elastic). SLO/SLI/SLA (error budget calculations).",
+          master:["Write a PromQL query that calculates p99 request latency from a histogram","Set up distributed tracing with OpenTelemetry and trace a request across 5 microservices","Design an SLO for a payment service with an error budget","Build a Grafana dashboard for a service's RED metrics (Rate, Errors, Duration)","Correlate a production incident using traces, metrics, and logs together"],
+          res:["Prometheus: Up & Running (Brazil & Volz)","Distributed Systems Observability (Sridharan — free online)","OpenTelemetry documentation","SRE Workbook (Google — free online)"] },
+        { name:"CI/CD & GitOps", tag:"hands-on",
+          desc:"CI pipeline design: fast feedback loops, test parallelization, artifact management. GitHub Actions: reusable workflows, composite actions, security hardening (OIDC for cloud auth, pinned actions). CD: deployment strategies (blue-green, canary, rolling, feature flags). GitOps: ArgoCD (sync, health assessment, ApplicationSets), Flux. Progressive delivery with Argo Rollouts / Flagger.",
+          master:["Build a GitHub Actions pipeline with matrix builds and artifact promotion","Implement a canary deployment using Argo Rollouts with automatic rollback","Set up ArgoCD with ApplicationSets for multi-environment management","Implement zero-downtime deployments for a stateful service","Design a deployment pipeline that runs 10,000 tests in under 5 minutes"],
+          res:["GitHub Actions documentation","ArgoCD documentation","GitOps and Kubernetes (Codefresh team)","Continuous Delivery (Humble & Farley)"] },
+        { name:"Infrastructure as Code & SRE", tag:"advanced",
+          desc:"Terraform advanced: modules, remote state, workspaces, provider development, Atlantis for automation. Pulumi for Python-native IaC. SRE principles: toil elimination, error budgets, CRE (customer reliability engineering), capacity planning, chaos engineering (Chaos Monkey, chaos-mesh, LitmusChaos), game days.",
+          master:["Write a Terraform module that creates a complete networking stack with tests","Implement chaos engineering in staging and measure resilience","Run a game day for a database failover scenario","Calculate error budgets and make burn rate alerts for production","Implement runbooks as code with automated diagnostic steps"],
+          res:["Site Reliability Engineering (Google — free online)","The SRE Workbook (Google — free online)","Terraform: Up and Running (Brikman)","Chaos Engineering (Rosenthal et al.)"] }
+      ]
+    },
+    { name:"Specialization Tracks", level:"expert", tagline:"Go world-class in your domain",
+      desc:"After the foundations, choose your territory and become the person everyone calls. Depth in one area beats breadth in many.",
+      topics:[
+        { name:"Programming Language Design & Compilers", tag:"expert",
+          desc:"Design and implement a full language: lexer → parser → type checker → IR → optimization passes → codegen. LLVM as a backend (write an LLVM IR frontend). Type systems: Hindley-Milner type inference, subtyping, linear types, dependent types. Garbage collector design (stop-the-world, incremental, concurrent, generational). JIT compilation with inline caches.",
+          master:["Implement a complete compiled language with a type system","Write an LLVM-based compiler for a small language","Implement Hindley-Milner type inference","Build a generational garbage collector","Implement a simple JIT with inline caches for a dynamic language"],
+          res:["Crafting Interpreters (Nystrom — free online)","LLVM tutorial","Types and Programming Languages (Pierce)","Garbage Collection Handbook (Jones et al.)"] },
+        { name:"High-Frequency Trading & Latency Engineering", tag:"expert",
+          desc:"Nanosecond-level optimization: CPU affinity (isolcpus), NUMA awareness, cache line padding, false sharing elimination, lock-free queues (SPSC, MPMC). Kernel bypass: DPDK, RDMA (Remote DMA). Custom network stacks. Order matching engine design. Colocation and market microstructure. Profiling with perf, Vtune, hardware performance counters.",
+          master:["Write a lock-free SPSC queue that outperforms a mutex queue at 1ns","Pin a thread to a specific CPU core and measure latency improvement","Implement a simple matching engine (price-time priority)","Profile an application with hardware performance counters","Measure and eliminate false sharing in a concurrent data structure"],
+          res:["LMAX Disruptor paper and source code","Mechanical Sympathy blog (Martin Thompson)","Art of Writing Efficient Programs (Pikus)","DPDK documentation"] },
+        { name:"WebAssembly & Embedded Systems", tag:"advanced",
+          desc:"WebAssembly: binary format, stack machine execution, linear memory model, WASI (WebAssembly System Interface), component model. Wasmtime and Wasmer runtimes. Embedded: bare-metal programming in Rust (no_std), RTOS (FreeRTOS — tasks, queues, mutexes), device drivers, interrupt handlers, DMA, protocols (I2C, SPI, UART, CAN). Real-time constraints.",
+          master:["Compile a Rust program to WASM and run it in the browser","Write a WASI module that reads from the filesystem","Write a bare-metal Rust program that blinks an LED on an ARM Cortex-M","Implement an I2C driver in Rust for embedded","Design a real-time control loop that meets a 1ms deadline"],
+          res:["WebAssembly specification (webassembly.github.io)","The Embedded Rust Book (free online)","FreeRTOS documentation","Programming Rust (Blandy — embedded chapter)"] }
+      ]
+    }
+  ]
+}
+
+};
+
+let currentArea = 'ai';
+let currentPhaseIdx = 0;
+
+function switchArea(area) {
+  currentArea = area;
+  currentPhaseIdx = 0;
+  document.querySelectorAll('.npill').forEach(b => b.classList.toggle('active', b.dataset.area === area));
+  document.getElementById('layout').dataset.current = area;
+  render();
+}
+
+function render() {
+  const data = DATA[currentArea];
+  renderSidebar(data);
+  renderMain(data);
+}
+
+function renderSidebar(data) {
+  const sidebar = document.getElementById('sidebar');
+  const accent = `var(--${data.area})`;
+  sidebar.innerHTML = `<div class="sidebar-section">Phases</div>` +
+    data.phases.map((ph, i) => `
+      <div class="phase-nav-item${i === currentPhaseIdx ? ' active-phase' : ''}" onclick="jumpToPhase(${i})">
+        <span class="ph-num">${i+1}</span>
+        <span>${ph.name}</span>
+      </div>
+    `).join('');
+}
+
+function renderMain(data) {
+  const main = document.getElementById('main');
+  const totalTopics = data.phases.reduce((acc, ph) => acc + ph.topics.length, 0);
+  main.innerHTML = `
+    <div class="disc-hero">
+      <div class="disc-eyebrow">${data.eyebrow}</div>
+      <div class="disc-title">${data.name}</div>
+      <div class="disc-sub">${data.sub}</div>
+      <div class="disc-stats">
+        <div class="stat"><div class="stat-val">${data.phases.length}</div><div class="stat-label">Phases</div></div>
+        <div class="stat"><div class="stat-val">${totalTopics}</div><div class="stat-label">Topics</div></div>
+        <div class="stat"><div class="stat-val">∞</div><div class="stat-label">Depth</div></div>
+      </div>
+    </div>
+    <div class="phases" id="phases-container">
+      ${data.phases.map((ph, i) => renderPhase(ph, i)).join('')}
+    </div>
+  `;
+}
+
+const levelMap = {
+  foundation: {cls:'lv-foundation', label:'Foundation'},
+  intermediate: {cls:'lv-intermediate', label:'Intermediate'},
+  advanced: {cls:'lv-advanced', label:'Advanced'},
+  expert: {cls:'lv-expert', label:'Expert'}
+};
+
+const tagMap = {
+  core: {cls:'tt-core', label:'Core'},
+  theory: {cls:'tt-theory', label:'Theory'},
+  'hands-on': {cls:'tt-hands-on', label:'Hands-On'},
+  tools: {cls:'tt-tools', label:'Tools'},
+  advanced: {cls:'tt-advanced', label:'Advanced'},
+  research: {cls:'tt-research', label:'Research'}
+};
+
+function renderPhase(ph, idx) {
+  const lv = levelMap[ph.level] || levelMap.foundation;
+  const isOpen = idx === currentPhaseIdx;
+  return `
+    <div class="phase-block${isOpen ? ' open' : ''}" id="phase-${idx}">
+      <div class="phase-header" onclick="togglePhase(${idx})">
+        <div class="phase-num">${idx+1}</div>
+        <div class="phase-info">
+          <div class="phase-name">${ph.name}</div>
+          <div class="phase-tagline">${ph.tagline}</div>
+        </div>
+        <div class="phase-meta">
+          <span class="level-badge ${lv.cls}">${lv.label}</span>
+        </div>
+        <span class="phase-chevron">›</span>
+      </div>
+      <div class="phase-body">
+        <div class="phase-desc">${ph.desc}</div>
+        <div class="topics-grid">
+          ${ph.topics.map((tp, ti) => renderTopic(tp, idx, ti)).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderTopic(tp, phIdx, tIdx) {
+  const tag = tagMap[tp.tag] || {cls:'tt-core', label:tp.tag};
+  const masterItems = tp.master.map(m => `<li>${m}</li>`).join('');
+  const resChips = tp.res.map(r => `<span class="res-chip">${r}</span>`).join('');
+  return `
+    <div class="topic-card" id="topic-${phIdx}-${tIdx}">
+      <div class="topic-head" onclick="toggleTopic(${phIdx},${tIdx})">
+        <span class="topic-name">${tp.name}</span>
+        <span class="topic-tag ${tag.cls}">${tag.label}</span>
+      </div>
+      <div class="topic-body-inner">
+        <div class="topic-section">
+          <div class="topic-section-label">What to master</div>
+          <p class="topic-desc">${tp.desc}</p>
+        </div>
+        <div class="topic-section">
+          <div class="topic-section-label">Mastery checklist</div>
+          <ul class="master-list">${masterItems}</ul>
+        </div>
+        <div class="topic-section">
+          <div class="topic-section-label">Resources</div>
+          <div class="res-list">${resChips}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function togglePhase(idx) {
+  const block = document.getElementById(`phase-${idx}`);
+  const isOpen = block.classList.contains('open');
+  document.querySelectorAll('.phase-block').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { block.classList.add('open'); currentPhaseIdx = idx; }
+  else currentPhaseIdx = -1;
+  document.querySelectorAll('.phase-nav-item').forEach((el, i) => {
+    el.classList.toggle('active-phase', i === currentPhaseIdx);
+  });
+}
+
+function toggleTopic(phIdx, tIdx) {
+  const card = document.getElementById(`topic-${phIdx}-${tIdx}`);
+  card.classList.toggle('open');
+}
+
+function jumpToPhase(idx) {
+  currentPhaseIdx = idx;
+  renderMain(DATA[currentArea]);
+  renderSidebar(DATA[currentArea]);
+  setTimeout(() => {
+    const el = document.getElementById(`phase-${idx}`);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 50);
+}
+
+render();
+</script>
+</body>
+</html>
