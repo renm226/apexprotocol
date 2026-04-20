@@ -1,13 +1,7 @@
 /**
- * ApexProtocol — Responsive JS
- 
- * Adds:
- *  - Mobile sidebar drawer (hamburger toggle)
- *  - Mobile bottom navigation bar (area switcher)
- *  - Swipe-to-close sidebar
- *  - Auto-close sidebar on phase click (mobile)
+ * ApexProtocol — responsive.js
+ * Drop into  js/responsive.js  and load AFTER main.js
  */
-
 (function () {
   'use strict';
 
@@ -17,174 +11,201 @@
     { id: 'hack',    name: '⚡ Hacking' },
     { id: 'soft',    name: '⎄ Software' },
     { id: 'crypto',  name: '⛓ Blockchain' },
-    { id: 'cloud',   name: '☁ Cloud' },
+    { id: 'cloud',   name: '☁ Cloud & DevOps' },
     { id: 'mobile',  name: '📱 Mobile' },
     { id: 'devsec',  name: '🛡 DevSecOps' },
-    { id: 'selfdev', name: '🌟 Self Dev' },
+    { id: 'selfdev', name: '🌟 Self Development' },
   ];
 
-  /* ── BUILD MOBILE BOTTOM NAV ──────────────────────────── */
-  function buildMobileNav() {
-    const inner = document.getElementById('mobNavInner');
-    if (!inner) return;
+  let currentArea = 'ai';
+  let dropdownOpen = false;
 
-    inner.innerHTML = AREAS.map(area =>
-      `<button
-        class="mob-nav-pill${area.id === (window._currentArea || 'ai') ? ' active' : ''}"
-        data-area="${area.id}"
-        onclick="window.switchArea('${area.id}')"
-      >${area.name}</button>`
-    ).join('');
-  }
+  /* ── BUILD DROPDOWN ───────────────────────────────────── */
+  function buildDropdown() {
+    // Create wrapper elements
+    const wrapper = document.createElement('div');
+    wrapper.className = 'mob-area-dropdown';
+    wrapper.id = 'mobAreaDropdown';
 
-  /* ── SYNC BOTTOM NAV ACTIVE STATE ─────────────────────── */
-  function syncMobileNav(areaId) {
-    document.querySelectorAll('.mob-nav-pill').forEach(pill => {
-      pill.classList.toggle('active', pill.getAttribute('data-area') === areaId);
+    const trigger = document.createElement('button');
+    trigger.className = 'mob-area-trigger';
+    trigger.id = 'mobAreaTrigger';
+    trigger.innerHTML = `
+      <span class="mob-trigger-label" id="mobTriggerLabel">◈ AI / ML</span>
+      <span class="mob-trigger-arrow">▼</span>
+    `;
+    trigger.addEventListener('click', toggleDropdown);
+
+    const menu = document.createElement('div');
+    menu.className = 'mob-area-menu';
+    menu.id = 'mobAreaMenu';
+    menu.innerHTML = AREAS.map(area => `
+      <div class="mob-area-item${area.id === currentArea ? ' active' : ''}"
+           data-area="${area.id}"
+           role="option"
+           aria-selected="${area.id === currentArea}">
+        <span class="area-dot"></span>
+        ${area.name}
+      </div>
+    `).join('');
+
+    // Click each item
+    menu.querySelectorAll('.mob-area-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.getAttribute('data-area');
+        selectArea(id);
+      });
     });
 
-    // Scroll the active pill into view on the bottom nav
-    const active = document.querySelector(`.mob-nav-pill[data-area="${areaId}"]`);
-    if (active) {
-      active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(menu);
+
+    // Insert into header after logo, before header-actions
+    const header = document.querySelector('.site-header');
+    const actions = header.querySelector('.header-actions');
+    header.insertBefore(wrapper, actions);
+  }
+
+  function toggleDropdown() {
+    dropdownOpen ? closeDropdown() : openDropdown();
+  }
+
+  function openDropdown() {
+    dropdownOpen = true;
+    document.getElementById('mobAreaMenu').classList.add('open');
+    document.getElementById('mobAreaTrigger').classList.add('open');
+  }
+
+  function closeDropdown() {
+    dropdownOpen = false;
+    const menu    = document.getElementById('mobAreaMenu');
+    const trigger = document.getElementById('mobAreaTrigger');
+    if (menu)    menu.classList.remove('open');
+    if (trigger) trigger.classList.remove('open');
+  }
+
+  function selectArea(id) {
+    currentArea = id;
+    closeDropdown();
+
+    // Update trigger label
+    const area = AREAS.find(a => a.id === id);
+    const label = document.getElementById('mobTriggerLabel');
+    if (label && area) label.textContent = area.name;
+
+    // Highlight active item
+    document.querySelectorAll('.mob-area-item').forEach(item => {
+      const isActive = item.getAttribute('data-area') === id;
+      item.classList.toggle('active', isActive);
+      item.setAttribute('aria-selected', isActive);
+    });
+
+    // Call the main.js switchArea
+    if (typeof window.switchArea === 'function') window.switchArea(id);
   }
 
   /* ── SIDEBAR DRAWER ───────────────────────────────────── */
-  function openMobileSidebar() {
-    const sidebar  = document.getElementById('sidebar');
-    const overlay  = document.getElementById('sidebarOverlay');
-    const menuBtn  = document.getElementById('mobMenuBtn');
-    if (!sidebar) return;
+  function buildHamburger() {
+    const btn = document.createElement('button');
+    btn.className = 'mob-menu-btn';
+    btn.id = 'mobMenuBtn';
+    btn.setAttribute('aria-label', 'Toggle phases menu');
+    btn.textContent = '☰';
+    btn.addEventListener('click', toggleSidebar);
 
-    sidebar.classList.add('mob-open');
-    if (overlay)  overlay.classList.add('show');
-    if (menuBtn)  menuBtn.textContent = '✕';
-    document.body.style.overflow = 'hidden'; // prevent bg scroll
+    const actions = document.querySelector('.header-actions');
+    if (actions) actions.appendChild(btn);
   }
 
-  function closeMobileSidebar() {
+  function buildOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.id = 'sidebarOverlay';
+    overlay.addEventListener('click', closeSidebar);
+
+    const layout = document.getElementById('layout');
+    if (layout) layout.insertBefore(overlay, layout.firstChild);
+  }
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    sidebar.classList.contains('mob-open') ? closeSidebar() : openSidebar();
+  }
+
+  function openSidebar() {
     const sidebar  = document.getElementById('sidebar');
     const overlay  = document.getElementById('sidebarOverlay');
-    const menuBtn  = document.getElementById('mobMenuBtn');
-    if (!sidebar) return;
+    const btn      = document.getElementById('mobMenuBtn');
+    if (sidebar) sidebar.classList.add('mob-open');
+    if (overlay) overlay.classList.add('show');
+    if (btn)     btn.textContent = '✕';
+    document.body.style.overflow = 'hidden';
+  }
 
-    sidebar.classList.remove('mob-open');
-    if (overlay)  overlay.classList.remove('show');
-    if (menuBtn)  menuBtn.textContent = '☰';
+  function closeSidebar() {
+    const sidebar  = document.getElementById('sidebar');
+    const overlay  = document.getElementById('sidebarOverlay');
+    const btn      = document.getElementById('mobMenuBtn');
+    if (sidebar) sidebar.classList.remove('mob-open');
+    if (overlay) overlay.classList.remove('show');
+    if (btn)     btn.textContent = '☰';
     document.body.style.overflow = '';
   }
 
-  function toggleMobileSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
-    sidebar.classList.contains('mob-open')
-      ? closeMobileSidebar()
-      : openMobileSidebar();
-  }
-
-  /* ── SWIPE-TO-CLOSE SIDEBAR ───────────────────────────── */
-  function attachSwipeToClose() {
-    const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
-
-    let startX = 0;
-    let startY = 0;
-
-    sidebar.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    sidebar.addEventListener('touchend', e => {
-      const dx = e.changedTouches[0].clientX - startX;
-      const dy = Math.abs(e.changedTouches[0].clientY - startY);
-      // Swipe left ≥ 60px, horizontal (dy < 50)
-      if (dx < -60 && dy < 50) closeMobileSidebar();
-    }, { passive: true });
-  }
-
-  /* ── PATCH switchArea TO ALSO SYNC MOBILE NAV ─────────── */
-  function patchSwitchArea() {
-    const original = window.switchArea;
-    if (!original) return;
-
-    window.switchArea = function (areaId) {
-      window._currentArea = areaId;
-      original(areaId);
-      syncMobileNav(areaId);
-      // Auto-close sidebar when user picks an area on mobile
-      if (window.innerWidth <= 640) closeMobileSidebar();
-    };
-  }
-
-  /* ── PATCH scrollToPhase TO CLOSE SIDEBAR ON MOBILE ───── */
+  /* Close sidebar when a phase is clicked (auto-navigate) */
   function patchScrollToPhase() {
-    const original = window.scrollToPhase;
-    if (!original) return;
-
+    const orig = window.scrollToPhase;
+    if (!orig) return;
     window.scrollToPhase = function (phaseIdx) {
-      original(phaseIdx);
-      if (window.innerWidth <= 640) {
-        // Small delay so the scroll starts before sidebar closes
-        setTimeout(closeMobileSidebar, 120);
-      }
+      orig(phaseIdx);
+      if (window.innerWidth <= 640) setTimeout(closeSidebar, 120);
     };
   }
 
-  /* ── CLOSE MODALS ON BACK SWIPE (Android) ─────────────── */
-  function handlePopState() {
-    ['exportModal', 'coffeeModal'].forEach(id => {
-      const modal = document.getElementById(id);
-      if (modal && modal.classList.contains('show')) {
-        window.closeModal(id);
-      }
+  /* Swipe-left on sidebar → close */
+  function attachSwipe() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    let sx = 0, sy = 0;
+    sidebar.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    sidebar.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = Math.abs(e.changedTouches[0].clientY - sy);
+      if (dx < -50 && dy < 40) closeSidebar();
+    }, { passive: true });
+  }
+
+  /* Close dropdown when tapping outside */
+  function attachOutsideClick() {
+    document.addEventListener('click', e => {
+      if (!dropdownOpen) return;
+      const wrapper = document.getElementById('mobAreaDropdown');
+      if (wrapper && !wrapper.contains(e.target)) closeDropdown();
     });
   }
 
-  /* ── KEYBOARD: ESC closes sidebar ─────────────────────── */
-  function handleKeydown(e) {
-    if (e.key === 'Escape') {
-      closeMobileSidebar();
-    }
-  }
+  /* ESC key */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeDropdown(); closeSidebar(); }
+  });
+
+  /* Re-close sidebar on resize to desktop */
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 640) { closeSidebar(); closeDropdown(); }
+  });
+
+  /* Expose globally */
+  window.closeMobileSidebar = closeSidebar;
 
   /* ── INIT ─────────────────────────────────────────────── */
   function init() {
-    // Set initial current area tracker
-    window._currentArea = 'ai';
-
-    // Build mobile bottom nav
-    buildMobileNav();
-
-    // Wire hamburger button
-    const menuBtn = document.getElementById('mobMenuBtn');
-    if (menuBtn) {
-      menuBtn.addEventListener('click', toggleMobileSidebar);
-    }
-
-    // Swipe to close sidebar
-    attachSwipeToClose();
-
-    // Patch core functions
-    // Use a short delay to ensure main.js has finished setting window.* functions
-    setTimeout(() => {
-      patchSwitchArea();
-      patchScrollToPhase();
-    }, 100);
-
-    // Back button / popstate
-    window.addEventListener('popstate', handlePopState);
-    document.addEventListener('keydown', handleKeydown);
-
-    // Expose closeMobileSidebar globally (used in HTML onclick on overlay)
-    window.openMobileSidebar  = openMobileSidebar;
-    window.closeMobileSidebar = closeMobileSidebar;
-
-    // Sync nav on window resize (going from mobile → desktop)
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 640) closeMobileSidebar();
-    });
+    buildDropdown();
+    buildHamburger();
+    buildOverlay();
+    attachOutsideClick();
+    // Patch after main.js has set window.scrollToPhase
+    setTimeout(patchScrollToPhase, 150);
   }
 
   if (document.readyState === 'loading') {
