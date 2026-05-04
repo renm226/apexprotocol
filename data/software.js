@@ -1,8 +1,8 @@
 const softwareData = {
   name: "SOFTWARE ENGINEERING & SYSTEM DESIGN",
   area: "soft",
-  eyebrow: "Clean Code · Architecture · Scalable Systems",
-  sub: "Build software that lasts. From design patterns to system architecture, from testing to deployment. Master the craft of creating robust, maintainable, and scalable software systems.",
+  eyebrow: "Clean Code · System Design · API Architecture · Performance Engineering",
+  sub: "Master the craft of building software that scales, endures, and actually ships. From first-principles data structures to distributed system design, from clean architecture to production performance engineering. This is the complete roadmap from junior developer to senior engineer and beyond.",
   phases: [
     {
       name: "Programming Fundamentals & Paradigms",
@@ -263,6 +263,146 @@ const softwareData = {
             "k6 Documentation (k6.io)",
             "JMeter User Manual",
             "Chaos Engineering (Principles and Practices)"
+          ]
+        }
+      ]
+    },
+    {
+      name: "API Design and Integration Patterns",
+      level: "intermediate",
+      tagline: "Contracts between systems",
+      desc: "APIs are the contracts between systems. A well-designed API is a product in itself — it should be intuitive to use, hard to misuse, and stable enough that changing it does not break every consumer. This phase covers the three dominant API paradigms: REST (the web standard), GraphQL (flexible queries for complex frontends), and gRPC (high-performance binary RPC for service-to-service communication).",
+      topics: [
+        {
+          name: "RESTful API Design",
+          tag: "core",
+          desc: "REST (Representational State Transfer) is an architectural style, not a protocol. The six constraints: client-server, statelessness, cacheability, layered system, uniform interface, and code-on-demand (optional). Practically: resources are nouns identified by URLs (/users/42/orders), HTTP methods express operations (GET for read, POST for create, PUT/PATCH for update, DELETE for remove), status codes communicate outcomes (200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable Entity, 429 Too Many Requests, 500 Internal Server Error). Versioning strategies: URI versioning (/v1/users) vs Accept header versioning — URI versioning is simpler to cache and debug. Pagination: cursor-based (for real-time data that changes), offset-based (for static data), Keyset pagination (for large datasets). HATEOAS: hypermedia links in responses guide clients to valid next actions — rarely implemented fully in practice. OpenAPI (Swagger) specification for documentation and code generation. API security: authentication (API keys for service-to-service, OAuth2 + JWT for user-facing), rate limiting, input validation. Idempotency keys: safe retry of POST requests for financial transactions.",
+          master: [
+            "Design a RESTful API for a ride-hailing app: model resources, endpoints, status codes, and error responses",
+            "Implement cursor-based pagination that works correctly when new items are inserted during traversal",
+            "Write a complete OpenAPI 3.0 spec for an existing API and generate client SDKs from it",
+            "Implement idempotency keys for a payment endpoint — explain exactly how the server uses them",
+            "Design a versioning strategy for a public API and write the migration guide for a breaking change",
+            "Implement rate limiting: fixed window vs sliding window vs token bucket — know the tradeoffs",
+            "Write API error responses that include machine-readable error codes, human-readable messages, and a documentation link"
+          ],
+          deepdive: "The RFC 7807 Problem Details standard (application/problem+json) gives you a consistent, machine-readable error format: type (a URI identifying the error class), title (human-readable summary), status (HTTP status code), detail (specific explanation for this occurrence), instance (URI of the specific request). When every API in your organization uses this format, clients can handle errors generically and log them consistently. Adopt it from day one — retrofitting error formats onto existing APIs is painful.",
+          res: [
+            "REST API Design Rulebook (Mark Massé — O'Reilly)",
+            "HTTP: The Definitive Guide (Gourley & Totty — foundational HTTP understanding)",
+            "OpenAPI Specification (spec.openapis.org/oas/v3.1.0)",
+            "API Security in Action (Neil Madden — Manning, thorough OAuth2/JWT coverage)"
+          ]
+        },
+        {
+          name: "GraphQL Schema Design",
+          tag: "advanced",
+          desc: "GraphQL is a query language for APIs where the client specifies exactly what data it needs. This eliminates over-fetching (REST returns fields you don't need) and under-fetching (REST requires multiple requests for related data). Core concepts: Schema Definition Language (SDL), types (Object, Input, Enum, Union, Interface), the Query/Mutation/Subscription operation types. Resolvers: functions that return data for each field. The N+1 problem: fetching a list of users and their posts naively issues one SQL query per user — DataLoader (batching and caching within a request) solves this. Pagination: Relay cursor connection spec is the standard. Mutations should follow a consistent pattern: input type → payload type with both the changed object and any errors. Subscriptions for real-time data via WebSocket. Schema stitching vs Federation (Apollo Federation) for composing schemas from multiple services. Persisted queries for production performance and security. GraphQL is not always better than REST — it adds complexity and requires careful authorization (field-level access control).",
+          master: [
+            "Design a GraphQL schema for a social platform: users, posts, comments, follows — with proper types and relationships",
+            "Implement DataLoader to batch and cache database calls within a request, eliminating N+1 queries",
+            "Implement cursor-based pagination following the Relay specification",
+            "Set up Apollo Federation: split a monolithic GraphQL schema across three separate subgraph services",
+            "Implement field-level authorization: users can only read their own private profile fields",
+            "Use persisted queries to prevent arbitrary query execution in production",
+            "Instrument resolvers with tracing and identify the slow fields in a production query"
+          ],
+          res: [
+            "GraphQL specification (spec.graphql.org — read the spec, not just tutorials)",
+            "Production Ready GraphQL (Marc-André Giroux — the best practical guide)",
+            "Apollo Federation documentation (apollographql.com/docs/federation)",
+            "DataLoader (GitHub: graphql/dataloader — read the source, it is 300 lines)"
+          ]
+        },
+        {
+          name: "gRPC and Protocol Buffers",
+          tag: "advanced",
+          desc: "gRPC is a high-performance, open-source RPC framework using HTTP/2 for transport and Protocol Buffers (Protobuf) for serialization. It is 3-10x faster than JSON REST for service-to-service communication due to binary encoding, HTTP/2 multiplexing, and header compression. Protocol Buffers: define your API schema in .proto files with strongly-typed messages and services. The protoc compiler generates client and server stubs in any language. Field numbers (not names) identify fields in the binary format — backward compatibility requires never reusing field numbers. Four RPC patterns: unary (one request, one response — like REST), server streaming (one request, stream of responses — live data), client streaming (stream of requests, one response — file upload), bidirectional streaming (both sides stream). Interceptors for cross-cutting concerns (authentication, logging, tracing). gRPC-Gateway: generate a REST/JSON proxy from your proto definitions so REST clients can use the same backend. Buf: modern Protobuf toolchain with linting, breaking change detection, and schema registry.",
+          master: [
+            "Define a .proto file for a user service with CRUD operations and generate client stubs in two languages",
+            "Implement a server-streaming RPC that pushes live stock price updates to clients",
+            "Write a gRPC interceptor for authentication: extract and validate a JWT from the request metadata",
+            "Explain how to make a backward-compatible change to a Protobuf schema vs a breaking change",
+            "Use Buf to lint your .proto files and detect breaking changes in CI before merging",
+            "Set up gRPC-Gateway alongside a gRPC server so the same handlers serve both gRPC and REST clients",
+            "Benchmark gRPC vs JSON REST for a representative payload — measure latency and throughput differences"
+          ],
+          deepdive: "Protobuf's backward compatibility rules are what make it safe to evolve APIs without coordinating rollouts across all services. The rules: you can add new fields (old clients ignore unknown fields), you can never delete or renumber existing fields (existing clients will break), you can rename fields (they are identified by number, not name in the binary format). This means your .proto file is a contract: treat field numbers like primary keys in a database — once assigned, they exist forever. Use the reserved keyword to prevent field numbers from being accidentally reused.",
+          res: [
+            "gRPC documentation (grpc.io/docs) — start with the core concepts",
+            "Protocol Buffers language guide (protobuf.dev/programming-guides/proto3)",
+            "Buf documentation (buf.build/docs) — linting and breaking change detection",
+            "Production gRPC (Google Cloud Blog — real-world operational advice)"
+          ]
+        }
+      ]
+    },
+    {
+      name: "Performance Engineering",
+      level: "advanced",
+      tagline: "Find the bottleneck, fix the bottleneck, measure the fix",
+      desc: "Performance problems in production are expensive: they increase infrastructure costs, degrade user experience, and often expose architectural flaws that are painful to fix under pressure. Performance engineering is systematic: measure first, profile second, optimize third. Never optimize without a measurement to prove the problem and a measurement to prove the fix. This phase covers application profiling, database query optimization, and the distributed system patterns that make systems resilient under load.",
+      topics: [
+        {
+          name: "Application Profiling and Optimization",
+          tag: "advanced",
+          desc: "Profiling identifies where your program spends its time (CPU profiling) and memory (memory profiling). CPU profiling: sampling profilers periodically record the call stack — output is a flame graph. Brendan Gregg's flame graph format is the standard: the x-axis is alphabetical (not time), width represents time spent. Memory profiling: identify allocations, retention paths, and garbage collection pressure. Tools by language: Python (cProfile, py-spy, memory_profiler, Austin), Java (JFR, async-profiler, VisualVM, heap dumps + MAT), Go (pprof — built into the standard library, net/http/pprof endpoint), Node.js (--inspect + Chrome DevTools, clinic.js). Algorithmic complexity: O(n²) code hidden in a hot path will destroy performance at scale — profile to find it. Big O matters most when n is large; constant factors matter for small n. Common optimizations: reduce allocations (object pooling, reuse buffers), use appropriate data structures (HashMap vs TreeMap, array vs linked list), avoid premature abstraction in hot paths, compile-time vs runtime work.",
+          master: [
+            "Profile a slow Python script with py-spy and generate a flame graph — identify and fix the hot path",
+            "Profile a Java application with async-profiler; generate both CPU and allocation flame graphs",
+            "Enable pprof in a Go HTTP server and profile it under load with go tool pprof",
+            "Identify a memory leak in a Node.js application using heap snapshots in Chrome DevTools",
+            "Find an O(n²) algorithm by profiling under increasing data sizes — rewrite it in O(n log n)",
+            "Use Linux perf to profile a native application at the syscall level — identify kernel time vs user time",
+            "Measure the impact of garbage collection pauses in a JVM application and tune GC settings"
+          ],
+          deepdive: "Flame graphs are the most information-dense performance visualization ever invented. Each frame represents a function. Width = time spent in that function (including callees). Height = call stack depth. To read a flame graph: look for the widest frames at the top — those are the hottest code paths. Look for plateaus (flat tops with many children) — those indicate functions that call many different things. Look for deep, narrow stacks — those indicate recursive calls. The visualization was invented by Brendan Gregg at Netflix and is now supported by every major profiling tool.",
+          res: [
+            "Systems Performance (Brendan Gregg — the definitive performance engineering reference)",
+            "Flame Graphs (brendangregg.com/flamegraphs.html — the original documentation)",
+            "Java Performance: In-Depth Advice for Tuning and Programming Java (Scott Oaks)",
+            "go tool pprof documentation (pkg.go.dev/net/http/pprof)"
+          ]
+        },
+        {
+          name: "Database Query Optimization",
+          tag: "advanced",
+          desc: "Database queries are the most common performance bottleneck in web applications. The EXPLAIN/EXPLAIN ANALYZE command shows how the database executes a query — read it before optimizing. Indexes are the primary tool: a B-tree index turns an O(n) full table scan into O(log n). Composite indexes: column order matters — an index on (a, b, c) can be used for queries on (a), (a, b), or (a, b, c) but not (b) or (c) alone. Covering indexes eliminate the table heap fetch — all needed columns are in the index itself. Partial indexes filter rows — smaller and faster for queries with WHERE conditions. Index bloat and VACUUM in PostgreSQL. The N+1 query problem: an ORM issues one query to get 100 records, then 100 more queries to get related data — fix with joins or eager loading (select_related/prefetch_related in Django, include in ActiveRecord). Connection pooling: databases support a limited number of connections (typically 100-200 for PostgreSQL) — PgBouncer pools connections between many application instances and the database. Query planning: understand hash join vs nested loop vs merge join and when each is chosen. Denormalization, materialized views, and read replicas for read-heavy workloads.",
+          master: [
+            "Run EXPLAIN ANALYZE on a slow query and identify whether it is doing a sequential scan that should be an index scan",
+            "Create a composite index and verify with EXPLAIN that the query planner uses it correctly",
+            "Identify N+1 queries in a Django or Rails application using the query log — fix with eager loading",
+            "Set up PgBouncer in transaction pooling mode and measure the improvement in connection handling under load",
+            "Create a partial index for a status column where 95% of rows have status = 'completed' — measure the size difference",
+            "Build a materialized view for an expensive aggregation query and schedule its refresh",
+            "Use pg_stat_statements to identify the top 10 slowest queries in a PostgreSQL database"
+          ],
+          res: [
+            "Use the Index, Luke (use-the-index-luke.com — free, best SQL index reference)",
+            "PostgreSQL documentation: EXPLAIN (postgresql.org/docs/current/using-explain.html)",
+            "High Performance MySQL (Schwartz, Zaitsev — the definitive MySQL tuning reference)",
+            "pg_stat_statements documentation (postgresql.org/docs/current/pgstatstatements.html)"
+          ]
+        },
+        {
+          name: "Distributed Systems Patterns",
+          tag: "advanced",
+          desc: "As systems scale horizontally, new failure modes emerge. The fallacies of distributed computing (Peter Deutsch, 1994): the network is reliable, latency is zero, bandwidth is infinite, the network is secure, topology does not change, there is one administrator, transport cost is zero, the network is homogeneous. Every one of these is false. Circuit Breaker pattern: track the failure rate of a downstream service; if it exceeds a threshold, open the circuit and return a fast fallback instead of waiting for timeouts — preventing cascading failures. Bulkhead pattern: isolate resources (thread pools, connection pools) for different downstream services so one slow service cannot exhaust all threads. Retry with exponential backoff and jitter: avoid thundering herd after an outage. Timeout everywhere: every network call must have a timeout or you will eventually accumulate blocked threads until the service is dead. The Two Generals Problem and why perfect distributed consensus is impossible (CAP theorem, Byzantine Fault Tolerance). Event-driven architecture and the Outbox pattern for at-least-once delivery with exactly-once business logic. Distributed sagas for long-running transactions without distributed locks.",
+          master: [
+            "Implement a Circuit Breaker with closed/open/half-open states in your preferred language",
+            "Set correct timeouts for every HTTP client in a service: connection timeout, read timeout, write timeout",
+            "Implement retry with exponential backoff and full jitter — explain why jitter prevents thundering herd",
+            "Design a saga for a checkout flow: payment, inventory reservation, order creation — define compensating transactions for each step",
+            "Implement the Outbox pattern: write an event to a database table in the same transaction as the business operation, then publish it asynchronously",
+            "Explain the CAP theorem with a concrete example: what does your system do during a network partition?",
+            "Implement a bulkhead using separate thread pools for three downstream services in a Java application"
+          ],
+          deepdive: "The Outbox pattern solves the dual-write problem that causes data loss in event-driven systems. The naive approach: update your database and then publish an event to a message broker. Problem: the database write succeeds, the service crashes before publishing the event — the event is lost. The Outbox pattern: write both the business record and the event to the same database in a single transaction. A separate process reads the outbox table and publishes events to the broker, marking them as sent. If publishing fails, the poller retries. This guarantees at-least-once delivery without a distributed transaction. Combine with idempotency keys on the consumer side for exactly-once business logic.",
+          res: [
+            "Designing Data-Intensive Applications (Martin Kleppmann — the best book on distributed systems for practitioners)",
+            "Release It! (Michael Nygard — the original book on circuit breakers, bulkheads, and production patterns)",
+            "Fallacies of Distributed Computing Explained (Arnon Rotem-Gal-Oz — free PDF)",
+            "Pattern: Transactional Outbox (microservices.io/patterns/data/transactional-outbox.html)"
           ]
         }
       ]

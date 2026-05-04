@@ -1,8 +1,8 @@
 const selfdevData = {
   name: "SELF DEVELOPMENT & CAREER MASTERY",
   area: "selfdev",
-  eyebrow: "Personal Growth · Leadership · Productivity · Career Architecture",
-  sub: "Technical skills alone won't build an exceptional career. Master your mindset, productivity systems, communication, leadership, and continuous learning strategies to become a force multiplier in any organization.",
+  eyebrow: "Growth Mindset · Deep Work · Leadership · Career Strategy · Negotiation",
+  sub: "The engineers who have the most impact are not always the most technically skilled — they are the ones who think clearly, communicate well, lead without ego, and play the long game in their careers. This guide covers the mental models, productivity systems, leadership principles, and career strategy frameworks used by the most effective people in the industry.",
   phases: [
     {
       name: "Mindset & Mental Models",

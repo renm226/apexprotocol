@@ -1,8 +1,8 @@
 const networkingData = {
   name: "NETWORKING & INFRASTRUCTURE",
   area: "net",
-  eyebrow: "Internet Protocols · Network Security · Infrastructure Engineering",
-  sub: "From electrical signals to global internet routing. A complete journey from understanding how bits physically travel to designing networks that carry millions of users. Master the protocols, architectures, and security principles that underpin all of modern computing.",
+  eyebrow: "Internet Protocols · Network Security · Infrastructure Engineering · BGP · SDN",
+  sub: "From the physics of electrical signals to the BGP routes that stitch the global internet together. This is a complete, rigorous path through every layer of the network stack — not just enough to pass a certification, but enough to design, troubleshoot, and secure real infrastructure. Every engineer who touches production systems needs this.",
   phases: [
     {
       name: "How Networks Actually Work",

@@ -1,8 +1,8 @@
 const aiData = {
   name: "ARTIFICIAL INTELLIGENCE & MACHINE LEARNING",
   area: "ai",
-  eyebrow: "Machine Intelligence · Deep Learning · LLMs · Research Frontier",
-  sub: "From first-principles mathematics to frontier research. A complete journey from knowing nothing about AI to building and understanding state-of-the-art systems. Every concept grounded, every technique understood deeply — not just used.",
+  eyebrow: "Mathematical Foundations · Deep Learning · Transformers · LLM Training · Production AI",
+  sub: "From first-principles mathematics to frontier research. A complete journey from knowing nothing about AI to building and understanding state-of-the-art systems. This is not a guide about calling the OpenAI API — it is a guide to genuinely understanding what your models are doing, why they work, and how to build new ones. Every concept grounded, every technique understood deeply — not just used.",
   phases: [
     {
       name: "Mathematical Foundations",

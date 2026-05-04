@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ApexProtocol — Elite Mastery Roadmap</title>
+<meta name="description" content="PathForge is a free, in-depth STEM mastery roadmap covering AI/ML, Networking, Offensive Security, Software Engineering, Blockchain, Cloud DevOps, Mobile Development, DevSecOps, and Self Development. Detailed guides, mastery checklists, and curated resources for every level.">
+<meta name="theme-color" content="#06060f">
+<title>PathForge — STEM Mastery Roadmap</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,11 +15,11 @@
 <body>
 
 <header class="site-header">
-  <div class="logo">APEX<span>Protocol</span></div>
+  <div class="logo">PATH<span>Forge</span></div>
   <div class="nav-scroll" id="navScroll"></div>
   <div class="header-actions">
     <!-- <button class="export-btn" onclick="window.openExportModal()">⬇ Export PDF</button> -->
-    <button class="coffee-btn" onclick="window.openCoffeeModal()">☕ Buy Coffee</button>
+    <button class="coffee-btn" onclick="window.openCoffeeModal()">☕ Support PathForge</button>
     <!-- responsive.js will inject the hamburger button here automatically -->
   </div>
 </header>
@@ -36,7 +38,7 @@
 <div class="modal-overlay" id="exportModal" onclick="window.closeModalIfOverlay(event,'exportModal')">
   <div class="modal">
     <h2>Export Guide</h2>
-    <p>Select a discipline to export as a print-ready PDF guide. The exported document includes all phases, topics, mastery checklists, deep-dives, code snippets, and resources — formatted for printing or digital reference.</p>
+    <p>Select a discipline to export as a print-ready PDF guide. The exported document includes all phases, topics, mastery checklists, deep-dives, and curated resources — formatted for offline study or printing.</p>
     <div class="modal-areas" id="modalAreas"></div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="window.closeModal('exportModal')">Cancel</button>
@@ -49,10 +51,9 @@
 <div class="modal-overlay" id="coffeeModal" onclick="window.closeModalIfOverlay(event,'coffeeModal')">
   <div class="coffee-modal">
     <div class="coffee-icon">☕</div>
-    <h2>Support This Work</h2>
-    <p>Hundreds of hours went into curating this deep-dive curriculum. If it helped you level up, consider buying a coffee — it keeps this guide free and continuously updated.
-      Part of the proceeds also go towards scaling up the project, adding new features, and creating more in-depth content across all disciplines. Your support means a lot! 🙏
-    </p>
+    <h2>Keep PathForge Free</h2>
+    <p>PathForge is a self-funded STEM guide built for anyone who wants to break into tech — regardless of their background or budget. Every roadmap, resource, and mastery checklist you see here was hand-curated across hundreds of hours of research.</p>
+    <p style="margin-top:10px">If this guide has helped you learn, land an opportunity, or simply pointed you in the right direction — please consider sending a small contribution. It directly funds new content, updated resources, and keeps this guide free for everyone.</p>
     <div class="coffee-amounts">
       <span class="amount-chip sel" id="amt1" onclick="window.selectAmt('$3','amt1')">$3 ☕</span>
       <span class="amount-chip" id="amt2" onclick="window.selectAmt('$5','amt2')">$5 ☕☕</span>
@@ -62,7 +63,7 @@
       <span class="paypal-logo">Pay</span><span style="color:#009cde;font-weight:800;font-style:italic">Pal</span>
       &nbsp;· Send Coffee
     </a>
-    <p style="margin-top:16px;font-size:11px;color:var(--dim)">samsonwiliams168@gmail.com · PayPal</p>
+    <p style="margin-top:16px;font-size:11px;color:var(--dim)">pathforge.guide · PayPal · samsono.odwori@gmail.com</p>
     <button class="btn-secondary" style="margin-top:16px;width:100%" onclick="window.closeModal('coffeeModal')">Maybe Later</button>
   </div>
 </div>

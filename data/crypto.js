@@ -1,8 +1,8 @@
 const cryptoData = {
   name: "BLOCKCHAIN & WEB3 DEVELOPMENT",
   area: "crypto",
-  eyebrow: "Decentralized Systems · Smart Contracts · Cryptocurrency",
-  sub: "From cryptographic primitives to DeFi protocols. Understand the technology that powers Bitcoin, Ethereum, and the decentralized web. Build secure smart contracts and understand consensus mechanisms at the protocol level.",
+  eyebrow: "Cryptographic Foundations · Smart Contracts · DeFi · ZK Proofs · Layer 2 Scaling",
+  sub: "From the number theory that makes digital signatures possible to the DeFi protocols moving billions of dollars daily. This guide doesn't stop at 'how to write an ERC-20 token' — it goes deep into consensus mechanisms, ZK proofs, rollup architectures, and cross-chain interoperability. Build on blockchains with the understanding of someone who could also audit them.",
   phases: [
     {
       name: "Cryptographic Foundations",

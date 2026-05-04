@@ -1,8 +1,8 @@
 const devsecData = {
   name: "DEVSECOPS",
   area: "devsec",
-  eyebrow: "Security as Code · Shift Left · Continuous Protection",
-  sub: "Integrate security throughout the software development lifecycle. From developer workstations to production infrastructure, embed security practices that scale with modern DevOps workflows.",
+  eyebrow: "Security as Code · Shift Left · SAST · DAST · Container Security · Compliance",
+  sub: "Security that lives only in the security team's backlog is security that doesn't ship. DevSecOps embeds security into every stage of the development lifecycle — in the developer's IDE, in the CI/CD pipeline, in the container registry, and in the production environment. This guide teaches you to build systems that are secure by default, not secure by afterthought.",
   phases: [
     {
       name: "Security Fundamentals for Developers",

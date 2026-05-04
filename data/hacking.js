@@ -1,8 +1,8 @@
 const hackingData = {
   name: "OFFENSIVE SECURITY & PENETRATION TESTING",
   area: "hack",
-  eyebrow: "Ethical Hacking · Red Teaming · Exploit Development · Adversarial Thinking",
-  sub: "Think like an attacker to defend like a professional. A complete journey from understanding the hacker mindset to advanced exploit development, red teaming, and adversary simulation. Every technique grounded in real methodology, not just tool usage.",
+  eyebrow: "Ethical Hacking · Red Teaming · Exploit Development · Active Directory · Cloud Attacks",
+  sub: "Think like an attacker to defend like a professional. This is the complete offensive security roadmap — from building your first lab and understanding the legal framework to advanced binary exploitation, Active Directory attack chains, and cloud infrastructure attacks. Every technique is grounded in real-world methodology used in professional engagements, not shallow tool tutorials.",
   phases: [
     {
       name: "The Hacker Mindset and Legal Framework",

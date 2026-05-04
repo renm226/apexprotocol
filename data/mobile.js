@@ -1,8 +1,8 @@
 const mobileData = {
   name: "MOBILE DEVELOPMENT",
   area: "mobile",
-  eyebrow: "iOS · Android · Cross-Platform · App Architecture",
-  sub: "Build production-grade mobile applications for billions of devices. Master native development (Swift/Kotlin), cross-platform frameworks (React Native/Flutter), app architecture, performance optimization, and App Store deployment.",
+  eyebrow: "iOS · Android · React Native · Flutter · App Architecture · App Store",
+  sub: "Build production-grade mobile applications trusted by millions of users. This roadmap covers native iOS development in Swift, native Android in Kotlin, cross-platform approaches with React Native and Flutter, and the full deployment lifecycle — from App Store submission to crash monitoring and analytics. Everything you need to ship and maintain real apps.",
   phases: [
     {
       name: "Mobile Development Fundamentals",
