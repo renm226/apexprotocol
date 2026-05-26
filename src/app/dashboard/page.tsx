@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import DashboardClient from './DashboardClient'
+import { APP } from '@/config/app'
 
-export const metadata = { title: 'Dashboard — Cortaxis' }
+export const metadata = { title: `Dashboard — ${APP.name}` }
 
 export default async function DashboardPage() {
   const supabase = await createClient()

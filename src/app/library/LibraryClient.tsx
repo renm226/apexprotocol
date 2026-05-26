@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { loadScript } from '@paypal/paypal-js'
+import { APP } from '@/config/app'
 
 interface Book {
   id: string
@@ -140,7 +141,7 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
   return (
     <>
       <header className="site-header">
-        <Link href="/" className="logo">COR<span>Taxis</span></Link>
+        <Link href="/" className="logo">{APP.name}</Link>
         <div style={{ flex: 1 }} />
         <div className="header-actions">
           {localAccess && (

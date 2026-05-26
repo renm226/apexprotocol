@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { APP } from '@/config/app'
 
 interface Subscription {
   status: string
@@ -64,7 +65,7 @@ export default function DashboardClient({ user, subscription, requests }: Props)
             <div className="dash-section-label">Subscription</div>
             <div className="dash-plan-card">
               <div>
-                <div className="dash-plan-name">{isPro ? 'Cortaxis Pro' : 'Free'}</div>
+                <div className="dash-plan-name">{isPro ? `${APP.name} Pro` : 'Free'}</div>
                 {isPro && periodEnd && (
                   <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--muted)', marginTop: 4 }}>
                     Renews {periodEnd}

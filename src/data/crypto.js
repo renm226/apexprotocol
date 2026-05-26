@@ -1,271 +1,265 @@
-﻿export const cryptoData = {
-  name: "BLOCKCHAIN & WEB3 DEVELOPMENT",
+export const cryptoData = {
+  name: "BLOCKCHAIN & WEB3",
   area: "crypto",
-  eyebrow: "Cryptographic Foundations Â· Smart Contracts Â· DeFi Â· ZK Proofs Â· Layer 2 Scaling",
-  sub: "From the number theory that makes digital signatures possible to the DeFi protocols moving billions of dollars daily. This guide doesn't stop at 'how to write an ERC-20 token' â€” it goes deep into consensus mechanisms, ZK proofs, rollup architectures, and cross-chain interoperability. Build on blockchains with the understanding of someone who could also audit them.",
+  eyebrow: "Cryptography · Bitcoin · Ethereum · Smart Contracts · DeFi · Smart Contract Security",
+  sub: "Most people learn blockchain by writing token contracts and calling it done. That produces developers who can deploy an ERC-20 but cannot explain why a 51% attack works, why the EVM has gas, or why a flash loan is possible. This roadmap starts with the cryptographic primitives that make blockchains possible and builds to the level where you can read a DeFi protocol's code and understand its attack surface.",
   phases: [
     {
       name: "Cryptographic Foundations",
       level: "foundation",
-      tagline: "The math behind blockchain",
-      desc: "Blockchain is applied cryptography. Master hash functions, public-key cryptography, digital signatures, and Merkle trees before touching any blockchain code.",
+      tagline: "Digital signatures and hash functions are the entire foundation",
+      desc: "A blockchain is a data structure secured by cryptography. Before you can understand why it is secure — or why it is not — you need to understand the cryptographic primitives it uses. This is not optional background reading. Without understanding hash functions and digital signatures, every blockchain concept you encounter will be a magic box that you use without comprehending.",
       topics: [
         {
-          name: "Hash Functions & Cryptographic Hashing",
+          name: "Cryptographic Hash Functions",
           tag: "core",
-          desc: "Properties: deterministic, fixed output size, pre-image resistance, second pre-image resistance, collision resistance. SHA-256 (used in Bitcoin), Keccak/SHA-3 (used in Ethereum). Merkle-DamgÃ¥rd construction, sponge construction. Hash applications: commitment schemes, password storage, data integrity, Merkle trees.",
+          desc: "A cryptographic hash function takes arbitrary input and produces a fixed-size output (digest). The properties that make it useful: deterministic (same input always produces same output), preimage resistant (given the hash, you cannot find the input), second-preimage resistant (given an input and its hash, you cannot find a different input with the same hash), collision resistant (you cannot find any two inputs with the same hash), and avalanche effect (a single bit change in the input completely changes the output). SHA-256 (used in Bitcoin) produces a 256-bit output. Keccak-256 (used in Ethereum) is a variant of SHA-3. These properties together make hash functions useful for: proving you know a value without revealing it (commit-reveal), detecting tampering (hash the file, publish the hash — any change in the file changes the hash), and proof of work (find an input whose hash starts with N zeros — computationally expensive to produce, trivially cheap to verify). Merkle trees use hashing to efficiently verify that a specific transaction is in a block without downloading the full block: hash pairs of transactions, hash pairs of hashes, repeat until you have one root hash.",
           master: [
-            "Implement SHA-256 padding and compression function conceptually",
-            "Explain the difference between pre-image and collision resistance",
-            "Build a Merkle tree from a list of transactions and verify inclusion",
-            "Understand length extension attacks on SHA-1 and SHA-2",
-            "Use cryptographic hashing for data integrity verification",
-            "Explain why SHA-256 is not suitable for passwords (use bcrypt/Argon2)",
-            "Implement a simple proof-of-work using hash iteration"
+            "Explain the five properties of a cryptographic hash function with a concrete example of what each property prevents",
+            "Explain how proof of work uses hash functions: what the miner is searching for and why it is hard",
+            "Describe a Merkle tree: how it is constructed and how it enables efficient inclusion proofs",
+            "Explain the commit-reveal pattern: what problem it solves and where it is used in blockchain protocols",
+            "Describe the birthday attack on hash functions: why collision resistance requires a larger output than preimage resistance",
+            "Explain why SHA-256 is appropriate for Bitcoin's proof of work and what would happen if SHA-256 were broken"
           ],
-          code: "// Merkle tree implementation in Python\nimport hashlib\n\nclass MerkleTree:\n    def __init__(self, data):\n        self.data = data\n        self.leaves = [self._hash(str(item)) for item in data]\n        self.root = self._build_tree(self.leaves)\n    \n    def _hash(self, value):\n        return hashlib.sha256(value.encode()).hexdigest()\n    \n    def _build_tree(self, nodes):\n        if len(nodes) == 1:\n            return nodes[0]\n        \n        new_level = []\n        for i in range(0, len(nodes), 2):\n            left = nodes[i]\n            right = nodes[i + 1] if i + 1 < len(nodes) else left\n            combined = left + right\n            new_level.append(self._hash(combined))\n        \n        return self._build_tree(new_level)\n    \n    def get_proof(self, index):\n        proof = []\n        nodes = self.leaves\n        idx = index\n        \n        while len(nodes) > 1:\n            if idx % 2 == 0:\n                # Node is left child, right sibling needed\n                if idx + 1 < len(nodes):\n                    proof.append(('right', nodes[idx + 1]))\n                else:\n                    proof.append(('right', nodes[idx]))\n            else:\n                # Node is right child, left sibling needed\n                proof.append(('left', nodes[idx - 1]))\n            \n            # Move to next level\n            idx = idx // 2\n            new_nodes = []\n            for i in range(0, len(nodes), 2):\n                left = nodes[i]\n                right = nodes[i + 1] if i + 1 < len(nodes) else left\n                new_nodes.append(self._hash(left + right))\n            nodes = new_nodes\n        \n        return proof\n\n# Proof of work implementation\ndef proof_of_work(block_data, difficulty=4):\n    prefix = '0' * difficulty\n    nonce = 0\n    \n    while True:\n        text = f\"{block_data}{nonce}\"\n        hash_result = hashlib.sha256(text.encode()).hexdigest()\n        if hash_result.startswith(prefix):\n            return nonce, hash_result\n        nonce += 1",
           res: [
-            "Cryptography Engineering (Ferguson, Schneier)",
-            "SHA-256 (FIPS 180-4) specification",
-            "Merkle Tree (original patent by Ralph Merkle)",
-            "Handbook of Applied Cryptography (free online)"
+            "Practical Cryptography for Developers (cryptobook.nakov.com) — free, practical, blockchain-oriented",
+            "Introduction to Modern Cryptography (Katz and Lindell) — rigorous academic treatment",
+            "SHA-256 explained (sha256algorithm.com) — step-by-step algorithm walkthrough",
+            "Bitcoin Developer Guide (developer.bitcoin.org) — how cryptographic primitives are used in Bitcoin"
           ]
         },
         {
-          name: "Public-Key Cryptography & ECDSA",
+          name: "Public Key Cryptography and Digital Signatures",
           tag: "core",
-          desc: "Asymmetric encryption: RSA (historical, not used in modern blockchains), Elliptic Curve Cryptography (ECC) â€” used in Bitcoin and Ethereum. secp256k1 curve parameters. ECDSA (Elliptic Curve Digital Signature Algorithm): private key to public key derivation, signing (k, R, S), verification. Ed25519 (used in Solana, Cardano).",
+          desc: "Public key cryptography uses a mathematically linked key pair: the private key is kept secret, the public key is shared freely. ECDSA (Elliptic Curve Digital Signature Algorithm) is the signature algorithm used in both Bitcoin and Ethereum, over the secp256k1 curve. To sign: produce a hash of the message, use the private key and a random nonce to compute the signature (r, s values). To verify: use the public key, the message hash, and the signature to verify that the signature was produced by the holder of the private key. Critical failure mode: if the same nonce is used twice with the same private key, the private key can be derived mathematically. This is how the PlayStation 3 private key was extracted. Bitcoin and Ethereum addresses are derived from public keys: take the public key, hash it with SHA-256 then RIPEMD-160 (Bitcoin) or Keccak-256 (Ethereum), apply a checksum. The private key is the only thing that proves ownership — there is no account recovery, no password reset. Lose the private key and the funds are gone.",
           master: [
-            "Understand elliptic curve equation: yÂ² = xÂ³ + ax + b (secp256k1: a=0, b=7)",
-            "Derive a public key from a private key using scalar multiplication on the curve",
-            "Explain why ECDSA uses a random nonce (k) and what happens if it's reused",
-            "Implement signature verification for a given message and signature",
-            "Understand the difference between secp256k1 and Ed25519",
-            "Generate a Bitcoin/ Ethereum private key and derive the public key and address",
-            "Explain ECDSA recovery: recovering public key from signature"
+            "Explain ECDSA signature generation and verification at a conceptual level — what the signing and verification operations are doing",
+            "Explain why nonce reuse in ECDSA leaks the private key — describe the attack",
+            "Describe how an Ethereum address is derived from a private key, step by step",
+            "Explain hierarchical deterministic wallets (BIP32): how a seed phrase generates a tree of key pairs",
+            "Explain what a brain wallet is and why it is cryptographically dangerous",
+            "Describe the difference between hot wallets and cold storage and the attack surface each is exposed to"
           ],
-          code: "# ECDSA implementation using Python's cryptography library\nfrom cryptography.hazmat.primitives.asymmetric import ec\nfrom cryptography.hazmat.primitives import hashes\nfrom cryptography.hazmat.primitives.asymmetric.utils import (\n    decode_dss_signature, encode_dss_signature\n)\nimport secrets\n\n# Generate private key (secp256k1)\nprivate_key = ec.generate_private_key(ec.SECP256K1())\npublic_key = private_key.public_key()\n\n# Sign a message\nmessage = b\"Send 1 BTC to address 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\"\nsignature = private_key.sign(message, ec.ECDSA(hashes.SHA256()))\n\n# Verify signature\ntry:\n    public_key.verify(signature, message, ec.ECDSA(hashes.SHA256()))\n    print(\"Signature valid!\")\nexcept:\n    print(\"Invalid signature\")\n\n# Derive Ethereum address from public key (simplified)\nimport hashlib\nfrom eth_keys import keys\n\nprivate_key_hex = secrets.token_hex(32)\nprivate_key_bytes = bytes.fromhex(private_key_hex)\neth_private_key = keys.PrivateKey(private_key_bytes)\neth_public_key = eth_private_key.public_key\n\n# Ethereum address = keccak256(public_key)[-20:]\naddress = hashlib.sha3_256(eth_public_key.to_bytes()).hexdigest()[-40:]\nprint(f\"Ethereum address: 0x{address}\")",
           res: [
-            "Elliptic Curve Cryptography (Andrea Corbellini's blog series)",
-            "SEC 2: Recommended Elliptic Curve Domain Parameters (secp256k1)",
-            "ECDSA: The Digital Signature Algorithm of Bitcoin (Andreas Antonopoulos)",
-            "Mastering Bitcoin (Chapter 4: Keys, Addresses)"
+            "Mastering Bitcoin (Andreas Antonopoulos) — free online, Chapters 4–6 on keys and addresses",
+            "Practical Cryptography for Developers — elliptic curve cryptography section",
+            "BIP32 specification — HD wallet derivation",
+            "evm.codes — useful for understanding Ethereum at the opcode level"
+          ]
+        }
+      ]
+    },
+    {
+      name: "Bitcoin and Blockchain Fundamentals",
+      level: "foundation",
+      tagline: "Bitcoin solved a problem that nobody believed could be solved",
+      desc: "The Byzantine Generals Problem asks how distributed actors who cannot trust each other can reach consensus on a common state in the presence of adversaries. Bitcoin solved it for the first time in a practical system. Understanding how it works — at the protocol level, not the narrative level — is the foundation for understanding every other blockchain.",
+      topics: [
+        {
+          name: "The Bitcoin Protocol",
+          tag: "core",
+          desc: "Bitcoin is a chain of blocks, where each block contains a list of transactions and a hash of the previous block. Changing any past transaction requires recalculating the proof of work for every subsequent block — computationally infeasible given the current network hash rate. Proof of work consensus: miners compete to find a nonce such that the block header hash is below the target (starts with N zeros). The difficulty adjusts every 2016 blocks to maintain a 10-minute block time. Longest chain rule: the chain with the most accumulated proof of work is the valid chain — this resolves forks where multiple miners find a valid block simultaneously. UTXO model: unspent transaction outputs are the unit of value. A transaction consumes UTXOs as inputs and produces new UTXOs as outputs. There is no account balance — your balance is the sum of all UTXOs assigned to your addresses. The transaction fee is the difference between inputs and outputs — miners collect fees as incentive. A 51% attack: controlling more than half the network hash rate allows double-spending but does not allow stealing from other wallets (private keys remain secure).",
+          master: [
+            "Explain the chain of block headers: what links each block to the previous and why changing past data is expensive",
+            "Describe the proof of work mining process: what miners are computing and why difficulty adjustment maintains the 10-minute target",
+            "Explain the UTXO model: how a transaction consumes inputs and creates outputs, and how change works",
+            "Explain a 51% attack: what it enables, what it does not enable, and what it costs at current network hash rate",
+            "Describe the mempool: what it contains, how fees affect priority, and what happens during congestion",
+            "Explain the halving: what it is, what it does to miner economics, and what it means for Bitcoin's long-term security model"
+          ],
+          res: [
+            "Bitcoin Whitepaper (Satoshi Nakamoto) — read it, it is nine pages",
+            "Mastering Bitcoin (Andreas Antonopoulos) — free online, the essential technical reference",
+            "Bitcoin Developer Documentation (developer.bitcoin.org) — precise protocol descriptions",
+            "learn-me-a-bitcoin (learnmeabitcoin.com) — visual explanations of Bitcoin internals"
           ]
         },
         {
           name: "Consensus Mechanisms",
-          tag: "core",
-          desc: "Proof of Work (PoW): mining, difficulty adjustment, longest chain rule, 51% attacks. Proof of Stake (PoS): validators, staking, slashing conditions, finality (Casper FFG, LMD GHOST). Delegated Proof of Stake (DPoS), Proof of Authority (PoA), Practical Byzantine Fault Tolerance (PBFT). Nakamoto consensus vs BFT-based consensus.",
+          tag: "intermediate",
+          desc: "Proof of Work provides security through energy expenditure — attacking the chain requires more computation than defending it. The security is proportional to the hash rate, which is proportional to the electricity cost. This is a feature, not a bug: the attack must destroy real-world resources. Proof of Stake replaces energy expenditure with economic stake. Validators lock up tokens as collateral; if they validate fraudulent blocks, their stake is slashed. Ethereum's Casper uses a finality gadget on top of its LMD-GHOST fork choice rule. The security assumption changes: instead of needing 51% of hash rate, you need 33% of staked ETH to compromise liveness or 66% to compromise safety. Delegated Proof of Stake (DPOS) elects a fixed set of block producers via token-weighted voting — faster finality but more centralized. Nakamoto consensus (Bitcoin's longest-chain rule) has probabilistic finality: a transaction with 6 confirmations is considered final because the probability of a reorg deep enough to reverse it is negligible, not zero. Tendermint-style consensus (used in Cosmos) has instant finality: a block is final as soon as 2/3 of validators have signed it — no reorgs, but the network halts under network partitions.",
           master: [
-            "Explain Bitcoin's difficulty adjustment algorithm (every 2016 blocks)",
-            "Calculate the probability of a 51% attack succeeding given network hash rate",
-            "Understand Ethereum's transition from PoW to PoS (The Merge)",
-            "Explain the nothing-at-stake problem and how PoS solves it with slashing",
-            "Implement a simplified PoW consensus simulator",
-            "Understand finality: what it means and why PoW has probabilistic finality",
-            "Compare PBFT vs Nakamoto consensus trade-offs"
+            "Explain Proof of Work security: why an attacker needs 51% hash rate and what they can do with it",
+            "Describe Proof of Stake slashing: what behavior it penalizes and how it replaces the energy cost of PoW",
+            "Explain the difference between probabilistic finality (Nakamoto consensus) and deterministic finality (Tendermint)",
+            "Describe the nothing-at-stake problem in naive Proof of Stake and how slashing addresses it",
+            "Explain the long-range attack in Proof of Stake and the mitigations used",
+            "Compare the centralization risks in PoW (mining pools), PoS (large validators), and DPoS (elected producers)"
           ],
-          code: "# Simple PoW consensus simulator\nimport hashlib\nimport time\nimport json\n\nclass Block:\n    def __init__(self, index, transactions, previous_hash, difficulty):\n        self.index = index\n        self.timestamp = time.time()\n        self.transactions = transactions\n        self.previous_hash = previous_hash\n        self.difficulty = difficulty\n        self.nonce = 0\n        self.hash = self.mine()\n    \n    def calculate_hash(self):\n        block_string = json.dumps({\n            'index': self.index,\n            'timestamp': self.timestamp,\n            'transactions': self.transactions,\n            'previous_hash': self.previous_hash,\n            'nonce': self.nonce\n        }, sort_keys=True)\n        return hashlib.sha256(block_string.encode()).hexdigest()\n    \n    def mine(self):\n        target = '0' * self.difficulty\n        while True:\n            self.hash = self.calculate_hash()\n            if self.hash.startswith(target):\n                return self.hash\n            self.nonce += 1\n\nclass Blockchain:\n    def __init__(self, difficulty=4):\n        self.chain = [self.create_genesis_block()]\n        self.difficulty = difficulty\n    \n    def create_genesis_block(self):\n        return Block(0, [\"Genesis block\"], \"0\", self.difficulty)\n    \n    def add_block(self, transactions):\n        previous_block = self.chain[-1]\n        new_block = Block(len(self.chain), transactions, previous_block.hash, self.difficulty)\n        self.chain.append(new_block)\n    \n    def is_chain_valid(self):\n        for i in range(1, len(self.chain)):\n            current = self.chain[i]\n            previous = self.chain[i-1]\n            \n            if current.hash != current.calculate_hash():\n                return False\n            if current.previous_hash != previous.hash:\n                return False\n            if not current.hash.startswith('0' * self.difficulty):\n                return False\n        return True\n\n# PoS validator simulator (simplified)\nclass Validator:\n    def __init__(self, address, stake):\n        self.address = address\n        self.stake = stake\n        self.slashed = False\n    \n    def propose_block(self, block):\n        if not self.slashed:\n            print(f\"Validator {self.address} proposing block {block.index}\")\n            return block\n        return None\n\ndef select_validator(validators, total_stake):\n    # Weighted random selection based on stake\n    import random\n    r = random.random() * total_stake\n    cumulative = 0\n    for validator in validators:\n        cumulative += validator.stake\n        if r <= cumulative:\n            return validator\n    return validators[0]",
           res: [
-            "Bitcoin: A Peer-to-Peer Electronic Cash System (Satoshi Nakamoto)",
-            "Ethereum: A Next-Generation Smart Contract Platform (Vitalik Buterin)",
-            "Proof of Stake FAQ (Ethereum.org)",
-            "Byzantine Generals Problem (Lamport, Shostak, Pease)"
+            "Mastering Ethereum (Antonopoulos, Wood) — Chapters on consensus, free online",
+            "Ethereum's Proof of Stake documentation (ethereum.org/pos) — current consensus mechanism",
+            "Tendermint consensus documentation — Byzantine fault tolerant consensus",
+            "On the Economics of Proof of Work and Proof of Stake (research papers) — economic security analysis"
           ]
         }
       ]
     },
     {
-      name: "Bitcoin & UTXO Model",
+      name: "Ethereum and Smart Contracts",
       level: "intermediate",
-      tagline: "Digital gold and its architecture",
-      desc: "Bitcoin's UTXO model, transaction structure, Script language, and network. Understand how the first cryptocurrency works at the protocol level.",
+      tagline: "Programmable money on a shared computer that nobody controls",
+      desc: "Ethereum extended Bitcoin by adding a Turing-complete virtual machine. Any computation can be encoded as a smart contract — a program that lives on the blockchain, executes deterministically on every node, and can hold and transfer value. The gas mechanism exists to prevent infinite loops from halting the network. Every instruction costs gas; every block has a gas limit; transactions that exceed the limit are reverted but still cost gas.",
       topics: [
         {
-          name: "Bitcoin Transactions & Script",
+          name: "The EVM and Solidity",
           tag: "core",
-          desc: "UTXO (Unspent Transaction Output) model: inputs reference previous outputs, outputs create new UTXOs. Transaction structure: version, inputs (txid, vout, scriptSig, sequence), outputs (value, scriptPubKey), locktime. Bitcoin Script: stack-based language, OP codes (OP_DUP, OP_HASH160, OP_EQUALVERIFY, OP_CHECKSIG). P2PKH (Pay-to-PubKey-Hash), P2SH (Pay-to-Script-Hash), P2WPKH (SegWit).",
+          desc: "The Ethereum Virtual Machine is a stack-based virtual machine. Instructions operate on a stack of 256-bit words. Storage is a key-value map of 256-bit slots that persists between transactions — it is the most expensive resource in the EVM. Memory is a byte array that is erased after each transaction. Calldata is read-only input data from the transaction. Gas: every opcode has a fixed gas cost. SSTORE (write to storage) is among the most expensive operations. Computationally intensive operations cost more gas. The gas limit per transaction is set by the sender; if the transaction runs out of gas, it reverts but the gas is consumed. Solidity is a statically-typed, compiled language that generates EVM bytecode. Important Solidity concepts: visibility (public, internal, private, external), state mutability (view, pure), payable functions that can receive ETH, events that emit data to transaction logs (not stored on-chain, used by frontends and indexers), custom errors (cheaper than revert strings), and the fallback/receive functions for handling plain ETH transfers.",
           master: [
-            "Explain the difference between UTXO model and account model (Ethereum)",
-            "Trace a Bitcoin transaction from input to output using a block explorer",
-            "Understand how multisignature (multisig) works in Bitcoin Script (OP_CHECKMULTISIG)",
-            "Explain SegWit (Segregated Witness) and its benefits (transaction malleability, block size)",
-            "Create a raw Bitcoin transaction using Bitcoin Core or a library",
-            "Understand transaction fees: how they're calculated and prioritization",
-            "Explain the difference between P2PKH and P2SH addresses"
+            "Explain the EVM execution model: stack, memory, storage, and calldata — how each is used and what each costs",
+            "Explain gas: why it exists, how the gas limit and gas price interact, and what happens when a transaction runs out of gas",
+            "Describe the difference between storage and memory in Solidity: lifetime, cost, and when to use each",
+            "Write a Solidity contract with proper visibility modifiers, events, and custom errors",
+            "Explain the ABI (Application Binary Interface): how function calls are encoded and how return values are decoded",
+            "Explain the difference between call, delegatecall, and staticcall — what each does and when each is used"
           ],
-          code: "# Bitcoin transaction structure (simplified)\nimport hashlib\nimport struct\n\nclass BitcoinTransaction:\n    def __init__(self, version=1, locktime=0):\n        self.version = version\n        self.inputs = []\n        self.outputs = []\n        self.locktime = locktime\n    \n    def add_input(self, txid, vout, script_sig=\"\", sequence=0xFFFFFFFF):\n        self.inputs.append({\n            'txid': txid,\n            'vout': vout,\n            'script_sig': script_sig,\n            'sequence': sequence\n        })\n    \n    def add_output(self, value, script_pubkey):\n        self.outputs.append({\n            'value': value,\n            'script_pubkey': script_pubkey\n        })\n    \n    def serialize(self):\n        # Simplified serialization (not complete)\n        result = struct.pack('<I', self.version)\n        result += struct.pack('<B', len(self.inputs))\n        for txin in self.inputs:\n            result += bytes.fromhex(txin['txid'])[::-1]  # txid in reverse\n            result += struct.pack('<I', txin['vout'])\n            result += struct.pack('<B', len(txin['script_sig']) // 2)\n            result += bytes.fromhex(txin['script_sig'])\n            result += struct.pack('<I', txin['sequence'])\n        \n        result += struct.pack('<B', len(self.outputs))\n        for txout in self.outputs:\n            result += struct.pack('<Q', txout['value'])\n            result += struct.pack('<B', len(txout['script_pubkey']) // 2)\n            result += bytes.fromhex(txout['script_pubkey'])\n        \n        result += struct.pack('<I', self.locktime)\n        return result.hex()\n\n# P2PKH script example\n# scriptPubKey: OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG\n# scriptSig: <sig> <pubKey>\n\n# Creating a P2PKH address\nimport hashlib\nimport base58\n\ndef p2pkh_address(public_key_hash):\n    # Add version byte (0x00 for mainnet)\n    versioned = b'\\x00' + public_key_hash\n    # Double SHA-256 checksum\n    checksum = hashlib.sha256(hashlib.sha256(versioned).digest()).digest()[:4]\n    # Base58 encode\n    return base58.b58encode(versioned + checksum).decode()\n\n# Example: generate address from public key\n# public_key = '04...' (uncompressed) or '02/03...' (compressed)\n# public_key_hash = hashlib.new('ripemd160', hashlib.sha256(public_key_bytes).digest()).digest()\n# address = p2pkh_address(public_key_hash)",
           res: [
-            "Mastering Bitcoin (Andreas Antonopoulos â€” free online)",
-            "Bitcoin Developer Documentation (bitcoin.org)",
-            "Bitcoin Wiki: Script",
-            "Learn Me a Bitcoin (learnmeabitcoin.com)"
+            "Mastering Ethereum (Antonopoulos, Wood) — free online, comprehensive EVM and Solidity coverage",
+            "Solidity documentation (docs.soliditylang.org) — the authoritative reference",
+            "CryptoZombies (cryptozombies.io) — interactive Solidity tutorial, good starting point",
+            "evm.codes — every opcode with description, gas cost, and stack behavior"
           ]
         },
         {
-          name: "Lightning Network & Layer 2",
-          tag: "advanced",
-          desc: "Scaling Bitcoin with payment channels. Hashed Timelock Contracts (HTLC), bidirectional payment channels, channel factories. Lightning Network: routing (source-based onion routing), gossip protocol, channel announcements. Watchtowers, multi-path payments, Wumbo channels. Taproot and Schnorr signatures (improved privacy and efficiency).",
+          name: "Token Standards and Contract Patterns",
+          tag: "intermediate",
+          desc: "Token standards are interfaces that allow contracts to interact without knowing each other's implementations. ERC-20 defines fungible tokens: balanceOf, transfer, transferFrom, approve, allowance. The approve/transferFrom pattern requires two transactions to authorize a DEX to spend your tokens — a UX problem that has led to many bugs where users approve unlimited allowances. ERC-721 defines non-fungible tokens: each token has a unique tokenId, ownerOf returns the current owner, transferFrom moves ownership. ERC-1155 is a multi-token standard supporting both fungible and non-fungible tokens in a single contract. Proxy patterns allow upgradeable contracts: the proxy holds state and delegates all calls to an implementation contract. The transparent proxy pattern and the UUPS pattern differ in where the upgrade logic lives. OpenZeppelin is the standard library for Solidity development — use their audited implementations for tokens, access control, and common patterns. Writing your own token from scratch is an interview exercise, not production practice.",
           master: [
-            "Explain how a bidirectional payment channel works (funding, commitment, closing)",
-            "Understand HTLC: how it enables trustless routing across multiple hops",
-            "Calculate channel capacity and understand how balances are tracked",
-            "Explain the difference between on-chain and off-chain transactions",
-            "Understand the concept of 'invoice' in Lightning Network",
-            "Set up a Lightning Network node (LND or c-lightning) on testnet",
-            "Explain the advantages of Taproot (Schnorr signatures, MAST, privacy)"
+            "Explain the ERC-20 approve/transferFrom pattern: what it enables and why it creates allowance risks",
+            "Describe the ERC-721 standard: what ownerOf and tokenId mean and how NFT marketplaces use these",
+            "Explain the delegatecall proxy pattern: how it enables upgradeable contracts and what storage collision means",
+            "Describe the difference between transparent proxy and UUPS proxy patterns",
+            "Explain why using OpenZeppelin's audited contracts is the correct production practice",
+            "Describe the access control patterns in Solidity: Ownable, RBAC, and when each is appropriate"
           ],
-          code: "# HTLC (Hashed Timelock Contract) conceptual implementation\nimport hashlib\nimport time\n\nclass HTLC:\n    def __init__(self, secret_hash, sender, receiver, amount, timelock):\n        self.secret_hash = secret_hash\n        self.sender = sender\n        self.receiver = receiver\n        self.amount = amount\n        self.timelock = timelock\n        self.secret = None\n        self.state = 'pending'  # pending, claimed, refunded\n    \n    def claim(self, secret, block_height):\n        # Verify secret matches hash\n        if hashlib.sha256(secret.encode()).hexdigest() != self.secret_hash:\n            return False, \"Invalid secret\"\n        \n        # Check timelock\n        if block_height >= self.timelock:\n            return False, \"Timelock expired\"\n        \n        self.secret = secret\n        self.state = 'claimed'\n        return True, f\"Payment of {self.amount} claimed by {self.receiver}\"\n    \n    def refund(self, block_height):\n        if block_height >= self.timelock and self.state == 'pending':\n            self.state = 'refunded'\n            return True, f\"Payment of {self.amount} refunded to {self.sender}\"\n        return False, \"Cannot refund yet\"\n\n# Payment channel (simplified)\nclass PaymentChannel:\n    def __init__(self, alice, bob, initial_balance_alice, initial_balance_bob):\n        self.alice = alice\n        self.bob = bob\n        self.balances = {alice: initial_balance_alice, bob: initial_balance_bob}\n        self.nonce = 0\n        self.last_signed_state = None\n    \n    def create_transaction(self, from_party, to_party, amount):\n        if self.balances[from_party] < amount:\n            return None\n        \n        new_balances = self.balances.copy()\n        new_balances[from_party] -= amount\n        new_balances[to_party] += amount\n        \n        # Increment nonce for new state\n        self.nonce += 1\n        \n        return {\n            'nonce': self.nonce,\n            'balances': new_balances,\n            'signatures': {}\n        }\n    \n    def sign_state(self, state, party):\n        # Sign the state (simplified - just mark as signed)\n        state['signatures'][party] = True\n        if len(state['signatures']) == 2:\n            self.last_signed_state = state\n            self.balances = state['balances']\n        return state",
           res: [
-            "Lightning Network Paper (Poon, Dryja)",
-            "Lightning Network Documentation (lightning.network)",
-            "Taproot: BIP 340-342",
-            "Mastering the Lightning Network (Antonopoulos, Osuntokun, Pickhardt)"
+            "OpenZeppelin documentation (docs.openzeppelin.com) — the standard library, read the security notes",
+            "EIPs repository (eips.ethereum.org) — read ERC-20, ERC-721, and ERC-1155 original proposals",
+            "ERC-20 EIP-20 technical details — the original interface specification",
+            "OpenZeppelin Upgrades Plugins documentation — proxy upgrade patterns"
           ]
         }
       ]
     },
     {
-      name: "Ethereum & Smart Contracts",
-      level: "intermediate",
-      tagline: "Programmable blockchain",
-      desc: "Ethereum Virtual Machine (EVM), smart contracts, gas, and Solidity. Build decentralized applications that run exactly as programmed without downtime or interference.",
-      topics: [
-        {
-          name: "EVM & Gas Model",
-          tag: "core",
-          desc: "Ethereum Virtual Machine: stack-based (256-bit words), memory, storage, calldata. Opcodes (ADD, SSTORE, SLOAD, CALL, CREATE). Gas: gas limit, gas price, refunds. Transaction lifecycle: pending, mined, reverted. Block structure: difficulty, gas limit, beneficiary (miner), state root. EIP-1559: base fee, priority fee, fee burning.",
-          master: [
-            "Explain the difference between memory, storage, and calldata in EVM",
-            "Calculate gas cost for a simple transaction (transfer, contract call)",
-            "Understand EIP-1559 fee market: base fee, priority fee, maxFeePerGas",
-            "Explain what happens when a transaction runs out of gas",
-            "Trace an Ethereum transaction using a block explorer or tool",
-            "Understand the difference between CALL, DELEGATECALL, and STATICCALL",
-            "Explain how Ethereum state is stored as a Merkle Patricia Trie"
-          ],
-          code: "// EVM opcode examples (conceptual)\n// Storage vs Memory\n\n// Storage (persistent, expensive)\ncontract StorageExample {\n    uint256 public storedData;  // Stored in contract storage\n    \n    function set(uint256 x) public {\n        storedData = x;  // SSTORE (20,000 gas)\n    }\n}\n\n// Memory (temporary, cheaper)\ncontract MemoryExample {\n    function calculate() public pure returns (uint256) {\n        uint256[] memory arr = new uint256[](10);  // MLOAD/MSTORE\n        for (uint i = 0; i < 10; i++) {\n            arr[i] = i * 2;\n        }\n        return arr[5];\n    }\n}\n\n// EIP-1559 transaction structure (Python)\ntransaction = {\n    'type': 2,  # EIP-1559 transaction\n    'chainId': 1,  # Mainnet\n    'nonce': 0,\n    'maxPriorityFeePerGas': 2_000_000_000,  # 2 Gwei tip\n    'maxFeePerGas': 30_000_000_000,  # 30 Gwei max\n    'gasLimit': 21_000,  # Standard ETH transfer\n    'to': '0x742d35Cc6634C0532925a3b844Bc9e7595f3b363',\n    'value': 10**17,  # 0.1 ETH\n    'data': '',\n    'accessList': []\n}\n\n# Gas calculation\n# Base fee is burned, priority fee goes to miner\n# MaxFeePerGas = BaseFee + PriorityFee\n# Actual fee = min(MaxFeePerGas, BaseFee + PriorityFee)\n# Refund = MaxFeePerGas - Actual Fee (if MaxFeePerGas higher)",
-          res: [
-            "Ethereum Yellow Paper (Dr. Gavin Wood)",
-            "Mastering Ethereum (Andreas Antonopoulos, Gavin Wood)",
-            "EVM Deep Dives (Noah Zinsmeister, teddav)",
-            "EIP-1559: Fee Market Change (Buterin, et al.)"
-          ]
-        },
-        {
-          name: "Solidity & Smart Contract Development",
-          tag: "core",
-          desc: "Solidity syntax: data types (uint, address, bool, bytes, string), visibility (public, private, internal, external), modifiers, events, error handling (require, revert, assert). Inheritance, libraries, interfaces. ERC standards: ERC-20 (fungible tokens), ERC-721 (NFTs), ERC-1155 (multi-token). Factory pattern, proxy patterns (UUPS, transparent proxy).",
-          master: [
-            "Write an ERC-20 token contract with mint, burn, and transfer functions",
-            "Implement an ERC-721 NFT contract with metadata URI",
-            "Write a contract that uses OpenZeppelin libraries (SafeMath, Ownable)",
-            "Understand reentrancy attacks and implement reentrancy guard",
-            "Explain the difference between delegatecall and call (proxy patterns)",
-            "Implement a timelock contract for governance",
-            "Write a simple DEX (decentralized exchange) with a constant product AMM"
-          ],
-          code: "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n// Simple ERC-20 token implementation\ncontract SimpleERC20 {\n    string public name;\n    string public symbol;\n    uint8 public decimals;\n    uint256 public totalSupply;\n    \n    mapping(address => uint256) public balanceOf;\n    mapping(address => mapping(address => uint256)) public allowance;\n    \n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n    \n    constructor(string memory _name, string memory _symbol, uint8 _decimals, uint256 _totalSupply) {\n        name = _name;\n        symbol = _symbol;\n        decimals = _decimals;\n        totalSupply = _totalSupply;\n        balanceOf[msg.sender] = _totalSupply;\n        emit Transfer(address(0), msg.sender, _totalSupply);\n    }\n    \n    function transfer(address to, uint256 value) external returns (bool) {\n        require(to != address(0), \"Invalid address\");\n        require(balanceOf[msg.sender] >= value, \"Insufficient balance\");\n        \n        balanceOf[msg.sender] -= value;\n        balanceOf[to] += value;\n        emit Transfer(msg.sender, to, value);\n        return true;\n    }\n    \n    function approve(address spender, uint256 value) external returns (bool) {\n        allowance[msg.sender][spender] = value;\n        emit Approval(msg.sender, spender, value);\n        return true;\n    }\n    \n    function transferFrom(address from, address to, uint256 value) external returns (bool) {\n        require(from != address(0), \"Invalid from address\");\n        require(to != address(0), \"Invalid to address\");\n        require(balanceOf[from] >= value, \"Insufficient balance\");\n        require(allowance[from][msg.sender] >= value, \"Insufficient allowance\");\n        \n        balanceOf[from] -= value;\n        balanceOf[to] += value;\n        allowance[from][msg.sender] -= value;\n        emit Transfer(from, to, value);\n        return true;\n    }\n}\n\n// Reentrancy guard example\ncontract ReentrancyGuard {\n    bool private _locked;\n    \n    modifier nonReentrant() {\n        require(!_locked, \"Reentrant call\");\n        _locked = true;\n        _;\n        _locked = false;\n    }\n}\n\n// Simple DEX (Constant Product AMM)\ncontract SimpleDEX is ReentrancyGuard {\n    IERC20 public tokenA;\n    IERC20 public tokenB;\n    uint256 public reserveA;\n    uint256 public reserveB;\n    \n    constructor(address _tokenA, address _tokenB) {\n        tokenA = IERC20(_tokenA);\n        tokenB = IERC20(_tokenB);\n    }\n    \n    function addLiquidity(uint256 amountA, uint256 amountB) external nonReentrant {\n        tokenA.transferFrom(msg.sender, address(this), amountA);\n        tokenB.transferFrom(msg.sender, address(this), amountB);\n        reserveA += amountA;\n        reserveB += amountB;\n    }\n    \n    function swapAForB(uint256 amountIn) external nonReentrant {\n        require(amountIn > 0, \"Amount must be > 0\");\n        uint256 amountOut = (amountIn * reserveB) / (reserveA + amountIn);\n        require(amountOut > 0, \"Output too low\");\n        \n        tokenA.transferFrom(msg.sender, address(this), amountIn);\n        tokenB.transfer(msg.sender, amountOut);\n        \n        reserveA += amountIn;\n        reserveB -= amountOut;\n    }\n}",
-          res: [
-            "Solidity Documentation (docs.soliditylang.org)",
-            "OpenZeppelin Contracts (openzeppelin.com/contracts)",
-            "Ethereum Smart Contract Best Practices (Consensys)",
-            "CryptoZombies â€” Learn Solidity by building games"
-          ]
-        },
-        {
-          name: "DeFi & Web3 Development",
-          tag: "advanced",
-          desc: "Building decentralized applications. Web3.js, Ethers.js for frontend integration. Hardhat, Foundry for development and testing. DeFi primitives: lending/borrowing (Aave, Compound), decentralized exchanges (Uniswap), stablecoins (DAI, USDC), yield farming, flash loans. Oracles (Chainlink). MEV (Miner Extractable Value).",
-          master: [
-            "Set up a Hardhat project with Solidity compilation and testing",
-            "Write tests for smart contracts using Hardhat or Foundry",
-            "Integrate a frontend with Ethers.js to interact with a smart contract",
-            "Explain how Uniswap's constant product AMM works (x*y=k)",
-            "Understand flash loans and how they enable arbitrage",
-            "Explain the oracle problem and how Chainlink solves it",
-            "Build a simple dApp that allows users to stake tokens for rewards"
-          ],
-          code: "// Hardhat test example\nconst { expect } = require(\"chai\");\n\ndescribe(\"SimpleERC20\", function () {\n    let SimpleERC20;\n    let token;\n    let owner;\n    let addr1;\n    let addr2;\n\n    beforeEach(async function () {\n        [owner, addr1, addr2] = await ethers.getSigners();\n        SimpleERC20 = await ethers.getContractFactory(\"SimpleERC20\");\n        token = await SimpleERC20.deploy(\"Test Token\", \"TEST\", 18, 1000000);\n        await token.deployed();\n    });\n\n    describe(\"Deployment\", function () {\n        it(\"Should set the right owner balance\", async function () {\n            expect(await token.balanceOf(owner.address)).to.equal(1000000);\n        });\n\n        it(\"Should set the right name and symbol\", async function () {\n            expect(await token.name()).to.equal(\"Test Token\");\n            expect(await token.symbol()).to.equal(\"TEST\");\n        });\n    });\n\n    describe(\"Transactions\", function () {\n        it(\"Should transfer tokens between accounts\", async function () {\n            await token.transfer(addr1.address, 100);\n            expect(await token.balanceOf(addr1.address)).to.equal(100);\n\n            await token.connect(addr1).transfer(addr2.address, 50);\n            expect(await token.balanceOf(addr2.address)).to.equal(50);\n        });\n\n        it(\"Should fail if sender doesn't have enough balance\", async function () {\n            await expect(token.connect(addr1).transfer(addr2.address, 1))\n                .to.be.revertedWith(\"Insufficient balance\");\n        });\n    });\n});\n\n// Web3.js frontend integration\nconst Web3 = require('web3');\nconst web3 = new Web3(window.ethereum);\n\n// Connect wallet\nasync function connectWallet() {\n    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });\n    const account = accounts[0];\n    console.log(\"Connected:\", account);\n    return account;\n}\n\n// Interact with contract\nconst contractABI = [...] // ABI from compilation\nconst contractAddress = \"0x...\"\nconst contract = new web3.eth.Contract(contractABI, contractAddress);\n\nasync function transferTokens(to, amount) {\n    const accounts = await web3.eth.getAccounts();\n    const amountWei = web3.utils.toWei(amount.toString(), 'ether');\n    \n    const tx = await contract.methods.transfer(to, amountWei).send({\n        from: accounts[0],\n        gas: 100000\n    });\n    console.log(\"Transaction hash:\", tx.transactionHash);\n    return tx;\n}\n\n// Listen to events\ncontract.events.Transfer({ fromBlock: 'latest' }, (error, event) => {\n    console.log(\"Transfer:\", event.returnValues);\n});",
-          res: [
-            "Uniswap Whitepaper (Hayden Adams)",
-            "Aave Protocol Documentation",
-            "Chainlink Documentation (docs.chain.link)",
-            "Flash Boys 2.0 (MEV research paper)"
-          ]
-        }
-      ]
-    },
-    {
-      name: "Advanced Blockchain Topics",
+      name: "DeFi Protocols",
       level: "advanced",
-      tagline: "Beyond mainstream protocols",
-      desc: "Zero-knowledge proofs, rollups, alternative L1s, and the future of blockchain scalability and privacy.",
+      tagline: "Financial primitives with no intermediaries and no off switch",
+      desc: "DeFi (Decentralized Finance) replaces financial intermediaries with smart contracts. Decentralized exchanges, lending protocols, stablecoins, and yield aggregators collectively manage hundreds of billions of dollars. Understanding how they work is inseparable from understanding how they fail — the most significant protocol exploits in blockchain history came from attackers who understood the mechanics more carefully than the developers who built them.",
       topics: [
         {
-          name: "Zero-Knowledge Proofs (ZK)",
+          name: "AMMs, DEXes, and Liquidity",
           tag: "advanced",
-          desc: "ZK-SNARKs (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge): proving knowledge without revealing information. zk-SNARKs components: polynomial commitments, pairing-based cryptography, trusted setup. ZK-STARKs (scalable, transparent, no trusted setup). zk-rollups: zkSync, StarkNet, Polygon zkEVM. ZK for privacy (Zcash) and scaling.",
+          desc: "Automated Market Makers replaced the order book model with a pricing formula. Uniswap V2 uses the constant product formula: x × y = k, where x and y are the reserves of two tokens. Price is derived from the ratio of reserves — buying one token decreases its supply, increasing its price. Liquidity providers deposit both tokens and receive LP tokens representing their share. Impermanent loss: if the price ratio of the two tokens changes after deposit, the LP would have been better off just holding the tokens — the loss is 'impermanent' because it disappears if prices return to the original ratio. Uniswap V3 introduced concentrated liquidity: LPs specify a price range for their liquidity rather than providing it uniformly across all prices. This allows much higher capital efficiency but requires active management. Slippage: the difference between expected price and execution price, caused by the impact of the trade on the reserves. MEV (Maximal Extractable Value): miners and validators can reorder transactions within a block. Sandwich attacks extract MEV by front-running a large trade, executing it, and back-running to sell the purchased tokens at a profit.",
           master: [
-            "Explain the difference between SNARKs and STARKs",
-            "Understand the concept of 'trusted setup' and its implications",
-            "Build a simple zk-SNARK using Circom and SnarkJS",
-            "Explain how zk-rollups achieve scalability (off-chain computation, on-chain verification)",
-            "Understand the difference between validity proofs and fraud proofs (optimistic rollups)",
-            "Explain how Zcash uses zk-SNARKs for shielded transactions",
-            "Implement a simple ZK circuit for proving age > 18 without revealing birthdate"
+            "Explain the constant product formula: how x × y = k determines price and what happens to price as a trade is executed",
+            "Calculate impermanent loss for a specific price ratio change and explain why LPs still provide liquidity despite IL",
+            "Explain Uniswap V3 concentrated liquidity: what it enables and what the management requirement is",
+            "Describe a sandwich attack: the three transactions involved and how MEV bots automate it",
+            "Explain price oracle manipulation: how a flash loan can briefly manipulate an AMM price and why this is an attack vector",
+            "Describe slippage tolerance: why it exists and the trade-off between setting it too low and too high"
           ],
-          code: "// Circom circuit example (simple zk-SNARK)\n// circuit.circom - Proving you know a number that is less than 100\npragma circom 2.0.0;\n\ntemplate LessThan100() {\n    signal input in;\n    signal output out;\n    \n    component lt = LessThan(8);  // 8 bits\n    lt.in[0] <== in;\n    lt.in[1] <== 100;\n    out <== lt.out;\n}\n\ncomponent main = LessThan100();\n\n// JavaScript to generate proof using SnarkJS\n/*\nconst snarkjs = require('snarkjs');\nconst fs = require('fs');\n\nasync function run() {\n    // Compile circuit\n    await snarkjs.pl(\"compile\", \"circuit.circom\");\n    \n    // Generate witness\n    const input = { \"in\": 42 };\n    await snarkjs.pl(\"witness\", \"circuit.json\", input, \"witness.wtns\");\n    \n    // Generate proof\n    const { proof, publicSignals } = await snarkjs.pl(\"prove\", \"circuit_final.zkey\", \"witness.wtns\");\n    \n    // Verify proof\n    const isValid = await snarkjs.pl(\"verify\", \"verification_key.json\", publicSignals, proof);\n    console.log(\"Proof valid:\", isValid);\n}\n*/\n\n// zk-rollup transaction (conceptual)\nclass ZKRollupTransaction {\n    constructor(from, to, amount, nonce) {\n        this.from = from;\n        this.to = to;\n        this.amount = amount;\n        this.nonce = nonce;\n    }\n    \n    generateProof(secretKey) {\n        // Generate ZK proof that:\n        // 1. Sender has sufficient balance\n        // 2. Transaction is signed by sender\n        // 3. Amount is positive\n        // 4. Nonce is correct\n        // This is done off-chain using ZK circuit\n        return proof;\n    }\n}\n\n// On-chain verification\n// Contract verifies the proof and updates state root\n// This consumes ~500k gas vs millions for individual transactions",
           res: [
-            "Zcash Protocol Specification (zk-SNARKs)",
-            "StarkWare: STARKs vs SNARKs",
-            "Vitalik Buterin's ZK-SNARKs blog series",
-            "Circom & SnarkJS documentation"
+            "Uniswap V2 whitepaper (uniswap.org) — read the original",
+            "Uniswap V3 whitepaper — concentrated liquidity mechanics",
+            "Ethereum Beige Paper — EVM and protocol mechanics",
+            "Finematics (finematics.com) — video explanations of DeFi mechanics, consistently accurate"
           ]
         },
         {
-          name: "Optimistic Rollups & Fraud Proofs",
+          name: "Lending Protocols and Stablecoins",
           tag: "advanced",
-          desc: "Scaling Ethereum by moving computation off-chain while keeping data on-chain. Optimism, Arbitrum, Base. Fraud proofs: validity challenges, one-round vs multi-round. EVM equivalence vs compatibility. Sequencers, forced inclusion, withdrawal delays. Celestia and data availability sampling.",
+          desc: "Lending protocols (Aave, Compound) allow over-collateralized borrowing: deposit one asset as collateral, borrow a smaller value of another. The health factor tracks the ratio of collateral to debt — when it falls below 1, the position is liquidatable. Liquidators pay back part of the debt and receive the collateral at a discount. Interest rates are algorithmic: utilization rate (borrowed / available) drives rates up when the pool is heavily used, incentivizing deposits and discouraging borrowing until equilibrium. Flash loans: borrow any amount from a lending protocol, execute arbitrary logic, repay in the same transaction — if repayment fails, the entire transaction reverts. Flash loans have zero credit risk for the protocol but have been used as attack vectors to amplify capital in exploits. Stablecoins: fiat-backed (USDC, USDT — redeemable for dollars held in bank accounts, centralized), over-collateralized (DAI — backed by crypto collateral at 150%+, maintained by the MakerDAO governance), and algorithmic (Terra LUNA — maintained by seigniorage mechanics, collapsed in 2022 demonstrating the fragility of reflexive designs).",
           master: [
-            "Explain how optimistic rollups assume transactions are valid by default",
-            "Understand the fraud proof mechanism: challenge period, dispute resolution",
-            "Compare optimistic rollups vs zk-rollups (security, speed, cost)",
-            "Explain the role of sequencers and centralization concerns",
-            "Understand forced inclusion: how users can bypass sequencers",
-            "Explain data availability problem and how rollups solve it",
-            "Deploy a contract on Arbitrum or Optimism testnet"
+            "Explain over-collateralization in lending: why it is required, what the health factor is, and how liquidation works",
+            "Describe how algorithmic interest rates work in Aave/Compound: utilization curve, supply/borrow rate relationship",
+            "Explain flash loans: what they enable, how they work atomically, and why they are legitimate as well as dangerous",
+            "Describe the DAI stablecoin mechanism: how collateral is managed, how the peg is maintained, and what happens in undercollateralization",
+            "Explain the Terra LUNA collapse mechanically: the death spiral that made the algorithmic peg unstable",
+            "Describe a price oracle attack on a lending protocol: how an AMM-based oracle can be manipulated and what the consequences are"
           ],
-          code: "// Optimistic rollup fraud proof (simplified)\ncontract OptimisticRollup {\n    mapping(uint256 => bytes32) public stateRoots;\n    uint256 public challengePeriod = 7 days;\n    \n    struct Transaction {\n        address from;\n        address to;\n        uint256 amount;\n        bytes signature;\n    }\n    \n    // Submit a batch of transactions\n    function submitBatch(Transaction[] calldata txs, bytes32 newStateRoot) external {\n        uint256 batchNumber = block.number;\n        stateRoots[batchNumber] = newStateRoot;\n        // Store batch for potential challenge\n        emit BatchSubmitted(batchNumber, newStateRoot);\n    }\n    \n    // Challenge a batch (fraud proof)\n    function challengeBatch(uint256 batchNumber, Transaction[] calldata txs, \n                           bytes32 expectedStateRoot) external {\n        require(block.number - batchNumber < challengePeriod, \"Challenge period expired\");\n        \n        // Execute transactions off-chain to verify state root\n        bytes32 computedRoot = executeTransactions(txs);\n        require(computedRoot != expectedStateRoot, \"No fraud detected\");\n        \n        // Fraud confirmed - revert batch\n        delete stateRoots[batchNumber];\n        emit BatchReverted(batchNumber);\n    }\n    \n    function executeTransactions(Transaction[] calldata txs) \n        internal returns (bytes32) {\n        // Simulate state changes\n        // Return final state root\n        return bytes32(0);\n    }\n}\n\n// Deploy to Arbitrum (using Hardhat)\n// npx hardhat run scripts/deploy.js --network arbitrumGoerli\n\n// Cross-chain messaging\ncontract L1ToL2Messenger {\n    function sendMessage(address l2Contract, bytes calldata message) external {\n        // Send message through rollup bridge\n        emit MessageSent(l2Contract, message);\n    }\n}",
           res: [
-            "Optimism Documentation (optimism.io)",
-            "Arbitrum Whitepaper (Offchain Labs)",
-            "Fraud Proofs in Optimistic Rollups (Ethereum Research)",
-            "Celestia: A Modular Consensus Layer"
+            "Aave Protocol Whitepaper (aave.com) — how lending pools work",
+            "MakerDAO documentation (makerdao.com) — DAI and the collateralized debt position system",
+            "Rekt.news — every major DeFi exploit explained technically",
+            "DeFi Mooc (Berkeley, free online) — academic treatment of DeFi mechanics"
+          ]
+        }
+      ]
+    },
+    {
+      name: "Smart Contract Security",
+      level: "advanced",
+      tagline: "Code that cannot be changed must be correct before deployment",
+      desc: "Smart contracts are immutable once deployed. There is no patch, no hotfix, no rollback — only a migration to a new contract, which requires user trust and is often not possible for DeFi protocols where users' funds are locked. This constraint demands a different level of rigor than normal software development. The history of DeFi exploits is a catalog of assumptions that seemed safe but were not.",
+      topics: [
+        {
+          name: "Common Vulnerabilities and Attack Patterns",
+          tag: "advanced",
+          desc: "Reentrancy: a function sends ETH to an external address before updating its state. The receiving address is a contract whose fallback function calls back into the original contract before the state update completes. The DAO hack (2016, $60M) was a reentrancy attack. The fix: use the checks-effects-interactions pattern (update state first, then interact with external contracts) and/or a reentrancy guard mutex. Integer overflow/underflow: before Solidity 0.8.0, arithmetic did not revert on overflow — adding 1 to the maximum uint256 would wrap around to 0. Use SafeMath (pre-0.8) or rely on Solidity 0.8.0+ built-in overflow checking. Access control: missing onlyOwner or role checks on privileged functions. Front-running: an attacker sees your pending transaction in the mempool and submits one with a higher gas price to execute first. This affects DEX trades (sandwich attacks) and commit-reveal schemes. Signature replay: a signature valid for one contract or chain ID is reused on another. EIP-712 and nonces prevent this. Delegate call to untrusted code: delegatecall runs code in the calling contract's storage context — if the called code is malicious or manipulated, it can overwrite arbitrary storage.",
+          master: [
+            "Explain reentrancy at the EVM level: what happens during the ETH transfer call and why state update order matters",
+            "Implement a reentrancy guard and explain why it is a sufficient fix even without the checks-effects-interactions pattern",
+            "Describe integer overflow: how it worked in Solidity <0.8.0 and what changed in 0.8.0",
+            "Explain signature replay attacks: what EIP-712 standardizes and how a nonce prevents replay",
+            "Describe the delegatecall vulnerability: how storage layout mismatches between proxy and implementation cause corruption",
+            "Explain front-running: how MEV searchers monitor the mempool and what commit-reveal does to prevent it"
+          ],
+          res: [
+            "SWC Registry (swcregistry.io) — Smart Contract Weakness Classification, every known vulnerability type",
+            "Ethernaut (ethernaut.openzeppelin.com) — 20 progressively harder Solidity security challenges",
+            "Damn Vulnerable DeFi (damnvulnerabledefi.xyz) — DeFi-specific security challenges",
+            "Rekt.news — real exploit post-mortems, most technically detailed available"
           ]
         },
         {
-          name: "Alternative L1 & Interoperability",
-          tag: "advanced",
-          desc: "Solana (PoH, Tower BFT, Sealevel runtime). Avalanche (subnets, Snow consensus). Cosmos (IBC, Tendermint, SDK). Polkadot (relay chain, parachains, XCM). Bridges (Wormhole, IBC, LayerZero). Cross-chain interoperability challenges (trust assumptions, double signing).",
+          name: "Auditing and Formal Verification",
+          tag: "expert",
+          desc: "A smart contract audit is a systematic review of contract code for security vulnerabilities before deployment. The audit process: automated analysis (Slither, MythX), manual code review by security researchers, fuzz testing to find unexpected inputs, and economic analysis of incentive design. Slither is the primary static analyzer — it detects common vulnerability patterns, incorrect access control, and dangerous code patterns with low false positive rates. Echidna is a property-based fuzzer: you define invariants (properties that must always be true) and Echidna tries to find inputs that violate them. Formal verification is the highest level of assurance: mathematically prove that the contract satisfies its specification under all possible inputs. Certora Prover and K framework are the primary formal verification tools in Ethereum. An audit does not guarantee security — it reduces the probability of known vulnerability classes. Novel attack vectors and economic design flaws are often missed. Bug bounty programs provide ongoing economic incentives for researchers to find and report vulnerabilities.",
           master: [
-            "Explain Solana's Proof of History (PoH) and how it enables high throughput",
-            "Understand Avalanche's Snow consensus family (Slush, Snowflake, Snowball, Avalanche)",
-            "Explain IBC (Inter-Blockchain Communication) protocol between Cosmos chains",
-            "Understand the difference between Polkadot's relay chain and parachains",
-            "Analyze bridge security: validator sets, multi-sig, light client verification",
-            "Explain the trade-offs between monolithic vs modular blockchains",
-            "Build a cross-chain DEX using IBC or LayerZero"
+            "Run Slither on a contract and interpret the findings — distinguish true positives from false positives",
+            "Write an Echidna property test that verifies an invariant in a simple token contract",
+            "Describe the audit process from initial code review to final report — what an auditor looks at in each phase",
+            "Explain what formal verification proves and what it does not prove",
+            "Describe the role of a bug bounty program and explain why it complements rather than replaces an audit",
+            "Read a post-mortem of a real DeFi exploit and identify at what stage in the audit process it should have been caught"
           ],
-          code: "// Solana Program (Rust - simplified)\nuse solana_program::{\n    account_info::AccountInfo,\n    entrypoint,\n    entrypoint::ProgramResult,\n    pubkey::Pubkey,\n    msg,\n};\n\nentrypoint!(process_instruction);\n\nfn process_instruction(\n    program_id: &Pubkey,\n    accounts: &[AccountInfo],\n    instruction_data: &[u8],\n) -> ProgramResult {\n    msg!(\"Hello from Solana program!\");\n    Ok(())\n}\n\n// Cosmos SDK module (Go - simplified)\ntype Keeper struct {\n    storeKey sdk.StoreKey\n}\n\nfunc (k Keeper) Transfer(ctx sdk.Context, from sdk.AccAddress, to sdk.AccAddress, amount sdk.Coin) error {\n    // Transfer tokens between accounts\n    err := k.bankKeeper.SendCoins(ctx, from, to, sdk.NewCoins(amount))\n    if err != nil {\n        return err\n    }\n    \n    ctx.EventManager().EmitEvent(\n        sdk.NewEvent(\n            \"transfer\",\n            sdk.NewAttribute(\"from\", from.String()),\n            sdk.NewAttribute(\"to\", to.String()),\n            sdk.NewAttribute(\"amount\", amount.String()),\n        ),\n    )\n    return nil\n}\n\n// IBC packet structure\nmessage FungibleTokenPacketData {\n    string denom = 1;\n    string amount = 2;\n    string sender = 3;\n    string receiver = 4;\n}\n\n// IBC transfer (CLI)\n// ibc-transfer transfer transfer channel-0 \\\n//   cosmos1... 1000uatom \\\n//   --from wallet --chain-id cosmos-hub --packet-timeout-height 0-1000",
           res: [
-            "Solana Whitepaper (Anatoly Yakovenko)",
-            "Avalanche Consensus Protocol (Team Rocket)",
-            "Cosmos Whitepaper (Jae Kwon)",
-            "Polkadot Whitepaper (Gavin Wood)"
+            "Trail of Bits audit reports (github.com/trailofbits/publications) — real audit findings",
+            "Slither documentation (github.com/crytic/slither) — the standard static analysis tool",
+            "Echidna documentation (github.com/crytic/echidna) — property-based fuzzing",
+            "Security considerations in the Solidity documentation — the canonical checklist"
+          ]
+        }
+      ]
+    },
+    {
+      name: "Layer 2 and Scaling",
+      level: "expert",
+      tagline: "Ethereum base layer is expensive by design — scaling happens above it",
+      desc: "Ethereum's base layer deliberately constrains throughput to preserve decentralization — every full node validates every transaction, limiting throughput to roughly 15–30 transactions per second. Layer 2 solutions execute transactions off-chain and post proofs or data to L1, inheriting its security while achieving orders of magnitude more throughput. Understanding the security assumptions of each approach is the difference between knowing what they claim and knowing whether to trust those claims.",
+      topics: [
+        {
+          name: "Rollups: Optimistic and ZK",
+          tag: "expert",
+          desc: "Rollups execute transactions off-chain and post transaction data to Ethereum L1, inheriting its data availability guarantees. Optimistic rollups assume transactions are valid and rely on fraud proofs: if someone posts an invalid state transition, anyone can submit a fraud proof during the challenge window (7 days in Arbitrum and Optimism) to revert it. The 7-day withdrawal delay exists precisely because of this challenge window. ZK rollups generate a zero-knowledge validity proof for every batch of transactions — the proof mathematically guarantees that the state transition is correct without revealing the transaction details. Withdrawal from ZK rollups can be near-instant once the proof is verified on L1. Zero-knowledge proofs (ZK-SNARKs, ZK-STARKs) allow proving knowledge of a value satisfying some constraint without revealing the value. ZK-SNARKs require a trusted setup ceremony. ZK-STARKs do not require a trusted setup but produce larger proofs. The proof generation is computationally expensive — currently taking seconds to minutes per batch, which limits throughput.",
+          master: [
+            "Explain optimistic rollup security: what the fraud proof is, why the challenge window must be long, and the 7-day withdrawal implication",
+            "Explain ZK rollup security: what validity proofs guarantee and why they enable instant finality",
+            "Describe the trusted setup ceremony in ZK-SNARKs: what it produces, why it is necessary, and what happens if it is compromised",
+            "Explain the difference between ZK-SNARKs and ZK-STARKs: proof size, verification cost, and trusted setup requirement",
+            "Describe the data availability problem: what happens if rollup operators withhold transaction data",
+            "Compare Optimism, Arbitrum, zkSync, and StarkNet on: EVM compatibility, proof type, and current throughput"
+          ],
+          res: [
+            "An Incomplete Guide to Rollups (Vitalik Buterin blog) — the most concise technical explanation",
+            "L2Beat (l2beat.com) — real-time TVL and security analysis of every L2",
+            "ZK-SNARK explanation (ZKProof.org) — the academic foundation",
+            "Ethereum scaling documentation (ethereum.org/scaling) — the official overview"
           ]
         }
       ]
     }
   ]
-};
+}

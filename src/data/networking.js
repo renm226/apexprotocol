@@ -1,553 +1,342 @@
-﻿export const networkingData = {
-  name: "NETWORKING & INFRASTRUCTURE",
+export const networkingData = {
+  name: "COMPUTER NETWORKING",
   area: "net",
-  eyebrow: "Internet Protocols Â· Network Security Â· Infrastructure Engineering Â· BGP Â· SDN",
-  sub: "From the physics of electrical signals to the BGP routes that stitch the global internet together. This is a complete, rigorous path through every layer of the network stack â€” not just enough to pass a certification, but enough to design, troubleshoot, and secure real infrastructure. Every engineer who touches production systems needs this.",
+  eyebrow: "TCP/IP · Routing · Switching · Security Protocols · BGP · Cloud Networking",
+  sub: "Networking is the kind of subject where you can spend years configuring equipment without understanding what you are configuring or why it behaves the way it does. This roadmap is built around first principles: what problems each protocol solves, why it was designed the way it was, and what happens when it breaks. A network engineer who understands TCP at the byte level is worth more than one who has memorized 50 show commands.",
   phases: [
     {
-      name: "How Networks Actually Work",
+      name: "Foundations: OSI Model and TCP/IP",
       level: "foundation",
-      tagline: "From electrical signals to the packet",
-      desc: "Before you configure a router or debug a packet, you need to understand what a network actually is at the physical level. This phase starts from first principles: how electrical signals encode data, how multiple devices share a medium, and how the OSI model provides a framework for every network interaction you will ever analyze. Do not rush this â€” the mental model you build here shapes everything that follows.",
+      tagline: "Every protocol conversation you will ever have starts here",
+      desc: "The OSI model is a conceptual framework, not a description of how networking actually works. TCP/IP is a description of how networking actually works. You need both: the OSI model gives you a vocabulary and a mental model for isolating problems, and TCP/IP tells you what the real protocols are doing. The critical skill at this level is being able to trace a packet's journey from application data through every encapsulation layer to bits on a wire — and explain what each layer is doing and why.",
       topics: [
         {
-          name: "Physical Layer and Signal Transmission",
+          name: "OSI Model and Protocol Encapsulation",
           tag: "core",
-          desc: "Data is ultimately electrical, optical, or electromagnetic signal. The physical layer encodes binary data into physical signals: NRZ, Manchester encoding, 4B/5B. Bandwidth (Hz) vs data rate (bps): Shannon's capacity theorem establishes the theoretical maximum data rate for a channel with a given bandwidth and signal-to-noise ratio: C = B Ã— logâ‚‚(1 + S/N). Attenuation, interference, and noise degrade signals over distance. Copper cables (Cat5e, Cat6, Cat6A): twisting reduces crosstalk via electromagnetic cancellation. Fiber optic: single-mode (long distance, single light path) vs multi-mode (shorter, cheaper). Wireless: ISM bands, channel width, MIMO, OFDM. Connectors, patch panels, structured cabling standards.",
+          desc: "The OSI model divides networking into seven layers: Physical (bits on a medium), Data Link (frames between directly connected nodes), Network (packets routed between networks), Transport (end-to-end reliability), Session, Presentation, Application. TCP/IP collapses this to four: Network Access (OSI 1+2), Internet (OSI 3), Transport (OSI 4), Application (OSI 5–7). The practical skill is encapsulation: application data is wrapped in a TCP segment header, wrapped in an IP packet header, wrapped in an Ethernet frame header and trailer, serialized to bits. Each layer adds its own header and treats the layer above's packet as opaque payload. Understanding encapsulation is why you can read a Wireshark capture — you are peeling layers off in the correct order.",
           master: [
-            "Explain Shannon's capacity theorem and calculate the theoretical max throughput of a channel",
-            "Explain why twisted-pair cables cancel electromagnetic interference",
-            "Understand the difference between single-mode and multi-mode fiber and when to use each",
-            "Explain how wireless OFDM works and why it handles multipath interference",
-            "Identify the physical layer symptoms: collisions, CRC errors, high error rates",
-            "Understand the difference between baseband and broadband transmission",
-            "Explain why fiber is immune to electromagnetic interference"
+            "Trace an HTTP request from browser to server at every OSI layer: what headers are added or modified at each step",
+            "Describe the PDU name at each layer: bit, frame, packet, segment, data",
+            "Draw the complete encapsulation structure for a TCP HTTP GET: Ethernet/IP/TCP/HTTP headers",
+            "Explain the difference between L2 MAC addressing and L3 IP addressing and when each is used",
+            "Describe what a broadcast domain and a collision domain are and how switches and routers affect each",
+            "Use Wireshark to capture a DNS query and HTTP request and identify the full protocol stack in each frame"
           ],
           res: [
-            "Computer Networks (Tanenbaum & Wetherall â€” chapters on physical layer)",
-            "CompTIA Network+ Study Guide (physical layer foundations)",
-            "Fundamentals of Wireless Communication (Tse & Viswanath â€” free PDF)",
-            "ANSI/TIA-568 Structured Cabling Standard overview"
+            "Computer Networking: A Top-Down Approach (Kurose and Ross) — the most accessible rigorous text",
+            "Computer Networks (Tanenbaum and Wetherall) — denser, more technically precise",
+            "Wireshark (wireshark.org) — install it before anything else, use it constantly",
+            "GNS3 or Packet Tracer — for building lab topologies without physical hardware"
           ]
         },
         {
-          name: "Data Link Layer and Ethernet",
+          name: "IP Addressing and Subnetting",
           tag: "core",
-          desc: "The data link layer handles communication between directly connected nodes on the same network segment. Ethernet is the dominant technology: frames have a preamble, destination MAC (6 bytes), source MAC (6 bytes), EtherType (identifies Layer 3 protocol), payload, and FCS (CRC-32 error check). MAC addresses are burned into NICs but are administratively changeable. CSMA/CD (legacy): devices listen before transmitting, detect collisions, and back off exponentially. Modern switches are full-duplex â€” collisions don't happen. Switches learn MAC addresses by observing source MACs and build a MAC address table (CAM table). VLANs (802.1Q): logical network segmentation with 12-bit VLAN ID tags inserted into Ethernet frames. Spanning Tree Protocol (STP, 802.1D) and RSTP (802.1w) prevent broadcast loops.",
+          desc: "An IP address is a 32-bit number. The subnet mask defines which bits are the network portion and which are the host portion. CIDR notation: 192.168.1.0/24 means the first 24 bits are the network, leaving 8 bits (256 addresses, 254 usable) for hosts. Subnetting is arithmetic: given 192.168.10.0/24, create 4 equal subnets — borrow 2 bits, giving /26, each subnet with 64 addresses. The network increment is 256 minus the decimal value of the subnet mask octet: for /26 the mask octet is 192, increment is 64. Private ranges (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 — not routable on the public internet, used behind NAT. VLSM allows different subnet sizes within the same network. IPv6 uses 128-bit addresses in eight 16-bit hex groups — compressed notation omits leading zeros and replaces consecutive zero groups with ::",
           master: [
-            "Explain how a switch populates its MAC address table â€” entry by entry",
-            "Understand why we need STP and what a broadcast storm looks like",
-            "Configure VLANs on a managed switch: access ports vs trunk ports",
-            "Explain the difference between a hub, switch, and router at a fundamental level",
-            "Understand 802.1Q VLAN tagging: where the tag is inserted in the Ethernet frame",
-            "Explain how Rapid STP (RSTP) achieves sub-second convergence vs original STP",
-            "Understand CAM table overflow attacks and port security as a mitigation"
+            "Subnet 192.168.0.0/16 into subnets supporting at least 500 hosts each — calculate network, broadcast, and usable ranges for the first four",
+            "Given an IP address and mask, determine whether two addresses are in the same subnet without a calculator",
+            "Explain CIDR and supernetting: how route aggregation reduces the size of routing tables",
+            "Describe the three private IPv4 ranges and explain why NAT makes them work on the internet",
+            "Explain IPv6 full and compressed notation and describe the EUI-64 interface identifier generation",
+            "Configure IPv4 and IPv6 addresses on interfaces in a lab and verify connectivity with ping and traceroute"
           ],
           res: [
-            "TCP/IP Illustrated Vol. 1 (Stevens â€” Ethernet and ARP chapters)",
-            "Computer Networks (Tanenbaum â€” data link layer)",
-            "Cisco Catalyst Switching documentation",
-            "802.1Q and 802.1D IEEE standards overview"
+            "Subnetting practice sites (subnettingpractice.com) — drill until it is instant",
+            "Professor Messer CompTIA Network+ course (free on YouTube) — concise, accurate fundamentals",
+            "RFC 1918 — read the original, it is short",
+            "IPv6 Fundamentals (Rick Graziani) — systematic IPv6 treatment"
           ]
         },
         {
-          name: "The OSI and TCP/IP Models",
+          name: "TCP and UDP in Depth",
           tag: "core",
-          desc: "The OSI 7-layer model is a conceptual framework: Physical, Data Link, Network, Transport, Session, Presentation, Application. The TCP/IP model is what actually runs the internet: Link, Internet, Transport, Application. Each layer provides services to the layer above and uses services from the layer below via encapsulation. When you send data, each layer adds its header (and sometimes trailer): application data â†’ TCP segment â†’ IP packet â†’ Ethernet frame â†’ bits. De-encapsulation happens in reverse at the receiver. Understanding which layer is responsible for what is critical for troubleshooting: if pings work but HTTP doesn't, the problem is above Layer 3. Protocol data units at each layer have names: frame (Layer 2), packet (Layer 3), segment (Layer 4), data/message (Layer 7).",
+          desc: "TCP provides reliable, ordered, connection-oriented delivery. The three-way handshake: SYN (client sends ISN), SYN-ACK (server acknowledges and sends its ISN), ACK (client acknowledges). ISNs are randomized to prevent injection attacks. Flow control: the receiver advertises a window size — how many bytes it can buffer — the sender must stay within it. Zero-window means the receiver buffer is full; the sender stops until the window opens. Congestion control: TCP infers congestion from packet loss and adjusts its rate. Slow start grows the congestion window exponentially until it hits the threshold, then congestion avoidance grows linearly. Four-way teardown: FIN/ACK, ACK, FIN/ACK, ACK. TIME-WAIT lasts 2×MSL to ensure all in-flight packets have cleared. UDP: no connection, no guarantee, no order, no flow control — one write equals one datagram. DNS, DHCP, SNMP, video streaming, gaming all use UDP because the overhead of TCP reliability is worse than occasional packet loss.",
           master: [
-            "Trace a web request at every layer from browser to server and back",
-            "Explain encapsulation and de-encapsulation with concrete header examples",
-            "Identify which layer a given protocol operates at for any common protocol",
-            "Use the OSI model to methodically troubleshoot a connectivity problem",
-            "Explain the difference between OSI and TCP/IP models",
-            "Understand what a socket is and how it bridges Layer 4 and Layer 7",
-            "Explain why the OSI model is theoretical but TCP/IP is what we actually use"
+            "Explain the three-way handshake at byte level: ISN purpose, why each message is necessary",
+            "Explain TCP flow control: sliding window, window advertisement, and zero-window condition",
+            "Describe TCP congestion control: slow start, congestion avoidance, fast retransmit, and fast recovery",
+            "Capture a complete TCP connection with Wireshark and identify handshake, data transfer, and teardown",
+            "Explain TIME-WAIT: why it exists and what happens to connections during a server restart",
+            "Describe the trade-offs that lead a protocol designer to choose UDP over TCP for a specific application"
           ],
           res: [
-            "Computer Networking: A Top-Down Approach (Kurose & Ross â€” standard textbook)",
-            "TCP/IP Illustrated Vol. 1 (Stevens)",
-            "Network Warrior (Gary Donahue â€” practical focus)",
-            "Cloudflare Learning Center (free, excellent explanations of networking concepts)"
+            "TCP/IP Illustrated Vol. 1 (W. Richard Stevens) — the definitive reference, Chapters 17–24",
+            "RFC 793 (TCP) and RFC 768 (UDP) — short, read the originals",
+            "Wireshark — capture real connections, analyze the sequence number arithmetic",
+            "tcp.guru — interactive TCP state machine visualizer"
           ]
         }
       ]
     },
     {
-      name: "IP Addressing and Subnetting",
+      name: "Switching and Layer 2",
       level: "foundation",
-      tagline: "The addressing system of the internet",
-      desc: "Every device on the internet has an address. IPv4 addressing is one of the most fundamental skills in networking â€” and the one most engineers get wrong under pressure. Master subnetting to the point where you can do it in your head. Then learn IPv6, which is no longer optional as IPv4 exhaustion is a real operational problem.",
+      tagline: "Layer 2 is where most misconfigurations cause the most mysterious failures",
+      desc: "Ethernet switches operate at Layer 2, making forwarding decisions based on MAC addresses. Understanding how MAC address tables are built, how spanning tree prevents loops, and how VLANs create logical segmentation is foundational to any enterprise network. Most network problems blamed on routing are switching problems when you dig into them.",
       topics: [
         {
-          name: "IPv4 Addressing and Subnetting",
+          name: "Ethernet, MAC Learning, and STP",
           tag: "core",
-          desc: "IPv4 addresses are 32 bits written as four octets in dotted decimal (192.168.1.1). The subnet mask divides the address into network portion and host portion. CIDR (Classless Inter-Domain Routing) notation /x indicates how many bits are the network prefix. Private address ranges (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. VLSM (Variable Length Subnet Masking): allocating subnets of different sizes from a block efficiently. Reserved addresses: network address (all host bits 0), broadcast (all host bits 1), loopback (127.0.0.0/8). Supernetting (route summarization): aggregating multiple subnets into one advertisement. CIDR and route aggregation are how the internet routing table stays manageable.",
+          desc: "A switch builds its MAC address table by learning: when a frame arrives, the source MAC is recorded against the ingress port. Forwarding decision: if the destination MAC is in the table, forward to that port; if not, flood to all ports except the incoming one. ARP resolves IP addresses to MAC addresses — a device broadcasts 'who has this IP?' and the owner responds with its MAC. ARP is unauthenticated, making it trivially spoofable. Spanning Tree Protocol prevents switching loops by electing a root bridge and blocking redundant paths. Loop detection: without STP, a broadcast frame would circulate forever, consuming all bandwidth and crashing every device. RSTP (802.1w) converges in seconds instead of the 30–50 seconds of original STP. PortFast on access ports bypasses the listening and learning states — always enable it on ports connected to endpoints, never on switch-to-switch uplinks.",
           master: [
-            "Given a /24 network, subnet it into subnets supporting exactly 60, 30, and 12 hosts using VLSM",
-            "Calculate the network address, broadcast address, first/last usable hosts for any CIDR block",
-            "Convert between dotted decimal and binary for any IP address without a calculator",
-            "Identify which subnet an IP address belongs to given a mask",
-            "Explain why 192.168.0.0/16 is wrong â€” it should be 192.168.0.0/24 or 192.168.0.0/17",
-            "Summarize a list of routes into the smallest possible supernet",
-            "Explain the difference between /30 (point-to-point links) and /31 (RFC 3021)"
+            "Explain MAC learning and flooding: walk through the table state for a 5-device network after 10 frames",
+            "Describe ARP: the request/reply process, cache lifetime, and how ARP poisoning exploits the lack of authentication",
+            "Explain STP root bridge election and port role assignment: root port, designated port, blocked port",
+            "Describe why a switching loop causes a broadcast storm at the physics level",
+            "Configure RSTP in a multi-switch lab topology and observe convergence after a link failure",
+            "Explain PortFast, BPDU Guard, and Root Guard — when each is appropriate and what attack each prevents"
           ],
-          deepdive: "Subnetting anxiety is common but unnecessary. The trick is binary thinking: a /25 gives you 128 addresses (2â·), a /26 gives 64 (2â¶), a /27 gives 32, /28 gives 16, /29 gives 8, /30 gives 4. Every bit you borrow from the host portion halves your hosts and doubles your subnets. Memorize powers of 2 from 2â° to 2Â¹â° and subnetting becomes arithmetic.",
           res: [
-            "Subnetting Practice (subnettingpractice.com â€” drill this until automatic)",
-            "CCNA 200-301 Official Cert Guide (subnetting chapters)",
-            "Professor Messer's CompTIA N+ (free video series on subnetting)",
-            "IP Subnetting from CIDR to VLSM (Cisco Press)"
+            "Cisco IOS documentation on STP — accurate and practical",
+            "Network Warrior (Gary Donahue) — real-world perspective from a practitioner",
+            "Wireshark — capture ARP and observe the full request/reply cycle",
+            "Packet Tracer lab — build a multi-switch topology and observe STP port states"
           ]
         },
         {
-          name: "IPv6 Addressing",
+          name: "VLANs, Trunking, and Inter-VLAN Routing",
           tag: "core",
-          desc: "IPv6 uses 128-bit addresses written as eight groups of four hexadecimal digits separated by colons (2001:0db8:85a3:0000:0000:8a2e:0370:7334). Compression rules: leading zeros in each group can be omitted, and one contiguous run of all-zero groups can be replaced with ::. Address types: unicast (one-to-one), anycast (one-to-nearest), multicast (one-to-many) â€” IPv6 has no broadcast. Global unicast (2000::/3), link-local (fe80::/10, auto-configured on every interface), unique local (fc00::/7, like RFC 1918). SLAAC (Stateless Address AutoConfiguration): devices generate their own global address from the router's prefix advertisement. DHCPv6 for stateful configuration. Neighbor Discovery Protocol (NDP) replaces ARP. ICMPv6 is mandatory and serves many functions.",
+          desc: "A VLAN is a logical segmentation of a switch — ports in different VLANs cannot communicate at Layer 2 even on the same physical switch. Each VLAN is its own broadcast domain. Trunk ports carry multiple VLANs using 802.1Q tagging: a 4-byte tag inserted into the Ethernet frame carries the VLAN ID. Access ports carry one VLAN, untagged — end devices are unaware of VLANs. The native VLAN on a trunk is sent untagged — mismatched native VLANs between trunk ends causes frames to arrive in the wrong VLAN (VLAN hopping). Inter-VLAN routing requires Layer 3: router-on-a-stick uses physical router subinterfaces (one per VLAN, creates a physical link bottleneck) or a Layer 3 switch with SVIs (Switched Virtual Interfaces). SVIs are the standard — faster, simpler, no bottleneck.",
           master: [
-            "Compress and expand any IPv6 address following the RFC rules",
-            "Explain why IPv6 eliminates broadcast and uses multicast instead",
-            "Understand how SLAAC generates a unique interface identifier from the MAC (EUI-64)",
-            "Explain NDP and its message types: Neighbor Solicitation, Neighbor Advertisement, Router Advertisement",
-            "Configure IPv6 dual-stack on a Linux system manually",
-            "Understand why link-local addresses are non-routable but required on every interface",
-            "Explain how DHCPv6 differs from DHCPv4 in terms of prefix delegation"
+            "Explain why hosts in different VLANs cannot communicate at Layer 2 even on the same switch",
+            "Configure VLANs, access ports, and a trunk in a lab — verify with show commands and a ping test",
+            "Explain 802.1Q tagging: what is in the tag, where it is inserted in the frame, what the native VLAN is",
+            "Describe VLAN hopping: the native VLAN mismatch attack and the double-tagging attack",
+            "Configure inter-VLAN routing with SVIs on a Layer 3 switch and verify routing between VLANs",
+            "Design a VLAN scheme for a small office: user, server, management, and voice VLANs"
           ],
           res: [
-            "IPv6 Fundamentals (Rick Graziani â€” comprehensive and clear)",
-            "RFC 8200 (IPv6 specification)",
-            "Hurricane Electric IPv6 Certification (free, practical challenge)",
-            "IPv6 Address Planning (O'Reilly)"
-          ]
-        },
-        {
-          name: "ARP, DNS, and DHCP",
-          tag: "core",
-          desc: "These three protocols make IP networks usable. ARP (Address Resolution Protocol): given a known IP address, find the corresponding MAC address via broadcast request. ARP tables cache IP-to-MAC mappings with a timeout. Gratuitous ARP: a device announces its own MAC for another IP (used in failover and HSRP, also used in ARP spoofing attacks). DNS (Domain Name System): hierarchical, distributed database mapping names to addresses. Recursive resolver, root servers, TLD servers, authoritative servers. DNS record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), NS (nameserver), PTR (reverse lookup), TXT (SPF, DKIM, verification), SRV (service location). TTL controls caching. DHCP: server assigns IP, subnet mask, default gateway, DNS servers to clients via DORA (Discover, Offer, Request, Acknowledge) process.",
-          master: [
-            "Explain the full ARP request/reply process with specific bytes exchanged",
-            "Trace a DNS query from browser through recursive resolver to authoritative server",
-            "Explain DNS caching and why a high TTL can cause problems during IP changes",
-            "Configure a BIND or Unbound DNS server for a small network",
-            "Understand DHCP lease process and what happens when a lease expires",
-            "Explain DHCP snooping and dynamic ARP inspection as security features",
-            "Understand split-horizon DNS and when it's needed"
-          ],
-          res: [
-            "DNS and BIND (Cricket Liu â€” the reference book)",
-            "The TCP/IP Guide (free online, excellent protocol-level detail)",
-            "RFC 826 (ARP), RFC 1034/1035 (DNS), RFC 2131 (DHCP)",
-            "Practical Networking YouTube channel"
+            "Cisco VLAN configuration guide — the reference implementation",
+            "VLAN Security Best Practices (NSA/CISA guidance) — covers VLAN hopping mitigations",
+            "Packet Tracer VLAN labs — build, verify, break, and fix the topology"
           ]
         }
       ]
     },
     {
-      name: "Transport Layer and Protocols",
+      name: "IP Routing",
       level: "intermediate",
-      tagline: "How data flows reliably across the network",
-      desc: "The transport layer is where reliability, ordering, and flow control live. TCP and UDP are the two workhorses. Understanding TCP deeply â€” its state machine, congestion control, and performance characteristics â€” is essential for debugging performance problems and building network applications.",
+      tagline: "How packets find their way across networks they have never seen",
+      desc: "Routing forwards packets between networks based on destination IP address. Routers maintain a routing table mapping network prefixes to next-hop addresses and egress interfaces. The protocols that build and maintain routing tables across dynamic networks — OSPF, BGP — are complex not because routing is theoretically hard but because they must be correct, scalable, and convergent in the presence of failures. Understanding when to use static routes, OSPF, or BGP is the core skill of a network engineer.",
       topics: [
         {
-          name: "TCP: Reliability and Congestion Control",
+          name: "Static Routing and the Routing Table",
           tag: "core",
-          desc: "TCP (Transmission Control Protocol) provides reliable, ordered, connection-oriented byte-stream delivery. Three-way handshake: SYN â†’ SYN-ACK â†’ ACK. Sequence numbers and acknowledgments ensure all bytes are received and ordered. Flow control: the receiver advertises a window size limiting how much data the sender can transmit without an ACK. Congestion control prevents senders from overwhelming the network: slow start (exponential growth until ssthresh), congestion avoidance (linear growth, AIMD), fast retransmit (retransmit on 3 duplicate ACKs), fast recovery. TCP variants: Reno, Cubic (Linux default), BBR (bandwidth-delay product-based, Google). TCP state machine: LISTEN, SYN-SENT, ESTABLISHED, FIN-WAIT-1, TIME-WAIT, CLOSE-WAIT, etc. TIME-WAIT exists to handle delayed duplicate segments.",
+          desc: "Every router makes a forwarding decision using longest prefix match: the routing table entry with the most specific matching prefix wins. Default route (0.0.0.0/0) matches everything and is always the least specific — the gateway of last resort. Administrative distance determines which routing source is preferred when multiple sources know a route to the same prefix: connected interfaces (AD 0) beat static routes (AD 1) beat OSPF (AD 110) beat RIP (AD 120). Static routes do not adapt to failures — a static route to a failed next-hop remains in the table until manually removed. Floating static routes use a higher-than-protocol AD so they only take effect when the dynamic route disappears. Null0 routes are used for summarization blackholing — advertise the summary, drop packets to destinations within the summary that do not match a more specific route.",
           master: [
-            "Explain the three-way handshake including sequence number initialization",
-            "Trace the TCP state machine for a complete connection lifecycle",
-            "Explain why TCP has TIME-WAIT and the problems caused by running it too short",
-            "Understand slow start, congestion avoidance, and fast recovery in detail",
-            "Explain the difference between TCP Cubic and TCP BBR at a conceptual level",
-            "Calculate the Bandwidth-Delay Product and explain why it matters for throughput",
-            "Use Wireshark to identify retransmissions, duplicate ACKs, and zero window conditions"
+            "Explain longest prefix match with examples: given a routing table and destination IP, determine which route wins and why",
+            "Explain administrative distance and give the correct value for static, OSPF, EIGRP, RIP, EBGP, and IBGP",
+            "Configure static routes in a multi-router topology and verify end-to-end connectivity",
+            "Explain the floating static route use case and how the AD value is set relative to the dynamic protocol",
+            "Debug a routing problem using show ip route, show ip arp, and traceroute — describe your methodology",
+            "Explain what happens when a packet arrives with no matching route and no default route"
           ],
           res: [
-            "TCP/IP Illustrated Vol. 1 (Stevens â€” TCP chapters are the best explanation)",
-            "BBR: Congestion-Based Congestion Control (Google 2016 â€” IEEE Queue)",
-            "RFC 5681: TCP Congestion Control",
-            "High Performance Browser Networking (Grigorik â€” free online)"
+            "TCP/IP Illustrated Vol. 1 Chapter 9 — IP routing, the precise reference",
+            "GNS3 lab — build a 4-router topology and verify routing with debug ip packet",
+            "Cisco IP routing documentation — comprehensive configuration reference"
           ]
         },
         {
-          name: "UDP and Application Layer Protocols",
-          tag: "core",
-          desc: "UDP (User Datagram Protocol) is connectionless, stateless, and provides no reliability or ordering guarantees. It adds only port numbers and a checksum to IP. Applications that need speed over reliability use UDP: DNS (single query-response), streaming video (QUIC is UDP-based), online gaming, VoIP (jitter more harmful than loss). QUIC (RFC 9000): built on UDP, provides TLS 1.3 security, multiplexing without head-of-line blocking, connection migration. HTTP/3 runs on QUIC. Key application protocols: HTTP/HTTPS (port 80/443), SMTP/IMAP/POP3 (email), FTP/SFTP, SSH (port 22), Telnet (legacy, never use), NTP (time synchronization, UDP port 123), SNMP (network management, UDP 161/162), TFTP (trivial FTP, UDP).",
+          name: "OSPF: Link-State Routing",
+          tag: "intermediate",
+          desc: "OSPF is a link-state protocol: every router floods information about its directly connected links to the entire area, and every router independently runs Dijkstra's algorithm on the resulting topology database. Neighbor adjacency: routers discover neighbors with Hello packets, exchange LSDBs, and synchronize. The DR/BDR election on multi-access networks reduces adjacencies — all routers form adjacency only with the DR/BDR. Areas reduce flooding overhead: all routers must connect to Area 0 (backbone). Inter-area routes pass through ABRs which summarize routes between areas. LSA types matter: Type 1 (Router LSA, within area), Type 2 (Network LSA, from DR), Type 3 (Summary LSA, inter-area from ABR), Type 5 (External LSA, redistributed routes from ASBR). OSPF cost defaults to 100Mbps / interface bandwidth — anything above 100Mbps has cost 1 unless you raise the reference bandwidth.",
           master: [
-            "Explain when UDP is preferable to TCP â€” give real examples",
-            "Understand why QUIC was built on UDP instead of extending TCP",
-            "Explain how QUIC solves head-of-line blocking in HTTP/2",
-            "Trace an HTTPS connection: DNS â†’ TCP â†’ TLS 1.3 handshake â†’ HTTP",
-            "Understand NTP's role and what happens when clocks drift on distributed systems",
-            "Explain the security implications of SNMP v1/v2c (community strings in plaintext)",
-            "Know the port numbers for all common protocols without looking them up"
+            "Describe the OSPF neighbor state machine: Down through Full, explaining what happens at each transition",
+            "Explain the DR/BDR election: what factors determine the winner and what happens on a point-to-point link",
+            "Describe LSA types 1, 2, 3, and 5 and explain what topology information each carries",
+            "Configure multi-area OSPF and verify with show ip ospf database, show ip ospf neighbor, show ip route ospf",
+            "Troubleshoot an OSPF adjacency stuck at ExStart or Loading — identify the cause",
+            "Explain OSPF route summarization at ABRs and why it is important for large networks"
           ],
           res: [
-            "RFC 9000 (QUIC transport protocol)",
-            "HTTP/3 Explained (Daniel Stenberg â€” free ebook)",
-            "High Performance Browser Networking (Grigorik â€” free online, protocols in depth)",
-            "The TCP/IP Guide (free online)"
+            "OSPF and IS-IS (Jeff Doyle) — technically precise OSPF reference",
+            "RFC 2328 (OSPF Version 2) — read Section 4 for the protocol overview",
+            "GNS3 OSPF multi-area lab — build the topology and observe LSA flooding behavior"
           ]
         },
         {
-          name: "Network Troubleshooting Methodology",
-          tag: "core",
-          desc: "Systematic troubleshooting saves hours. The OSI model is your framework: start at Layer 1 (is the cable plugged in?), move up layer by layer. Essential tools: ping (ICMP echo â€” tests Layer 3 reachability), traceroute (TTL expiration trick â€” maps the path), nslookup/dig (DNS queries), netstat/ss (socket state), tcpdump/Wireshark (packet capture), iperf3 (bandwidth testing), mtr (real-time traceroute with statistics). Common failure modes and their symptoms: wrong subnet mask (cannot reach hosts in same network), wrong default gateway (cannot reach remote networks), DNS failure (can ping IPs but not names), firewall drops (asymmetric behavior, ICMP replies without TCP SYN-ACK).",
+          name: "BGP: The Protocol That Runs the Internet",
+          tag: "advanced",
+          desc: "BGP is the routing protocol of the internet. Unlike OSPF which optimizes for shortest path, BGP optimizes for policy. BGP is a path vector protocol — it carries the full AS path to the destination, not just the next hop. Loop prevention: if your own AS number appears in the path, discard the route. EBGP runs between different autonomous systems; IBGP runs within one. IBGP does not re-advertise routes between peers — all IBGP routers need a full mesh or route reflectors. BGP attribute path selection: Weight (Cisco only, highest), LOCAL_PREF (prefer exit point, highest), AS_PATH length (shorter), MED (prefer entry point, lower). Route maps implement policy. BGP hijacking injects false routes — a malicious AS advertises a more specific prefix for someone else's address space, attracting their traffic. RPKI (Resource Public Key Infrastructure) addresses this by cryptographically binding IP prefixes to AS numbers.",
           master: [
-            "Follow a strict top-down or bottom-up OSI troubleshooting methodology",
-            "Use tcpdump to capture traffic for a specific host, port, and protocol",
-            "Identify packet loss and latency spikes using mtr over a 60-second window",
-            "Use dig to perform all DNS query types (A, AAAA, MX, TXT, NS, PTR)",
-            "Explain how traceroute uses TTL to map network path hop by hop",
-            "Identify an MTU mismatch using the ping -M do and -s flags",
-            "Analyze a Wireshark capture to diagnose TCP retransmissions and high latency"
+            "Describe the BGP session establishment and the four message types: OPEN, UPDATE, KEEPALIVE, NOTIFICATION",
+            "Explain EBGP vs IBGP: purpose, where each runs, and why IBGP requires full mesh or route reflectors",
+            "Explain BGP path selection in order: from Weight through MED — give a scenario where each attribute is the decision point",
+            "Configure EBGP peering between two ASes and verify route exchange",
+            "Explain BGP hijacking: how it works, why it is possible, and what RPKI does about it",
+            "Describe the role of COMMUNITIES attribute in BGP policy — practical use cases"
           ],
           res: [
-            "Network Troubleshooting Tools (O'Reilly â€” comprehensive reference)",
-            "Wireshark Documentation and sample captures (Wireshark wiki)",
-            "Brendan Gregg's networking performance tools (brendangregg.com)",
-            "tcpdump cheat sheet (Daniel Miessler)"
+            "Internet Routing Architectures (Sam Halabi) — the classic BGP book",
+            "BGP4 RFC 4271 — read the path attributes section",
+            "Hurricane Electric BGP Toolkit (bgp.he.net) — see the real internet routing table",
+            "BGP in the Data Center (Dinesh Dutt) — modern BGP usage in infrastructure"
           ]
         }
       ]
     },
     {
-      name: "Routing and Switching",
+      name: "Network Services",
       level: "intermediate",
-      tagline: "Moving packets intelligently across networks",
-      desc: "Routing is the process of selecting paths through a network of networks. Static routing is fine for simple topologies but doesn't scale. Dynamic routing protocols automatically discover topology changes and recalculate optimal paths. This phase covers the protocols that actually run the internet.",
+      tagline: "The protocols that make the network actually usable",
+      desc: "IP routing moves packets between networks. DNS, DHCP, NAT, and NTP are what make those packets arrive at the right application at the right time. These are treated as background infrastructure until they break — at which point they are the hardest things to troubleshoot because their failures are subtle and non-obvious.",
       topics: [
         {
-          name: "Static Routing and Router Architecture",
+          name: "DNS: More Complex Than It Looks",
           tag: "core",
-          desc: "A router forwards packets based on a routing table: each entry maps a destination prefix to a next-hop IP or exit interface. The longest prefix match rule determines which route wins when multiple entries match. Administrative distance (AD) breaks ties between routes from different sources (lower is preferred: connected = 0, static = 1, OSPF = 110, BGP = 200). Floating static routes: set high AD so they only activate when the primary route disappears. Router architecture: route processor (builds routing table from RIB), switching fabric, line cards with FIB for hardware forwarding (CEF on Cisco). Management plane, control plane, and data plane separation.",
+          desc: "DNS translates domain names to IPs. Resolution: the stub resolver queries a recursive resolver (your ISP's or 8.8.8.8). The recursive resolver checks its cache. If not cached, it queries a root name server → TLD name server → authoritative name server → answer. The response is cached for the TTL duration. Record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail, with priority), NS (name server), TXT (SPF/DKIM/DMARC), PTR (reverse lookup), SRV (service location). DNS uses UDP port 53 for queries under 512 bytes, TCP for larger or zone transfers. DNS is a critical attack surface: cache poisoning injects false records into a recursive resolver (Kaminsky attack), DNS hijacking redirects queries to attacker-controlled resolvers, DNS exfiltration tunnels data through TXT or CNAME queries to an attacker-controlled domain.",
           master: [
-            "Explain the longest prefix match with multiple overlapping routes",
-            "Configure static routes with backup floating statics on a router",
-            "Explain the difference between the RIB (routing information base) and FIB (forwarding table)",
-            "Understand why the data plane must forward at line rate while the control plane can be slow",
-            "Configure a default route and explain when it is used",
-            "Explain administrative distance and how to use it for route preference",
-            "Trace a packet through a router from ingress to egress"
+            "Trace a DNS resolution end-to-end from stub resolver to authoritative server — explain caching at each step",
+            "Describe all seven DNS record types: A, AAAA, CNAME, MX, NS, TXT, PTR — use case for each",
+            "Explain the Kaminsky attack: what vulnerability it exploits and how DNSSEC prevents it",
+            "Use dig to troubleshoot a resolution problem: follow the delegation chain manually to the authoritative server",
+            "Explain negative caching: NXDOMAIN and NOERROR with empty answer, and the TTL implications",
+            "Configure split-horizon DNS and explain the security and operational motivation"
           ],
           res: [
-            "Routing TCP/IP Vol. 1 (Doyle â€” comprehensive routing reference)",
-            "CCNA 200-301 Official Cert Guide",
-            "Cisco IOS Configuration Guide: IP Routing",
-            "Juniper Technical Library (free, excellent for JunOS routing)"
+            "DNS and BIND (Cricket Liu and Paul Albitz) — the authoritative reference",
+            "Cloudflare DNS learning center — clear explanations of DNS concepts",
+            "dig manual page — learn every option before using any other DNS tool"
           ]
         },
         {
-          name: "OSPF â€” Open Shortest Path First",
-          tag: "advanced",
-          desc: "OSPF is a link-state routing protocol: each router knows the complete topology of its area. Routers exchange Link State Advertisements (LSAs) using reliable flooding. Each router independently runs Dijkstra's SPF algorithm to build a shortest path tree. OSPF areas reduce flooding overhead: all areas connect to Area 0 (backbone). Router types: Internal (one area), ABR (Area Border Router â€” connects multiple areas), ASBR (Autonomous System Boundary Router â€” imports external routes). Hello packets establish and maintain adjacencies. On broadcast networks, a Designated Router (DR) and Backup DR (BDR) are elected to reduce LSA flooding. Metric is cost (interface bandwidth by default). Authentication (MD5/SHA). OSPFv3 carries IPv6.",
+          name: "DHCP, NAT, and Address Management",
+          tag: "core",
+          desc: "DHCP automates IP assignment. The DORA process: Discover (client broadcasts, no IP yet), Offer (server responds with available IP), Request (client broadcasts its choice), Acknowledge (server confirms the lease). The client broadcasts because it has no valid IP yet — broadcasts reach the server on the local segment. DHCP relay agents forward broadcasts as unicast to the server, enabling one server to serve multiple subnets. NAT maps private IPs to public IPs. PAT (NAT overload) maps many private addresses to one public address using unique source ports — the NAT table tracks (private IP, private port) → (public IP, public port). Inbound connections require static NAT or port forwarding. NAT breaks end-to-end connectivity, complicates protocols that embed IP addresses in their payload (FTP, SIP), and creates per-connection state that must be maintained indefinitely.",
           master: [
-            "Explain how OSPF uses flooding to ensure every router has identical LSDBs",
-            "Understand the DR/BDR election process and why it exists",
-            "Configure multi-area OSPF with route summarization at ABRs",
-            "Troubleshoot an OSPF adjacency stuck in EXSTART or LOADING state",
-            "Explain all major LSA types (1, 2, 3, 4, 5, 7) and where each is seen",
-            "Understand stub, totally stubby, and NSSA area types and when to use each",
-            "Explain OSPF authentication and why it prevents route injection attacks"
+            "Describe the DORA process — explain why each step uses broadcast versus unicast",
+            "Configure DHCP options: gateway, DNS server, lease time — verify assignment on a client",
+            "Configure a DHCP relay agent and explain what it does to the DHCP packet",
+            "Explain PAT: how multiple hosts share a single public IP and how the NAT table tracks each session",
+            "Describe why NAT breaks FTP in passive mode and what NAT-ALG does to fix it",
+            "Design an IPv4 addressing plan for a small organization with multiple subnets and a single NAT boundary"
           ],
           res: [
-            "OSPF: Anatomy of an Internet Routing Protocol (Moy â€” written by the RFC author)",
-            "RFC 2328 (OSPFv2) and RFC 5340 (OSPFv3)",
-            "Cisco OSPF Design Guide",
-            "Routing TCP/IP Vol. 1 (Doyle â€” best OSPF deep dive)"
-          ]
-        },
-        {
-          name: "BGP â€” The Internet's Routing Protocol",
-          tag: "advanced",
-          desc: "BGP (Border Gateway Protocol) is the routing protocol of the internet. It connects autonomous systems (AS): organizations with their own IP address space and routing policies. eBGP runs between different ASes; iBGP runs between routers in the same AS. BGP is a path-vector protocol: each route advertisement carries the full AS_PATH, preventing loops. Key path attributes: AS_PATH (loop prevention, path length), NEXT_HOP, LOCAL_PREF (influence outbound â€” higher preferred within AS), MED (influence inbound from a neighbor AS â€” lower preferred), communities (arbitrary tags for policy). BGP best-path selection has 13 decision steps. Route reflectors solve iBGP full-mesh scaling. BGP security: RPKI (Route Origin Authorization prevents hijacks), prefix filtering, max-prefix limits.",
-          master: [
-            "Explain the difference between eBGP and iBGP in terms of next-hop and TTL",
-            "Use AS_PATH prepending and LOCAL_PREF together to implement a preferred-primary/backup-secondary design",
-            "Explain the BGP best-path selection algorithm (at least the first 8 steps in order)",
-            "Configure a route reflector and explain why it replaces full-mesh iBGP",
-            "Understand BGP communities: what well-known communities (NO_EXPORT, NO_ADVERTISE) do",
-            "Explain RPKI and how Route Origin Authorizations prevent BGP hijacks",
-            "Read a BGP routing table from a looking glass server and identify the best path"
-          ],
-          res: [
-            "BGP: Building Reliable Networks with the Border Gateway Protocol (O'Reilly)",
-            "RFC 4271 (BGP-4 specification)",
-            "BGP Best Path Selection (Cisco documentation â€” memorize the algorithm)",
-            "BGP.tools and RIPE Stat â€” live internet BGP data"
+            "RFC 2131 (DHCP) — read it, it is not long",
+            "RFC 3022 (NAT) — the original NAT specification",
+            "Cisco NAT configuration guide — practical and well-organized"
           ]
         }
       ]
     },
     {
-      name: "Network Security",
+      name: "Network Security Protocols",
       level: "intermediate",
-      tagline: "Defend every layer",
-      desc: "Networks are the primary attack surface. Every protocol you learned in previous phases has associated vulnerabilities. This phase covers security at every layer: securing the physical access, controlling Layer 2, firewalling at Layer 3-7, encrypting with VPNs, and monitoring everything. Security is not a feature to add at the end â€” it must be designed in.",
+      tagline: "Protocols designed for connectivity have no built-in security",
+      desc: "TCP/IP was designed assuming every node is cooperative — no authentication of packet sources, no confidentiality of data in transit, no legitimacy verification of routing advertisements. TLS, IPSec, and 802.1X each address specific vulnerabilities in the original design. Understanding why each protocol exists — what attack it prevents — is the only way to configure it correctly.",
       topics: [
         {
-          name: "Layer 2 Security",
+          name: "TLS: How Almost All Secure Communication Works",
           tag: "core",
-          desc: "ARP spoofing: an attacker sends gratuitous ARP replies associating their MAC with another host's IP, enabling man-in-the-middle attacks. Dynamic ARP Inspection (DAI): switches validate ARP packets against a DHCP snooping table before forwarding. DHCP snooping: the switch only forwards DHCP server replies from trusted ports â€” prevents rogue DHCP servers. Port security: limit the number of MAC addresses on a port and shut it down on violation. MAC flooding (CAM table overflow): flooding a switch with fake MAC addresses fills the CAM table, forcing it to flood frames like a hub. VLAN hopping: double tagging or switch spoofing to access a different VLAN. 802.1X: port-based access control using EAP and RADIUS â€” authenticate devices before they get network access.",
+          desc: "TLS provides confidentiality, integrity, and authentication for TCP connections. The TLS 1.3 handshake: ClientHello (supported cipher suites, key share), ServerHello (chosen suite, key share), the server and client derive shared keys from the Diffie-Hellman exchange, the server sends its certificate and Finished encrypted with derived keys, the client verifies and sends Finished. Forward secrecy: ephemeral DH key exchange means compromise of the server's long-term private key does not compromise past sessions — each session uses fresh keys. Certificate validation: signed by a trusted CA in the browser trust store, CN/SAN matches hostname, not expired, not revoked. HSTS forces HTTPS for a domain for a specified duration, preventing SSL stripping. Certificate Transparency logs allow public auditing of every certificate a CA issues.",
           master: [
-            "Explain the ARP spoofing attack and how DAI prevents it",
-            "Configure DHCP snooping and DAI on a Cisco switch",
-            "Understand MAC flooding and why it causes the switch to fail open",
-            "Configure 802.1X with a RADIUS server for wired network authentication",
-            "Explain double-tagging VLAN hopping and how to prevent it",
-            "Configure port security with sticky MAC learning and violation shutdown",
-            "Understand Private VLANs (PVLANs) for isolation within a VLAN"
+            "Describe the TLS 1.3 handshake: what is exchanged, in what order, and how session keys are derived",
+            "Explain Diffie-Hellman key exchange: why two parties can arrive at the same key without transmitting it",
+            "Explain certificate chain validation: root CA, intermediate CA, leaf certificate, and browser trust store",
+            "Describe SSL stripping and explain why HSTS prevents it",
+            "Use Wireshark to capture a TLS 1.3 handshake and identify the ClientHello and ServerHello messages",
+            "Explain what a self-signed certificate is, why browsers reject it, and when it is acceptable to use one"
           ],
           res: [
-            "CCNP ENARSI Official Cert Guide (Layer 2 security chapters)",
-            "Cisco Layer 2 Security Best Practices",
-            "Network Security Bible (Cole et al.)",
-            "SANS Institute: Securing Layer 2 (white paper)"
+            "The Illustrated TLS 1.3 Connection (tls13.ulfheim.net) — byte-by-byte annotation of a real handshake",
+            "Bulletproof TLS and PKI (Ivan Ristic) — the definitive practical TLS reference",
+            "SSL Labs (ssllabs.com/ssltest) — test any site, read the explanations of each finding",
+            "RFC 8446 (TLS 1.3) — read the overview sections"
           ]
         },
         {
-          name: "Firewalls and Access Control",
-          tag: "core",
-          desc: "Stateless packet filtering: ACLs match on source/destination IP, port, protocol. Rules are processed top-down with implicit deny at the end. Stateful firewalls track connection state (TCP established, related ICMP) and allow return traffic automatically. This eliminates the need for inbound rules for established connections. Next-Generation Firewalls (NGFW): application identification at Layer 7, SSL/TLS inspection (decrypt-inspect-re-encrypt), user identity integration, threat intelligence. Zones: internal (trusted), DMZ (semi-trusted, public-facing servers), external (untrusted). Linux iptables: PREROUTING, INPUT, FORWARD, OUTPUT, POSTROUTING chains. nftables: modern replacement. pfSense/OPNsense as open-source firewall platforms.",
+          name: "Firewalls and Network Security Architecture",
+          tag: "intermediate",
+          desc: "A stateless ACL filters packets based on source IP, destination IP, protocol, and port — each packet evaluated independently. A stateful firewall tracks connection state — it allows reply traffic for established connections without an explicit inbound rule. A stateless ACL requires both an outbound rule and an inbound reply rule; a stateful firewall requires only the outbound rule. Next-generation firewalls add application awareness: they identify applications regardless of port, integrate IPS signatures, and enforce user-identity-based policies. DMZ isolation: internet-facing servers sit in a DMZ so that compromise of a web server does not give direct access to the internal network. Defense in depth means the firewall is one control layer, not the only one. Microsegmentation limits the blast radius when a host is compromised — east-west traffic between servers must pass through policy enforcement, not just north-south traffic at the perimeter.",
           master: [
-            "Explain the difference between stateless and stateful firewalls with concrete examples",
-            "Design a DMZ with correct ACLs for web server, mail server, and internal network",
-            "Configure iptables rules for a Linux router with NAT (MASQUERADE) and firewall",
-            "Understand SSL inspection: what the man-in-the-middle it performs and the trust implications",
-            "Explain zone-based firewall architecture and how it simplifies rule management",
-            "Identify firewall evasion techniques: fragmentation, tunneling over allowed ports",
-            "Audit a firewall ruleset for shadowed, duplicate, or overly permissive rules"
+            "Explain stateful versus stateless filtering: why stateful is the default and when stateless is appropriate",
+            "Design a three-zone firewall architecture: internet, DMZ, and internal — specify permitted traffic between each zone",
+            "Write ACL rules to permit outbound HTTP/HTTPS and DNS while denying everything else",
+            "Describe what an NGFW adds over a stateful firewall and when the capabilities justify the cost",
+            "Explain east-west data center traffic and why perimeter firewalls do not address it",
+            "Describe microsegmentation and how it differs from traditional VLAN-based segmentation"
           ],
           res: [
-            "Linux Firewalls (Michael Rash â€” iptables in depth)",
-            "Palo Alto PCNSE Study Guide (NGFW concepts)",
-            "pfSense: The Definitive Guide",
-            "NIST SP 800-41: Guidelines on Firewalls and Firewall Policy"
-          ]
-        },
-        {
-          name: "VPN Technologies",
-          tag: "advanced",
-          desc: "VPNs create encrypted tunnels over untrusted networks. IPsec: the most widely deployed VPN framework. IKEv2 (Phase 1) negotiates the security association (SA) â€” authentication (certificates or PSK), encryption algorithm, key exchange (Diffie-Hellman). IPsec (Phase 2) protects data via ESP (Encapsulating Security Payload â€” encryption + integrity). Tunnel mode wraps the entire IP packet; transport mode only protects the payload. WireGuard: modern, simpler VPN protocol with Curve25519 keys, ChaCha20 encryption, and the cleanest codebase of any VPN â€” ~4,000 lines vs OpenVPN's 100,000+. OpenVPN: SSL/TLS-based, configurable, works over TCP or UDP, widely compatible. Remote access vs site-to-site. Split tunneling vs full tunneling tradeoffs.",
-          master: [
-            "Explain IKEv2 Phase 1 and Phase 2 negotiations and what each establishes",
-            "Understand Diffie-Hellman key exchange and why it achieves forward secrecy",
-            "Compare WireGuard vs OpenVPN vs IPsec: tradeoffs in security, speed, and complexity",
-            "Configure a WireGuard site-to-site VPN between two Linux routers",
-            "Understand the difference between AH (deprecated) and ESP in IPsec",
-            "Explain split tunneling and the security implications of enabling it",
-            "Configure DMVPN Phase 2 for spoke-to-spoke VPN without hairpinning through the hub"
-          ],
-          res: [
-            "WireGuard paper: Fast, Modern, Secure VPN Tunnel (Donenfeld 2017)",
-            "IPsec RFCs: 4301 (architecture), 4303 (ESP), 7296 (IKEv2)",
-            "OpenVPN documentation and cookbook",
-            "DMVPN Technology and Design Guide (Cisco)"
+            "Network Security Architectures (Sean Convery) — systematic network security design",
+            "NIST SP 800-41 Guidelines on Firewalls and Firewall Policy",
+            "NSA Network Infrastructure Security Guide — practical hardening guidance"
           ]
         }
       ]
     },
     {
-      name: "Cloud Networking and SDN",
+      name: "Network Monitoring and Troubleshooting",
       level: "advanced",
-      tagline: "Networking in the cloud era",
-      desc: "The cloud has fundamentally changed networking. Physical topology is abstracted into software. Virtual Private Clouds (VPCs), software-defined networking (SDN), VXLAN overlays, and network automation are now core skills for network engineers. Physical routers and switches still exist, but they are increasingly programmed rather than manually configured.",
+      tagline: "Systematic diagnosis beats experience-based guessing every time",
+      desc: "Network troubleshooting is methodical, not intuitive. Isolate the layer, eliminate the candidates, verify assumptions. Most experienced engineers have refined their guessing into a method without realizing it — learn the method explicitly and you will outperform engineers with three times your experience. The single most valuable diagnostic tool is packet capture, because it tells you exactly what happened on the wire rather than what the device thinks happened.",
       topics: [
         {
-          name: "Cloud Networking Fundamentals",
-          tag: "advanced",
-          desc: "Virtual Private Cloud (VPC): a logically isolated network within a cloud provider's infrastructure. Subnets (public vs private), route tables, Internet Gateways, NAT Gateways, security groups (stateful, instance-level firewall), and Network ACLs (stateless, subnet-level). AWS-specific: VPC peering (non-transitive), Transit Gateway (hub for multiple VPCs), PrivateLink (private access to services), Direct Connect (dedicated WAN link). GCP: VPC is global (spans all regions), shared VPC, Cloud Interconnect. Azure: VNets, VNet Peering, ExpressRoute, NSGs. Multi-cloud connectivity: SD-WAN. Load balancing: Layer 4 (NLB, pass-through) vs Layer 7 (ALB, content-aware). Service meshes (Istio, Linkerd) for microservice networking.",
+          name: "Packet Capture and Protocol Analysis",
+          tag: "core",
+          desc: "Wireshark is the primary diagnostic tool. Capture filters use BPF syntax and are applied at capture time — they reduce capture size but you cannot recover filtered packets. Display filters are applied to an existing capture — the syntax is completely different from BPF and non-destructive. Key display filters: ip.addr, tcp.port, tcp.flags.syn, http, dns, icmp. Follow TCP Stream reconstructs the full conversation for a selected connection. Expert Information flags anomalies: TCP retransmissions (packet loss), duplicate ACKs, zero windows (receiver buffer full), RSTs (unexpected terminations). Statistics > Protocol Hierarchy shows traffic composition. tshark is the command-line version — use it for long-running captures and scripting. tcpdump is the standard for remote captures — save to a file with -w and open in Wireshark locally.",
           master: [
-            "Design a three-tier VPC with public, private, and data subnets across multiple AZs",
-            "Explain the difference between security groups (stateful) and NACLs (stateless)",
-            "Understand VPC peering limitations â€” why it is not transitive",
-            "Configure AWS Transit Gateway to connect multiple VPCs in a hub-spoke topology",
-            "Explain the difference between Layer 4 and Layer 7 load balancers",
-            "Design a multi-region active-active architecture with global load balancing",
-            "Understand PrivateLink and why it avoids exposing traffic to the public internet"
+            "Capture a complete HTTP session and reconstruct the full request and response",
+            "Identify TCP retransmissions, out-of-order packets, and zero-window conditions — explain each",
+            "Use tshark to capture on a remote server and transfer the capture file for analysis",
+            "Write a BPF capture filter and a Wireshark display filter for the same traffic — explain the difference",
+            "Use the IO Graph to identify a bandwidth saturation event and correlate it with specific flows",
+            "Analyze a TLS handshake in a capture and identify the ClientHello, ServerHello, and cipher suite negotiation"
           ],
           res: [
-            "AWS Networking Fundamentals (AWS skill builder â€” free)",
-            "Google Cloud Networking documentation",
-            "Cloud Networking Concepts for Traditional Network Engineers (AWS whitepaper)",
-            "The Cloud Networking Architecture (Microsoft Azure well-architected framework)"
+            "Wireshark documentation (wireshark.org/docs) — the official filter reference",
+            "Wireshark Network Analysis (Laura Chappell) — the most comprehensive Wireshark text",
+            "Wireshark sample captures (wiki.wireshark.org/SampleCaptures) — real traffic to analyze",
+            "Chris Greer Wireshark channel (YouTube) — practical troubleshooting demonstrations"
           ]
         },
         {
-          name: "VXLAN and Overlay Networks",
+          name: "Network Performance and SNMP Monitoring",
           tag: "advanced",
-          desc: "VXLAN (Virtual Extensible LAN) extends Layer 2 networks over Layer 3 infrastructure by encapsulating Ethernet frames in UDP packets. The VXLAN Network Identifier (VNI) is 24 bits, supporting ~16 million virtual networks (vs 4,094 VLANs). VTEP (VXLAN Tunnel Endpoint): the device that encapsulates/de-encapsulates VXLAN traffic. BGP EVPN (Ethernet VPN): uses BGP to distribute MAC/IP information between VTEPs, replacing flood-and-learn. Route types: Type 2 (MAC/IP advertisement), Type 3 (multicast group), Type 5 (IP prefix). Anycast gateway: all leaf switches share the same virtual gateway MAC/IP so hosts can default-route to any leaf. This is the standard architecture for modern data center fabrics.",
+          desc: "Bandwidth utilization, latency, packet loss, and jitter are the four metrics that determine network health. Bandwidth: percentage of interface capacity in use — SNMP interface counters or NetFlow for per-flow breakdown. Latency: round-trip time — distinguish propagation delay (speed-of-light, distance-limited), queuing delay (packets waiting in a buffer), and serialization delay (time to put bits on the wire). Packet loss: TCP retransmissions in captures, or SNMP error counters. Jitter: variation in latency — critical for VoIP which needs consistent latency more than low average latency. SNMP: the manager polls agents on devices for MIB OID values. SNMPv1/v2c use community strings in plaintext — use SNMPv3 with authentication and encryption. NetFlow/IPFIX exports sampled flow records: source/destination IPs, ports, protocols, byte counts — traffic analysis at scale without full packet capture.",
           master: [
-            "Explain why VXLAN was created â€” what problem does it solve over VLANs?",
-            "Understand VXLAN encapsulation: VXLAN header + UDP header added to the Ethernet frame",
-            "Explain how BGP EVPN replaces VXLAN flood-and-learn for MAC/IP distribution",
-            "Understand EVPN Type 2 and Type 5 routes and what each advertises",
-            "Configure a simple VXLAN network between two Linux hosts using ip-link commands",
-            "Explain the anycast gateway concept and how it enables optimal forwarding",
-            "Troubleshoot VXLAN: check VTEP reachability, VNI consistency, and ARP suppression"
+            "Poll interface utilization counters via SNMP and graph them over time",
+            "Explain SNMP polling versus SNMP traps — when each is appropriate",
+            "Configure NetFlow export on a router and analyze the flow records",
+            "Diagnose a VoIP quality problem using jitter and packet loss measurements",
+            "Explain queuing mechanisms: FIFO, WFQ, CBWFQ, LLQ — what problem each solves for each traffic type",
+            "Design a network monitoring architecture for a medium organization: tools, data, alert thresholds, retention"
           ],
           res: [
-            "RFC 7348 (VXLAN specification)",
-            "RFC 7432 (BGP MPLS-Based Ethernet VPN â€” BGP EVPN base)",
-            "FRRouting EVPN Documentation",
-            "Cumulus Networks EVPN-VXLAN Design Guide (free)"
-          ]
-        },
-        {
-          name: "Network Automation",
-          tag: "advanced",
-          desc: "Manual configuration of hundreds of devices is error-prone and slow. Network automation uses code to configure, validate, and monitor networks. Python is the primary language: Netmiko (SSH connections to network devices), NAPALM (multi-vendor network automation), Nornir (parallel task execution). Ansible for network: playbooks with ios_config, junos_config, eos_config modules. NETCONF (RFC 6241) and RESTCONF (RFC 8040) are model-driven protocols. YANG data models define the schema for configuration and operational data. Infrastructure as Code (IaC): version control all configurations in Git. CI/CD for networks: automated testing (Batfish for configuration validation, pytest-network) before deploying changes. NetBox as the source of truth for network inventory.",
-          master: [
-            "Write an Ansible playbook to push OSPF configuration to 10 routers simultaneously",
-            "Use Netmiko to SSH into a device, collect show commands, and parse structured output",
-            "Implement automated config backups to Git with timestamps on a schedule",
-            "Use Batfish to validate that an ACL change does not block critical services",
-            "Understand YANG models: browse a device's YANG schema with pyang",
-            "Design a GitOps workflow: changes to Git trigger pipeline that validates and deploys",
-            "Build a network inventory system in NetBox and use it as an Ansible dynamic inventory"
-          ],
-          res: [
-            "Network Programmability and Automation (O'Reilly â€” Kirk Byers et al.)",
-            "Ansible Network Automation documentation",
-            "Batfish: Network Configuration Analysis (batfish.org)",
-            "NetBox Documentation (netbox.dev)"
+            "Grafana + InfluxDB + Telegraf SNMP plugin — the modern open-source monitoring stack",
+            "Cisco QoS documentation — comprehensive treatment of queuing and policing",
+            "MRTG or Cacti — simpler SNMP-based monitoring, good starting point"
           ]
         }
       ]
     },
     {
-      name: "Advanced Routing and Data Center",
-      level: "expert",
-      tagline: "High-performance, large-scale network architectures",
-      desc: "Enterprise and data center networking at scale. MPLS for traffic engineering and VPN services, modern data center Clos fabrics, and QoS for guaranteeing performance. This is where networking becomes a systems engineering discipline.",
+      name: "Cloud Networking",
+      level: "advanced",
+      tagline: "The same problems, different abstractions, different failure modes",
+      desc: "Cloud networking is not fundamentally different from physical networking — IP addresses, routing, and VLANs still exist — but the implementation is software-defined, the failure modes are different, and the operational model is completely different. The engineers who struggle in cloud environments are the ones who try to apply physical network mental models directly rather than understanding how cloud abstractions map to underlying networking concepts.",
       topics: [
         {
-          name: "MPLS and Traffic Engineering",
+          name: "AWS VPC and Network Architecture",
           tag: "advanced",
-          desc: "MPLS (Multiprotocol Label Switching) forwards packets based on short fixed-length labels rather than IP addresses, enabling much faster forwarding and powerful traffic engineering. Label Distribution Protocol (LDP) distributes labels for destinations. RSVP-TE reserves bandwidth along explicit paths for traffic engineering. MPLS L3 VPN: each customer gets a VRF (Virtual Routing and Forwarding instance) on the PE router, isolating their routing table. Route Distinguisher (RD) makes routes unique in the BGP table; Route Target (RT) controls route import/export between VRFs. MPLS L2 VPN (VPWS, VPLS): carry Layer 2 frames over MPLS. Segment Routing (SR-MPLS, SRv6): source-routing where the path is encoded in the packet header â€” no per-flow state in the network.",
+          desc: "A VPC is a logically isolated network in a single AWS region. Subnets are created within the VPC and tied to an availability zone. Internet Gateway enables inbound and outbound internet for instances with public IPs. NAT Gateway enables outbound internet for private subnet instances without exposing them to inbound. Security Groups are stateful L4 firewalls applied to instances — they track state and allow reply traffic automatically. Network ACLs are stateless and applied to subnets — both inbound and outbound rules are required. VPC Peering connects two VPCs for private routing — transitive peering does not work (A peers with B, B peers with C: A cannot reach C through B). Transit Gateway connects many VPCs and on-premises networks through a central hub. Direct Connect is a dedicated private circuit to AWS — consistent bandwidth and latency versus internet-based VPN. AWS networking pricing: data transfer out to the internet is charged per GB, as is transfer between AZs.",
           master: [
-            "Explain the difference between IP routing (per-hop lookup) and MPLS (label swapping)",
-            "Configure MPLS L3 VPN: PE-CE routing, VRF definition, RD and RT assignment",
-            "Understand how the MPLS label stack enables both VPNs and TE simultaneously",
-            "Explain Segment Routing and why it eliminates the need for LDP and RSVP-TE",
-            "Understand TI-LFA (Topology Independent Loop-Free Alternate) for fast reroute",
-            "Compare MPLS with SD-WAN for enterprise WAN connectivity",
-            "Explain how traffic engineering avoids congested links that SPF would route through"
+            "Design a VPC for a three-tier application: web, app, and database — specify subnet types, security groups, and routing tables",
+            "Explain the difference between Security Groups and Network ACLs: statefulness, scope, and when each is appropriate",
+            "Configure VPC peering between two VPCs and explain why transitive routing does not work",
+            "Describe Transit Gateway and the problem it solves versus mesh peering in a hub-and-spoke model",
+            "Explain the trade-offs between VPN Gateway and Direct Connect for on-premises connectivity",
+            "Calculate the monthly cost of a specific data transfer pattern in AWS and identify the most expensive component"
           ],
           res: [
-            "MPLS Fundamentals (Luc De Ghein â€” clear and practical)",
-            "Segment Routing (Clarence Filsfils et al. â€” Cisco Press)",
-            "RFC 8402 (Segment Routing Architecture)",
-            "MPLS: Technology and Applications (Davie & Farrel)"
-          ]
-        },
-        {
-          name: "Data Center Fabric Design",
-          tag: "expert",
-          desc: "Modern data centers use spine-leaf (Clos) topology instead of traditional three-tier (core-distribution-access). Every leaf connects to every spine â€” creating a non-blocking, predictable latency fabric. ECMP (Equal-Cost Multi-Path) load balances across all spine uplinks simultaneously. BGP is used as the underlay routing protocol because it scales to thousands of devices. MLAG (Multi-chassis LAG) provides redundancy at the server level. The overlay (VXLAN BGP EVPN) provides tenant isolation and Layer 2 extension. Platforms: Arista EOS, Cisco ACI (policy-based), Juniper QFX, open-source Cumulus Linux. Disaggregation: separating hardware from software (white-box switching). SONiC (Software for Open Networking in the Cloud): Microsoft's open-source NOS now used by major hyperscalers.",
-          master: [
-            "Design a two-tier Clos fabric for 400 servers with full redundancy and calculate oversubscription",
-            "Explain why spine-leaf provides predictable latency that three-tier cannot",
-            "Configure eBGP underlay with unique ASNs on every leaf for ECMP routing",
-            "Understand MLAG: how two switches appear as one to the downstream device",
-            "Deploy VXLAN BGP EVPN on top of the BGP underlay",
-            "Explain Cisco ACI's policy model: EPGs, contracts, and the policy-centric approach",
-            "Understand SONiC's containerized architecture and why hyperscalers chose it"
-          ],
-          res: [
-            "Data Center Spine and Leaf Architecture (Cisco White Paper)",
-            "BGP in the Data Center (Dinesh Dutt â€” free O'Reilly ebook)",
-            "Arista Campus Fabric Design Guide",
-            "SONiC documentation (github.com/Azure/SONiC)"
-          ]
-        },
-        {
-          name: "QoS and Network Performance",
-          tag: "expert",
-          desc: "Quality of Service ensures critical traffic gets preferential treatment. Classification: mark packets with DSCP (DiffServ Code Point, 6 bits) or 802.1p (3 bits in 802.1Q VLAN tag). Queuing: FIFO (no QoS), PQ (Priority Queue â€” strict priority can starve), WFQ (Weighted Fair Queuing), CBWFQ (Class-Based WFQ with guaranteed bandwidth per class), LLQ (Low Latency Queuing â€” priority queue for voice + CBWFQ for data). Shaping vs policing: shaping buffers excess traffic to enforce a rate limit smoothly; policing drops excess traffic immediately. WRED (Weighted Random Early Detection) drops packets before queues fill to prevent TCP synchronization. VoIP QoS: voice needs < 150ms latency, < 1% packet loss, < 30ms jitter.",
-          master: [
-            "Explain the DSCP marking for Expedited Forwarding (EF) and Assured Forwarding (AF)",
-            "Configure a 3-class QoS policy: voice (LLQ), business data (CBWFQ 30%), default (CBWFQ remaining)",
-            "Understand the difference between traffic shaping (buffers) and policing (drops)",
-            "Explain WRED and why it prevents global TCP synchronization",
-            "Design a QoS policy for a network carrying voice, video conferencing, and data",
-            "Explain why QoS matters more on WAN links than LAN links (bottleneck bandwidth)",
-            "Understand MOS (Mean Opinion Score) for voice quality measurement"
-          ],
-          res: [
-            "End-to-End QoS Network Design (Tim Szigeti et al. â€” Cisco Press)",
-            "RFC 2474 (DiffServ field definition)",
-            "RFC 2598 (Expedited Forwarding PHB for voice)",
-            "Cisco QoS Design Guide"
-          ]
-        }
-      ]
-    },
-    {
-      name: "Network Monitoring and Operations",
-      level: "expert",
-      tagline: "Observability, performance, and reliability at scale",
-      desc: "A network you cannot observe is a network you cannot operate. This final phase covers the tooling, methodologies, and practices for running networks reliably at scale â€” from monitoring and telemetry to incident response and capacity planning.",
-      topics: [
-        {
-          name: "Network Monitoring and Observability",
-          tag: "advanced",
-          desc: "SNMP (Simple Network Management Protocol): MIBs (Management Information Base) define what can be queried (interface counters, CPU utilization, memory). SNMP v3 adds authentication and encryption (v1/v2c use community strings in cleartext). Streaming telemetry (YANG push / gRPC): replaces SNMP polling with push-based models for sub-second visibility. NetFlow/IPFIX: routers export sampled flow records (source/destination IP, port, bytes, packets) to a collector. Useful for traffic analysis, capacity planning, and detecting anomalies. sFlow: alternative, samples packets at the data plane. Prometheus + Grafana: modern monitoring stack. SNMP exporter for Prometheus. Alertmanager for notifications. Full-stack observability: metrics, logs, traces.",
-          master: [
-            "Deploy Prometheus and Grafana to monitor network device SNMP metrics",
-            "Configure NetFlow export from a router and analyze top talkers with ntopng",
-            "Use streaming telemetry to get interface counters at 10-second intervals",
-            "Write a Prometheus alert rule for interface utilization exceeding 80%",
-            "Understand the difference between polling (SNMP) and streaming telemetry",
-            "Use Grafana dashboards to visualize BGP peer state changes over time",
-            "Implement distributed tracing across a network path using OpenTelemetry"
-          ],
-          res: [
-            "The Practice of Network Security Monitoring (Bejtlich)",
-            "Prometheus and Grafana documentation",
-            "RFC 7011 (IPFIX specification)",
-            "Network Telemetry with OpenConfig (Cisco DevNet free learning lab)"
-          ]
-        },
-        {
-          name: "IDS/IPS and Network Threat Detection",
-          tag: "advanced",
-          desc: "Intrusion Detection Systems (IDS) passively monitor traffic and alert on suspicious patterns. Intrusion Prevention Systems (IPS) are inline and can drop malicious traffic. Signature-based: Snort and Suricata match packets against known attack signatures â€” fast but miss zero-days. Anomaly-based: baseline normal behavior and alert on deviations â€” more false positives. Zeek (formerly Bro): a network analysis framework that extracts metadata about connections, HTTP, DNS, SSL â€” enables complex behavioral queries. SIEM (Security Information and Event Management): centralizes logs and alerts from all devices. Elk Stack (Elasticsearch, Logstash, Kibana) or Splunk. Network Detection and Response (NDR): modern ML-based threat detection (Darktrace, Vectra, ExtraHop).",
-          master: [
-            "Install Suricata and write a custom rule to detect a specific scan pattern",
-            "Configure Zeek to log all DNS queries and HTTP requests to a central server",
-            "Build an ELK stack pipeline ingesting firewall and IDS logs",
-            "Detect C2 beaconing by analyzing Zeek connection logs for periodic connection attempts",
-            "Understand the difference between inline IPS and out-of-band IDS placement",
-            "Perform a PCAP analysis to identify lateral movement indicators",
-            "Explain the diamond model of intrusion analysis for structuring threat investigations"
-          ],
-          res: [
-            "The Practice of Network Security Monitoring (Bejtlich â€” required reading)",
-            "Zeek (zeek.org) documentation and scripting guide",
-            "Suricata User Guide",
-            "Applied Network Security Monitoring (Sanders & Smith)"
-          ]
-        },
-        {
-          name: "Capacity Planning and Network Design",
-          tag: "expert",
-          desc: "Networks fail when capacity planning is wrong. Measure: collect interface utilization, packet rates, error counters, and latency over long periods. Model: understand growth trends, seasonal patterns, and the impact of new applications. Plan: upgrade links before they hit 70-80% utilization (queuing at 80% causes significant latency). Network design principles: build for failure (redundancy at every layer), design for manageability (consistent addressing and naming), document everything. Disaster recovery: RPO (Recovery Point Objective) and RTO (Recovery Time Objective). Failover technologies: HSRP/VRRP for gateway redundancy, BFD (Bidirectional Forwarding Detection) for fast failure detection (sub-second vs OSPF/BGP keepalive timers). Change management: validated rollback procedures, maintenance windows, peer review.",
-          master: [
-            "Perform a capacity analysis for a WAN link using 95th percentile utilization data",
-            "Design a high availability architecture for a data center with RPO=0 and RTO < 30 seconds",
-            "Configure BFD with OSPF to achieve sub-second failure detection",
-            "Understand HSRP vs VRRP vs GLBP for first-hop redundancy",
-            "Design an addressing and VLAN scheme that scales to 50 office locations",
-            "Write a network design document with topology, addressing plan, and security design",
-            "Conduct a post-incident analysis after a network outage using structured methodology"
-          ],
-          res: [
-            "Network Design Cookbook (Cisco Press)",
-            "The Practice of Cloud System Administration (Limoncelli et al.)",
-            "ITIL Foundation: IT Service Management concepts",
-            "Visible Ops Handbook (Kim, Behr, Spafford â€” change management for infrastructure)"
+            "AWS VPC documentation (docs.aws.amazon.com/vpc) — read the entire User Guide",
+            "AWS Networking Fundamentals re:Invent sessions (YouTube) — structured deep dives",
+            "Azure Virtual Network documentation — same concepts, different terminology and implementation",
+            "The Last Week in AWS (Corey Quinn) — honest operational and cost analysis"
           ]
         }
       ]
     }
   ]
-};
+}

@@ -1,338 +1,208 @@
-﻿export const softwareData = {
-  name: "SOFTWARE ENGINEERING & SYSTEM DESIGN",
+export const softwareData = {
+  name: "SOFTWARE ENGINEERING",
   area: "soft",
-  eyebrow: "Clean Code Â· System Design Â· API Architecture Â· Performance Engineering",
-  sub: "Master the craft of building software that scales, endures, and actually ships. From first-principles data structures to distributed system design, from clean architecture to production performance engineering. This is the complete roadmap from junior developer to senior engineer and beyond.",
+  eyebrow: "Data Structures · Algorithms · System Design · Architecture · Databases · Performance",
+  sub: "The engineers who get stuck at mid-level for years are not the ones who cannot code. They are the ones who never developed a mental model for how systems behave under load, why certain designs collapse when scale increases, or how to reason about the correctness of their own solutions. This roadmap builds the foundations that separate engineers who can implement from engineers who can design.",
   phases: [
     {
-      name: "Programming Fundamentals & Paradigms",
+      name: "Data Structures and Algorithms",
       level: "foundation",
-      tagline: "The building blocks of software",
-      desc: "Before you architect systems, master the fundamentals. Data structures, algorithms, and multiple programming paradigms. Language is just a tool â€” principles are universal.",
+      tagline: "The vocabulary for reasoning about computational efficiency",
+      desc: "Data structures and algorithms are not interview trivia — they are the vocabulary you need to have informed conversations about tradeoffs in system design. Not every production problem requires a custom AVL tree. But an engineer who does not understand why hash tables have O(1) average lookup, or why B-trees are the default for database indexes, or why naive sorting of 100M items on a single machine is a bad idea, will make systematically poor decisions about the components they build and use.",
       topics: [
         {
-          name: "Data Structures & Algorithms",
+          name: "Complexity Analysis and Core Data Structures",
           tag: "core",
-          desc: "Arrays, linked lists (singly/doubly), stacks, queues, hash tables (collision resolution: chaining, open addressing), trees (BST, AVL, Red-Black, B-trees), heaps (min/max, priority queue), graphs (adjacency matrix/list, traversal: BFS, DFS). Sorting algorithms (quicksort, mergesort, heapsort, radix sort) â€” implement and analyze complexity.",
+          desc: "Big-O notation describes how an algorithm's resource usage grows as input size grows — it characterizes the limiting behavior, not the constant factor. O(1) is constant, O(log n) grows slowly (binary search, balanced tree operations), O(n) is linear, O(n log n) is typical of good sorting, O(n²) is the mark of nested iteration that becomes unusable at scale. Arrays have O(1) random access because elements are contiguous in memory — you multiply the index by the element size to compute the address directly. Linked lists have O(1) insertion and deletion at a known position but O(n) access — you must walk from the head. Hash tables achieve average O(1) insert, lookup, and delete by mapping keys to array indices using a hash function. Collision resolution: chaining (each bucket is a linked list) or open addressing (probe for the next available bucket). Hash table degradation: a bad hash function or high load factor causes many collisions and degrades performance toward O(n). Stacks (LIFO) and queues (FIFO) are constraints on access, not separate data structures — they are implemented with arrays or linked lists.",
           master: [
-            "Implement a dynamic array (ArrayList) from scratch with resizing",
-            "Implement a hash table with separate chaining and load factor resizing",
-            "Implement a binary search tree with insert, delete, find, and traversal",
-            "Implement quicksort and mergesort and analyze worst-case vs average-case complexity",
-            "Solve 50+ LeetCode problems covering all major data structures",
-            "Understand Big O notation: calculate time/space complexity for any algorithm",
-            "Implement Dijkstra's shortest path and A* search algorithm"
+            "Explain O(1), O(log n), O(n), O(n log n), O(n²) with a concrete algorithm example for each",
+            "Explain why array random access is O(1) at the memory level",
+            "Explain hash table collision resolution: chaining versus open addressing, and how load factor affects performance",
+            "Implement a hash table from scratch: hash function, bucket array, collision handling, resize logic",
+            "Explain when a linked list is the right choice over an array and when it is not",
+            "Describe the time and space complexity of the fundamental operations for arrays, linked lists, stacks, queues, and hash tables"
           ],
-          code: "// Hash table with separate chaining\nclass HashTable<K, V> {\n    private static class Entry<K, V> {\n        K key;\n        V value;\n        Entry<K, V> next;\n        \n        Entry(K key, V value) {\n            this.key = key;\n            this.value = value;\n        }\n    }\n    \n    private Entry<K, V>[] buckets;\n    private int size = 0;\n    private static final double LOAD_FACTOR = 0.75;\n    \n    @SuppressWarnings(\"unchecked\")\n    public HashTable() {\n        buckets = (Entry<K, V>[]) new Entry[16];\n    }\n    \n    private int hash(K key) {\n        return Math.abs(key.hashCode()) % buckets.length;\n    }\n    \n    public void put(K key, V value) {\n        int index = hash(key);\n        Entry<K, V> entry = buckets[index];\n        \n        while (entry != null) {\n            if (entry.key.equals(key)) {\n                entry.value = value;\n                return;\n            }\n            entry = entry.next;\n        }\n        \n        Entry<K, V> newEntry = new Entry<>(key, value);\n        newEntry.next = buckets[index];\n        buckets[index] = newEntry;\n        size++;\n        \n        if ((double) size / buckets.length > LOAD_FACTOR) {\n            resize();\n        }\n    }\n    \n    private void resize() {\n        // Implementation omitted for brevity\n    }\n}",
           res: [
-            "Introduction to Algorithms (CLRS)",
-            "Grokking Algorithms (Aditya Bhargava)",
-            "Cracking the Coding Interview (Gayle Laakmann McDowell)",
-            "LeetCode.com â€” practice platform"
+            "The Algorithm Design Manual (Steven Skiena) — the most practical algorithms text",
+            "Introduction to Algorithms (Cormen et al., CLRS) — the rigorous reference",
+            "LeetCode Explore (leetcode.com) — structured exercises on each data structure",
+            "Visualgo (visualgo.net) — animated algorithm and data structure visualizations"
           ]
         },
         {
-          name: "Object-Oriented Programming & SOLID",
+          name: "Trees, Graphs, and Sorting",
           tag: "core",
-          desc: "OOP principles: encapsulation, inheritance, polymorphism, abstraction. SOLID principles: Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion. Design patterns (Gang of Four): Creational (Singleton, Factory, Builder), Structural (Adapter, Decorator, Proxy), Behavioral (Observer, Strategy, Command).",
+          desc: "Binary search trees maintain sorted order: left subtree has smaller keys, right subtree has larger keys. In-order traversal produces sorted output. BST operations are O(h) where h is the height — in a balanced tree that is O(log n), in the worst case (sorted input) the tree degenerates into a linked list and h = n. Balanced BSTs (AVL, Red-Black) guarantee O(log n) by maintaining height balance through rotations. Heaps are complete binary trees with the heap property: the parent is larger (max-heap) or smaller (min-heap) than its children. Array representation of a heap: the children of index i are at 2i+1 and 2i+2. HeapSort and priority queues use the heap data structure. Graphs have vertices and edges — directed or undirected, weighted or unweighted. BFS uses a queue, explores level by level, finds shortest path in unweighted graphs. DFS uses a stack (or recursion), explores depth-first, useful for topological sort, cycle detection, connected components. Sorting: merge sort is O(n log n) always, stable, uses O(n) extra space. Quicksort is O(n log n) average, O(n²) worst case, O(log n) stack space, faster in practice due to cache behavior.",
           master: [
-            "Explain and apply each SOLID principle with code examples",
-            "Implement a Factory pattern for creating different types of database connections",
-            "Use Observer pattern to implement an event notification system",
-            "Apply Dependency Injection to decouple classes and improve testability",
-            "Identify and refactor code that violates Liskov Substitution",
-            "Implement a Builder pattern for constructing complex objects (e.g., SQL query builder)",
-            "Use Strategy pattern to swap sorting algorithms at runtime"
+            "Explain why a naive BST degenerates to O(n) with sorted input and how AVL trees prevent this",
+            "Implement BFS and DFS on a graph from scratch and explain the difference in what each explores first",
+            "Use BFS to find the shortest path between two nodes in an unweighted graph",
+            "Explain Dijkstra's algorithm: what it finds, why it needs a priority queue, and where it fails",
+            "Explain merge sort and quicksort: why quicksort is faster in practice despite the same average complexity",
+            "Implement a topological sort and describe a real-world problem it solves"
           ],
-          code: "// Strategy Pattern example\ninterface PaymentStrategy {\n    void pay(int amount);\n}\n\nclass CreditCardPayment implements PaymentStrategy {\n    private String cardNumber;\n    \n    CreditCardPayment(String cardNumber) {\n        this.cardNumber = cardNumber;\n    }\n    \n    @Override\n    public void pay(int amount) {\n        System.out.println(\"Paid \" + amount + \" using credit card \" + cardNumber);\n    }\n}\n\nclass PayPalPayment implements PaymentStrategy {\n    private String email;\n    \n    PayPalPayment(String email) {\n        this.email = email;\n    }\n    \n    @Override\n    public void pay(int amount) {\n        System.out.println(\"Paid \" + amount + \" using PayPal account \" + email);\n    }\n}\n\nclass ShoppingCart {\n    private PaymentStrategy paymentStrategy;\n    \n    public void setPaymentStrategy(PaymentStrategy strategy) {\n        this.paymentStrategy = strategy;\n    }\n    \n    public void checkout(int total) {\n        paymentStrategy.pay(total);\n    }\n}\n\n// Usage\nShoppingCart cart = new ShoppingCart();\ncart.setPaymentStrategy(new CreditCardPayment(\"1234-5678\"));\ncart.checkout(100);\n\ncart.setPaymentStrategy(new PayPalPayment(\"user@example.com\"));\ncart.checkout(50);",
           res: [
-            "Design Patterns: Elements of Reusable OO Software (GoF)",
-            "Clean Code (Robert Martin)",
-            "Head First Design Patterns (Freeman, Robson)",
-            "Refactoring to Patterns (Joshua Kerievsky)"
-          ]
-        },
-        {
-          name: "Functional Programming",
-          tag: "core",
-          desc: "Immutable data, pure functions, referential transparency, side-effect isolation. Higher-order functions (map, filter, reduce), function composition, currying, partial application. Monads (Maybe, Either, IO), functors, applicatives. Languages: Haskell, Elm, Scala, Clojure, or FP features in JS/Python/Java.",
-          master: [
-            "Implement map, filter, reduce (fold) from scratch",
-            "Write a curried function and explain partial application",
-            "Use Option/Maybe monad to handle null safely without exceptions",
-            "Compose multiple functions into a pipeline",
-            "Explain monad laws (left identity, right identity, associativity)",
-            "Refactor imperative code with loops into functional map/filter/reduce",
-            "Implement a simple Either monad for error handling"
-          ],
-          code: "// Functional programming in JavaScript\n\n// Immutability\nconst numbers = [1, 2, 3, 4, 5];\nconst doubled = numbers.map(n => n * 2);  // Returns new array, doesn't modify original\n\n// Pure function\nconst add = (x, y) => x + y;  // No side effects, same input = same output\n\n// Higher-order functions\nconst filterEven = numbers.filter(n => n % 2 === 0);\nconst sum = numbers.reduce((acc, n) => acc + n, 0);\n\n// Currying\nconst multiply = x => y => x * y;\nconst double = multiply(2);\nconsole.log(double(5));  // 10\n\n// Function composition\nconst compose = (f, g) => x => f(g(x));\nconst addOne = x => x + 1;\nconst square = x => x * x;\nconst addOneThenSquare = compose(square, addOne);\nconsole.log(addOneThenSquare(4));  // (4+1)^2 = 25\n\n// Maybe monad (simplified)\nclass Maybe {\n    constructor(value) { this.value = value; }\n    static of(value) { return new Maybe(value); }\n    map(fn) { return this.value === null ? Maybe.of(null) : Maybe.of(fn(this.value)); }\n    getOrElse(defaultValue) { return this.value === null ? defaultValue : this.value; }\n}\n\nconst result = Maybe.of(5).map(x => x * 2).map(x => x + 1).getOrElse(0);\nconsole.log(result);  // 11",
-          res: [
-            "Functional Programming in Scala (Paul Chiusano)",
-            "Learn You a Haskell for Great Good (Miran LipovaÄa)",
-            "Functional Light JS (Kyle Simpson â€” free online)",
-            "Category Theory for Programmers (Bartosz Milewski)"
+            "The Algorithm Design Manual (Skiena) Chapters 5–7 — graph algorithms",
+            "NeetCode roadmap (neetcode.io) — curated problem set organized by pattern",
+            "Grokking Algorithms (Aditya Bhargava) — visual explanations, good for solidifying intuition",
+            "LeetCode Patterns — identify the 20 algorithm patterns that solve 80% of problems"
           ]
         }
       ]
     },
     {
-      name: "Software Design & Architecture",
+      name: "Systems Design Foundations",
       level: "intermediate",
-      tagline: "Building for change and scale",
-      desc: "How to structure software that grows with requirements. Architectural patterns, clean architecture, microservices, event-driven design, and domain-driven design.",
+      tagline: "Building systems that work under conditions you did not anticipate",
+      desc: "A system that works for one user rarely works for one million. The challenges of scale are not primarily about writing faster code — they are about eliminating bottlenecks, distributing load, handling partial failures gracefully, and making explicit trade-offs between consistency, availability, and partition tolerance. Systems design is the practice of making those trade-offs deliberately.",
       topics: [
         {
-          name: "Architectural Patterns",
+          name: "Distributed Systems Fundamentals",
           tag: "core",
-          desc: "Layered architecture (presentation, business, persistence, database), Hexagonal architecture (ports and adapters), Clean architecture (entities, use cases, interfaces, frameworks), CQRS (Command Query Responsibility Segregation), Event Sourcing, Microservices vs Monolith (trade-offs, decomposition strategies), Serverless architecture.",
+          desc: "The CAP theorem states that a distributed system can provide at most two of: Consistency (every read receives the most recent write), Availability (every request receives a response), Partition Tolerance (the system continues operating when some nodes cannot communicate). In practice, network partitions happen — you choose between consistency and availability when they do. PACELC extends CAP: even without partitions, there is a trade-off between latency and consistency. Strong consistency means all nodes see the same value at the same time — requires coordination. Eventual consistency means all nodes will converge to the same value eventually — enables better performance and availability. The distributed systems fallacies: the network is reliable; latency is zero; bandwidth is infinite; the network is secure; topology does not change; there is one administrator; transport cost is zero; the network is homogeneous. Every senior engineer has been burned by assuming one of these. Idempotency is a property of operations that can be applied multiple times without different outcomes — at-least-once delivery combined with idempotent operations gives you effectively-once semantics without distributed transactions.",
           master: [
-            "Design a layered architecture for an e-commerce system",
-            "Implement Clean Architecture with separation of concerns",
-            "Explain when to choose microservices vs monolith with concrete examples",
-            "Implement CQRS pattern with separate read and write models",
-            "Design an event-sourced system with event store and projections",
-            "Understand the strangler fig pattern for monolith migration",
-            "Implement a circuit breaker pattern for microservice resilience"
+            "Explain the CAP theorem with a concrete example of each trade-off decision in a real system",
+            "Describe eventual consistency and give a real-world example of a system where it is the correct choice",
+            "Explain idempotency: what it means, why it matters for retries, and how to design an idempotent API",
+            "Describe the two-phase commit protocol: what it guarantees and why distributed transactions are avoided",
+            "Explain the difference between synchronous and asynchronous replication and the durability trade-off",
+            "Describe the consensus problem and explain why Raft is easier to understand than Paxos"
           ],
-          code: "// Clean Architecture layers (Java example)\n\n// Entity (Enterprise Business Rules)\npublic class Product {\n    private Long id;\n    private String name;\n    private Money price;\n    private int quantity;\n    \n    public boolean isAvailable() {\n        return quantity > 0;\n    }\n    \n    public void reduceQuantity(int amount) {\n        if (amount > quantity) throw new InsufficientStockException();\n        quantity -= amount;\n    }\n}\n\n// Use Case (Application Business Rules)\npublic class PlaceOrderUseCase {\n    private final ProductRepository productRepository;\n    private final OrderRepository orderRepository;\n    \n    public PlaceOrderUseCase(ProductRepository productRepository, OrderRepository orderRepository) {\n        this.productRepository = productRepository;\n        this.orderRepository = orderRepository;\n    }\n    \n    public Order execute(PlaceOrderCommand command) {\n        Product product = productRepository.findById(command.getProductId());\n        if (!product.isAvailable()) {\n            throw new ProductNotAvailableException();\n        }\n        \n        Order order = new Order(command.getCustomerId(), product, command.getQuantity());\n        product.reduceQuantity(command.getQuantity());\n        \n        return orderRepository.save(order);\n    }\n}\n\n// Interface Adapters (Controllers, Presenters)\n@RestController\npublic class OrderController {\n    private final PlaceOrderUseCase placeOrderUseCase;\n    \n    @PostMapping(\"/orders\")\n    public OrderResponse placeOrder(@RequestBody OrderRequest request) {\n        PlaceOrderCommand command = new PlaceOrderCommand(\n            request.getProductId(), \n            request.getCustomerId(), \n            request.getQuantity()\n        );\n        Order order = placeOrderUseCase.execute(command);\n        return new OrderResponse(order.getId(), order.getStatus());\n    }\n}",
           res: [
-            "Clean Architecture (Robert Martin)",
-            "Patterns of Enterprise Application Architecture (Martin Fowler)",
-            "Building Microservices (Sam Newman)",
-            "Domain-Driven Design (Eric Evans)"
+            "Designing Data-Intensive Applications (Martin Kleppmann) — the essential distributed systems book for practitioners",
+            "The Raft Consensus Algorithm (Diego Ongaro, John Ousterhout) — the readable consensus protocol",
+            "AWS re:Invent talks on distributed systems — practical, experience-based",
+            "Notes on Distributed Systems for Young Bloods (Jeff Hodges) — read this early and often"
           ]
         },
         {
-          name: "Domain-Driven Design (DDD)",
-          tag: "advanced",
-          desc: "Strategic design: Ubiquitous language, bounded contexts, context mapping (partnership, shared kernel, customer-supplier, conformist, anticorruption layer, open host service). Tactical patterns: Entity, Value Object, Aggregate, Aggregate Root, Repository, Factory, Service, Domain Event, Specification.",
+          name: "Caching, Load Balancing, and Horizontal Scaling",
+          tag: "core",
+          desc: "Caching trades memory for speed by storing the result of expensive computations or queries. Cache hit rate is the metric that matters — a cache with 50% hit rate provides little benefit. The hardest problems in caching are not implementation — they are invalidation (when should a cached value be considered stale), eviction (what to remove when the cache is full, with LRU being the most common policy), and thundering herd (many requests hitting the database simultaneously after a popular cached item expires). Load balancers distribute traffic across multiple instances. Round-robin assigns requests sequentially; least-connections sends to the instance with fewest active connections; consistent hashing maps requests to instances in a way that minimizes redistribution when instances are added or removed. Horizontal scaling adds more instances; vertical scaling adds more resources to one instance. Stateless services scale horizontally easily — any instance can serve any request. Stateful services require sticky sessions or externalized state (Redis, database) to scale horizontally.",
           master: [
-            "Identify bounded contexts for a complex business domain (e.g., e-commerce, banking)",
-            "Define aggregates and aggregate roots with consistency boundaries",
-            "Implement value objects with immutability and equality semantics",
-            "Use domain events to communicate changes between bounded contexts",
-            "Design repositories for aggregate persistence",
-            "Apply anticorruption layer when integrating with legacy systems",
-            "Implement specification pattern for complex business rules"
+            "Describe three cache invalidation strategies and explain the trade-offs between cache freshness and database load",
+            "Explain the thundering herd problem and describe two ways to prevent it",
+            "Explain consistent hashing: how it works and why it is preferred over modulo hashing for distributed caches",
+            "Describe the difference between L1/L2/L3 caches (application, distributed, CDN) and give a use case for each",
+            "Design a system to cache database query results for an endpoint that receives 10,000 requests per second",
+            "Explain why stateless architecture is a prerequisite for horizontal scaling"
           ],
-          code: "// DDD tactical patterns (Java)\n\n// Value Object (immutable, equality by attributes)\npublic final class Money {\n    private final BigDecimal amount;\n    private final Currency currency;\n    \n    public Money(BigDecimal amount, Currency currency) {\n        this.amount = amount;\n        this.currency = currency;\n    }\n    \n    @Override\n    public boolean equals(Object o) {\n        if (this == o) return true;\n        if (!(o instanceof Money)) return false;\n        Money money = (Money) o;\n        return amount.equals(money.amount) && currency.equals(money.currency);\n    }\n    \n    @Override\n    public int hashCode() {\n        return Objects.hash(amount, currency);\n    }\n}\n\n// Aggregate Root\npublic class Order extends AggregateRoot<OrderId> {\n    private OrderId id;\n    private CustomerId customerId;\n    private List<OrderLine> lines = new ArrayList<>();\n    private OrderStatus status;\n    \n    public void addLine(ProductId productId, int quantity, Money price) {\n        if (status != OrderStatus.DRAFT) {\n            throw new OrderNotModifiableException();\n        }\n        lines.add(new OrderLine(productId, quantity, price));\n        registerEvent(new OrderLineAddedEvent(id, productId, quantity));\n    }\n    \n    public void submit() {\n        if (lines.isEmpty()) {\n            throw new EmptyOrderException();\n        }\n        this.status = OrderStatus.SUBMITTED;\n        registerEvent(new OrderSubmittedEvent(id, calculateTotal()));\n    }\n    \n    private Money calculateTotal() {\n        return lines.stream()\n            .map(OrderLine::getSubtotal)\n            .reduce(Money.ZERO, Money::add);\n    }\n}\n\n// Repository\npublic interface OrderRepository {\n    Order findById(OrderId id);\n    void save(Order order);\n    void delete(OrderId id);\n}",
           res: [
-            "Domain-Driven Design (Eric Evans â€” the blue book)",
-            "Implementing Domain-Driven Design (Vaughn Vernon)",
-            "Domain-Driven Design Distilled (Vaughn Vernon)",
-            "DDD Community resources (dddcommunity.org)"
+            "Designing Data-Intensive Applications (Kleppmann) Chapter 5 — replication and caching",
+            "Redis documentation — the standard distributed cache, read the data type documentation",
+            "System Design Interview (Alex Xu) — practical walk-throughs of common design problems",
+            "AWS ElastiCache documentation — real caching infrastructure patterns"
           ]
         },
         {
-          name: "Design Patterns in Depth",
-          tag: "advanced",
-          desc: "Creational patterns beyond Singleton: Abstract Factory for families of products, Prototype for cloning, Dependency Injection container implementation. Structural: Bridge (decouple abstraction from implementation), Composite (tree structures), Flyweight (shared objects for memory efficiency). Behavioral: Chain of Responsibility (request processing pipeline), Memento (undo/redo), Visitor (operations on object structure).",
+          name: "Databases: Relational and Non-Relational",
+          tag: "core",
+          desc: "Relational databases store data in tables with enforced schemas and support ACID transactions. ACID: Atomicity (the transaction completes fully or not at all), Consistency (constraints are enforced), Isolation (concurrent transactions do not see each other's intermediate state), Durability (committed transactions survive crashes). Isolation levels trade correctness for performance: Read Uncommitted allows dirty reads, Read Committed prevents dirty reads but allows non-repeatable reads, Repeatable Read prevents non-repeatable reads but allows phantom reads, Serializable prevents all anomalies. B-tree indexes keep data sorted — efficient for range queries and equality lookups. Covering indexes include all columns needed by a query, eliminating the table lookup entirely. Query optimization: explain/analyze shows the query plan and whether indexes are being used. Non-relational databases sacrifice some SQL features for specific performance or scalability properties: document stores (MongoDB) for flexible schema, key-value stores (Redis) for simple lookup, column families (Cassandra) for high write throughput and time-series data, graph databases (Neo4j) for relationship-heavy queries.",
           master: [
-            "Implement Abstract Factory for cross-platform UI components",
-            "Use Bridge pattern to separate device control from device implementations",
-            "Implement a Composite pattern for file system representation",
-            "Use Chain of Responsibility for request validation and processing",
-            "Implement Memento pattern for text editor undo/redo",
-            "Use Visitor to add new operations without modifying existing classes",
-            "Implement a simple Dependency Injection container"
+            "Explain ACID properties with a concrete example of what each property prevents",
+            "Describe the four isolation levels and give an anomaly that each higher level prevents",
+            "Explain how a B-tree index works and why it makes queries faster — include what a clustered versus non-clustered index means",
+            "Use EXPLAIN/ANALYZE on a slow query, identify the bottleneck, and fix it",
+            "Describe N+1 query problem: how it arises and two ways to fix it",
+            "Choose between a relational and a document database for a specific use case and justify the decision"
           ],
-          code: "// Visitor Pattern example\ninterface Element {\n    void accept(Visitor visitor);\n}\n\nclass Paragraph implements Element {\n    private String text;\n    \n    Paragraph(String text) { this.text = text; }\n    String getText() { return text; }\n    \n    @Override\n    public void accept(Visitor visitor) {\n        visitor.visit(this);\n    }\n}\n\nclass Image implements Element {\n    private String url;\n    \n    Image(String url) { this.url = url; }\n    String getUrl() { return url; }\n    \n    @Override\n    public void accept(Visitor visitor) {\n        visitor.visit(this);\n    }\n}\n\ninterface Visitor {\n    void visit(Paragraph paragraph);\n    void visit(Image image);\n}\n\nclass HTMLExporter implements Visitor {\n    private StringBuilder output = new StringBuilder();\n    \n    @Override\n    public void visit(Paragraph paragraph) {\n        output.append(\"<p>\").append(paragraph.getText()).append(\"</p>\\n\");\n    }\n    \n    @Override\n    public void visit(Image image) {\n        output.append(\"<img src='\").append(image.getUrl()).append(\"' />\\n\");\n    }\n    \n    String getHTML() { return output.toString(); }\n}\n\n// Usage\nList<Element> document = Arrays.asList(\n    new Paragraph(\"Hello World\"),\n    new Image(\"photo.jpg\"),\n    new Paragraph(\"Another paragraph\")\n);\n\nHTMLExporter exporter = new HTMLExporter();\nfor (Element element : document) {\n    element.accept(exporter);\n}\nSystem.out.println(exporter.getHTML());",
           res: [
-            "Design Patterns (Gamma et al. â€” GoF book)",
-            "Head First Design Patterns (Freeman & Robson)",
-            "Design Patterns in Modern C++ (Dmitri Nesteruk)",
-            "Refactoring.Guru â€” Design Patterns (website)"
+            "Designing Data-Intensive Applications (Kleppmann) Chapters 2–4 — the best database fundamentals coverage",
+            "Use the Index, Luke (use-the-index-luke.com) — SQL indexing for developers, free",
+            "PostgreSQL documentation — read the sections on query planning and index types",
+            "Database Internals (Alex Petrov) — storage engines and distributed database internals"
           ]
         }
       ]
     },
     {
-      name: "System Design & Scalability",
-      level: "advanced",
-      tagline: "Building systems that serve millions",
-      desc: "Designing large-scale distributed systems. Load balancing, caching, database sharding, message queues, CDNs, and consistency models. Prepare for system design interviews and real-world architecture challenges.",
-      topics: [
-        {
-          name: "Load Balancing & Proxies",
-          tag: "core",
-          desc: "Load balancer algorithms: round-robin, least connections, IP hash, weighted round-robin. Layer 4 (transport) vs Layer 7 (application) load balancing. Reverse proxy (Nginx, HAProxy, Envoy). Forward proxy. Load balancer deployment: active-passive, active-active, global server load balancing (GSLB). Health checks, session persistence (sticky sessions).",
-          master: [
-            "Configure Nginx as a reverse proxy with load balancing to 3 backend servers",
-            "Explain the difference between L4 and L7 load balancing with use cases",
-            "Implement session persistence using cookie insertion",
-            "Design a GSLB solution for multi-region failover",
-            "Set up HAProxy with health checks and fallback servers",
-            "Understand consistent hashing for distributed caching",
-            "Implement rate limiting at the load balancer level"
-          ],
-          code: "# Nginx load balancing configuration\nhttp {\n    upstream backend_servers {\n        # Load balancing method (default: round-robin)\n        least_conn;\n        \n        # Servers with weights\n        server backend1.example.com weight=3;\n        server backend2.example.com weight=2;\n        server backend3.example.com backup;\n        \n        # Health check\n        keepalive 32;\n    }\n    \n    server {\n        listen 80;\n        \n        location / {\n            proxy_pass http://backend_servers;\n            proxy_set_header Host $host;\n            proxy_set_header X-Real-IP $remote_addr;\n            \n            # Session stickiness (cookie-based)\n            proxy_cookie_path / \"/; HttpOnly; Secure\";\n        }\n        \n        # Rate limiting\n        limit_req_zone $binary_remote_addr zone=mylimit:10m rate=10r/s;\n        location /api/ {\n            limit_req zone=mylimit burst=20 nodelay;\n            proxy_pass http://backend_servers;\n        }\n    }\n}\n\n# HAProxy configuration (excerpt)\nfrontend web_frontend\n    bind *:80\n    mode http\n    default_backend web_servers\n\nbackend web_servers\n    mode http\n    balance roundrobin\n    option httpchk GET /health\n    server web1 10.0.0.1:80 check inter 3s rise 2 fall 3\n    server web2 10.0.0.2:80 check inter 3s rise 2 fall 3\n    server web3 10.0.0.3:80 check backup",
-          res: [
-            "Nginx Documentation (nginx.org)",
-            "HAProxy Configuration Manual",
-            "System Design Interview (Alex Xu)",
-            "High Performance Browser Networking (Ilya Grigorik)"
-          ]
-        },
-        {
-          name: "Caching Strategies",
-          tag: "core",
-          desc: "Cache types: CDN (CloudFront, Cloudflare), DNS caching, HTTP caching (ETag, Last-Modified, Cache-Control), application caching (Redis, Memcached), database caching (query cache, buffer pool). Cache strategies: cache-aside (lazy loading), write-through, write-behind (write-back), write-around. Eviction policies: LRU, LFU, FIFO, TTL. Cache invalidation challenges.",
-          master: [
-            "Implement cache-aside pattern with Redis for database queries",
-            "Configure HTTP caching headers for static assets (Cache-Control, ETag)",
-            "Design a CDN strategy for global content delivery",
-            "Implement write-through cache for banking transactions",
-            "Use Redis with TTL for session storage",
-            "Understand cache stampede problem and solutions (probabilistic early expiration)",
-            "Implement distributed caching with consistent hashing"
-          ],
-          code: "# Python Redis cache-aside implementation\nimport redis\nimport json\nfrom functools import wraps\n\nredis_client = redis.Redis(host='localhost', port=6379, decode_responses=True)\n\ndef cache_aside(ttl=300):\n    def decorator(func):\n        @wraps(func)\n        def wrapper(*args, **kwargs):\n            # Create cache key from function name and arguments\n            cache_key = f\"{func.__name__}:{str(args)}:{str(kwargs)}\"\n            \n            # Try to get from cache\n            cached_result = redis_client.get(cache_key)\n            if cached_result:\n                return json.loads(cached_result)\n            \n            # Cache miss - call the actual function\n            result = func(*args, **kwargs)\n            \n            # Store in cache with TTL\n            redis_client.setex(cache_key, ttl, json.dumps(result))\n            \n            return result\n        return wrapper\n    return decorator\n\n@cache_aside(ttl=60)\ndef get_user_profile(user_id):\n    # Expensive database query\n    return db.query(\"SELECT * FROM users WHERE id = ?\", user_id)\n\n# Write-through pattern\ndef update_user(user_id, data):\n    # Update database\n    db.execute(\"UPDATE users SET name = ? WHERE id = ?\", data['name'], user_id)\n    \n    # Update cache\n    cache_key = f\"get_user_profile:({user_id},):{{}}\"\n    redis_client.setex(cache_key, 60, json.dumps(data))\n\n# Redis LRU configuration (redis.conf)\n# maxmemory 256mb\n# maxmemory-policy allkeys-lru",
-          res: [
-            "Redis documentation (redis.io)",
-            "Caching Strategies (Microsoft Architecture Center)",
-            "Memcached: A Distributed Memory Object Caching System",
-            "HTTP Caching (MDN Web Docs)"
-          ]
-        },
-        {
-          name: "Database Scaling & Sharding",
-          tag: "advanced",
-          desc: "Vertical scaling (more powerful hardware) vs horizontal scaling (more nodes). Replication: master-slave (read replicas), master-master (multi-master). Sharding strategies: range-based, hash-based (consistent hashing), directory-based. Shard key selection. Distributed transactions: 2PC (two-phase commit), Saga pattern. Eventual consistency vs strong consistency. CAP theorem.",
-          master: [
-            "Design a sharding strategy for a social media feed database",
-            "Implement read replicas with PostgreSQL streaming replication",
-            "Explain the difference between horizontal and vertical partitioning",
-            "Design a system using Saga pattern for distributed transactions",
-            "Understand consistent hashing for dynamic shard rebalancing",
-            "Implement a distributed ID generator (Snowflake, UUID v7)",
-            "Explain CAP theorem trade-offs with real-world examples"
-          ],
-          code: "# Database sharding example (application-level)\nimport hashlib\n\nclass ShardedDatabase:\n    def __init__(self, shards):\n        self.shards = shards  # List of database connections\n        self.num_shards = len(shards)\n    \n    def _get_shard(self, shard_key):\n        # Consistent hashing (simplified)\n        hash_value = hashlib.md5(shard_key.encode()).hexdigest()\n        shard_index = int(hash_value, 16) % self.num_shards\n        return self.shards[shard_index]\n    \n    def get_user(self, user_id):\n        shard = self._get_shard(user_id)\n        return shard.query(\"SELECT * FROM users WHERE id = ?\", user_id)\n    \n    def get_user_posts(self, user_id, page=1, limit=20):\n        # Posts table might be sharded by user_id as well\n        shard = self._get_shard(user_id)\n        offset = (page - 1) * limit\n        return shard.query(\n            \"SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?\",\n            user_id, limit, offset\n        )\n\n# Range-based sharding\n# Shard 1: user_id 1-1,000,000\n# Shard 2: user_id 1,000,001-2,000,000\n# Shard 3: user_id 2,000,001-3,000,000\n\n# Distributed ID generator (Snowflake)\n# 64-bit ID: 1 bit unused | 41 bits timestamp | 10 bits machine ID | 12 bits sequence\nclass SnowflakeID:\n    def __init__(self, machine_id):\n        self.machine_id = machine_id\n        self.sequence = 0\n        self.last_timestamp = -1\n        self.EPOCH = 1609459200000  # 2021-01-01\n    \n    def generate(self):\n        timestamp = int(time.time() * 1000)\n        if timestamp == self.last_timestamp:\n            self.sequence = (self.sequence + 1) & 4095  # 12 bits\n            if self.sequence == 0:\n                timestamp = self._wait_next_millis()\n        else:\n            self.sequence = 0\n        \n        self.last_timestamp = timestamp\n        \n        return ((timestamp - self.EPOCH) << 22) | (self.machine_id << 12) | self.sequence",
-          res: [
-            "Designing Data-Intensive Applications (Martin Kleppmann)",
-            "Database Internals (Alex Petrov)",
-            "High Performance MySQL (Baron Schwartz et al.)",
-            "Consistent Hashing (original paper by Karger et al.)"
-          ]
-        }
-      ]
-    },
-    {
-      name: "Testing & Quality Assurance",
+      name: "Software Architecture Patterns",
       level: "intermediate",
-      tagline: "Confidence through automation",
-      desc: "Testing pyramid: unit tests, integration tests, end-to-end tests. Test-driven development (TDD), behavior-driven development (BDD). Mocking, stubbing, property-based testing. Performance testing, security testing, chaos engineering.",
+      tagline: "Architecture decisions outlast every other decision you make",
+      desc: "Architecture patterns are not solutions to specific problems — they are reusable structures that solve categories of problems while introducing specific trade-offs. The right pattern depends on the team size, deployment model, performance requirements, and how the system is expected to change. An engineer who applies microservices to a two-person startup creates a distributed monolith with all the downsides of both approaches. An engineer who keeps a monolith at 50 engineers with divergent deployment requirements creates a bottleneck for the entire organization.",
       topics: [
         {
-          name: "Unit & Integration Testing",
-          tag: "core",
-          desc: "Unit testing frameworks: JUnit (Java), pytest (Python), Jest (JS), RSpec (Ruby). Test isolation, mocking frameworks (Mockito, unittest.mock). Test fixtures, parameterized tests. Code coverage (JaCoCo, coverage.py). Test-driven development (red-green-refactor). Integration tests: testing components together, testcontainers for external dependencies.",
+          name: "Monoliths, Microservices, and Service Design",
+          tag: "intermediate",
+          desc: "A monolith is a single deployable unit containing all application functionality. Well-structured monoliths are fast to develop, easy to test, and simple to deploy — they are the right choice for most systems at their initial stage. They become problematic when different parts of the system need to scale independently, when teams need to deploy independently, or when technological diversity is required. Microservices decompose the system into independently deployable services with well-defined interfaces. The trade-offs are real and non-trivial: distributed tracing becomes essential because a single request spans many services, service-to-service communication failures must be handled explicitly, data consistency across services requires saga patterns or eventual consistency rather than database transactions, and operational complexity increases substantially. The strangler fig pattern incrementally migrates a monolith to microservices: new functionality is built as a separate service, old functionality is gradually replaced. Doing this correctly requires a well-defined API contract before the first service boundary is introduced.",
           master: [
-            "Write unit tests with 80%+ coverage for a non-trivial module",
-            "Use mocking to isolate a class from its dependencies",
-            "Implement parameterized tests to test multiple input combinations",
-            "Apply TDD to implement a new feature (write test first, then code)",
-            "Set up integration tests with testcontainers for database testing",
-            "Use property-based testing (Hypothesis, QuickCheck) to find edge cases",
-            "Configure CI pipeline to run tests on every commit"
+            "Describe the failure modes of a poorly executed monolith-to-microservices migration",
+            "Explain the Strangler Fig pattern and describe the sequence of steps for a safe migration",
+            "Describe what a saga pattern is and explain why it is necessary when a transaction spans multiple services",
+            "Explain when a monolith is the correct architecture and give the specific signs that indicate it is time to decompose",
+            "Design the service boundaries for a specific application — justify each boundary and identify the cross-service calls",
+            "Describe how distributed tracing works and why it is required in a microservices architecture"
           ],
-          code: "# Python unit tests with pytest and mocking\nimport pytest\nfrom unittest.mock import Mock, patch\nfrom myapp import UserService, UserRepository\n\nclass TestUserService:\n    def test_get_user_by_id_returns_user(self):\n        # Arrange\n        mock_repo = Mock(spec=UserRepository)\n        mock_repo.find_by_id.return_value = {\"id\": 1, \"name\": \"Alice\"}\n        service = UserService(mock_repo)\n        \n        # Act\n        user = service.get_user(1)\n        \n        # Assert\n        assert user[\"id\"] == 1\n        assert user[\"name\"] == \"Alice\"\n        mock_repo.find_by_id.assert_called_once_with(1)\n    \n    @patch('myapp.UserService.validate_email')\n    def test_create_user_with_invalid_email_raises_error(self, mock_validate):\n        mock_validate.side_effect = ValueError(\"Invalid email\")\n        service = UserService(Mock())\n        \n        with pytest.raises(ValueError, match=\"Invalid email\"):\n            service.create_user(\"bob\", \"invalid-email\")\n    \n    # Parameterized test\n    @pytest.mark.parametrize(\"input,expected\", [\n        (\"a@b.com\", True),\n        (\"invalid\", False),\n        (\"\", False),\n    ])\n    def test_email_validation(self, input, expected):\n        assert UserService.is_valid_email(input) == expected\n\n# Property-based testing with Hypothesis\nfrom hypothesis import given, strategies as st\n\ndef test_reverse_twice_returns_original():\n    @given(st.lists(st.integers()))\n    def test_reverse_twice(lst):\n        assert list(reversed(list(reversed(lst)))) == lst\n    test_reverse_twice()",
           res: [
-            "xUnit Test Patterns (Gerard Meszaros)",
-            "Working Effectively with Unit Tests (Jay Fields)",
-            "pytest documentation (docs.pytest.org)",
-            "The Art of Unit Testing (Roy Osherove)"
+            "Building Microservices (Sam Newman) — the definitive microservices reference",
+            "Monolith to Microservices (Sam Newman) — the migration patterns",
+            "Martin Fowler's microservices articles (martinfowler.com) — required reading on the trade-offs",
+            "Microservices Patterns (Chris Richardson) — saga, CQRS, and other patterns"
           ]
         },
         {
-          name: "End-to-End & Performance Testing",
-          tag: "advanced",
-          desc: "E2E testing frameworks: Selenium, Cypress, Playwright, Puppeteer. Page Object Model. Performance testing: JMeter, Gatling, k6. Load testing (simulating users), stress testing (finding breaking point), soak testing (long duration). Profiling: flame graphs, memory leaks, CPU profiling. Chaos engineering: Chaos Monkey, Gremlin.",
+          name: "API Design: REST, GraphQL, and gRPC",
+          tag: "intermediate",
+          desc: "REST is an architectural style, not a protocol — most APIs called 'REST' are actually HTTP APIs that vary widely in how closely they follow REST constraints. The Richardson Maturity Model describes levels from Level 0 (HTTP as a transport) to Level 3 (hypermedia controls). HTTP verbs have semantics: GET is safe and idempotent, POST creates, PUT replaces (idempotent), PATCH modifies partially, DELETE removes (idempotent). Status codes must be accurate — returning 200 OK with an error message in the body is a widely practiced antipattern. Versioning: URL versioning (/v1/) is explicit; Accept header versioning is theoretically correct; both work. GraphQL allows clients to specify exactly what data they need — it solves over-fetching (too much data) and under-fetching (too many round trips) at the cost of complexity in caching, authorization, and server-side performance (deeply nested queries can become N+1 nightmares). gRPC uses Protocol Buffers for serialization — typed, compact, fast, and excellent for internal service-to-service communication. The generated client code eliminates a class of integration errors.",
           master: [
-            "Write an E2E test with Playwright that logs in and completes a purchase flow",
-            "Implement Page Object Model for maintainable E2E tests",
-            "Run a load test with k6 to simulate 1000 concurrent users",
-            "Profile a web application's memory usage and identify leaks",
-            "Set up chaos engineering experiment to test service resilience",
-            "Use JMeter to create a distributed load test",
-            "Analyze performance test results and identify bottlenecks"
+            "Design a REST API for a resource: correct HTTP verbs, status codes, URL structure, and pagination",
+            "Explain idempotency in the context of HTTP: which methods are idempotent and why it matters for retries",
+            "Describe the N+1 problem in GraphQL and the DataLoader pattern that solves it",
+            "Compare REST, GraphQL, and gRPC: when each is the right choice",
+            "Design a versioning strategy for a public API and explain the trade-offs",
+            "Explain HTTP caching: Cache-Control, ETags, and conditional requests — when they work and when they do not"
           ],
-          code: "// JavaScript E2E test with Playwright\nconst { test, expect } = require('@playwright/test');\n\n// Page Object Model\nclass LoginPage {\n    constructor(page) {\n        this.page = page;\n        this.usernameInput = page.locator('#username');\n        this.passwordInput = page.locator('#password');\n        this.loginButton = page.locator('button[type=\"submit\"]');\n        this.errorMessage = page.locator('.error');\n    }\n    \n    async goto() {\n        await this.page.goto('https://example.com/login');\n    }\n    \n    async login(username, password) {\n        await this.usernameInput.fill(username);\n        await this.passwordInput.fill(password);\n        await this.loginButton.click();\n    }\n}\n\ntest('successful login redirects to dashboard', async ({ page }) => {\n    const loginPage = new LoginPage(page);\n    await loginPage.goto();\n    await loginPage.login('validuser', 'validpass');\n    \n    await expect(page).toHaveURL('https://example.com/dashboard');\n    await expect(page.locator('h1')).toContainText('Welcome');\n});\n\n// k6 load test script\nimport http from 'k6/http';\nimport { check, sleep } from 'k6';\n\nexport let options = {\n    stages: [\n        { duration: '30s', target: 50 },   // Ramp up to 50 users\n        { duration: '1m', target: 50 },    // Stay at 50 users\n        { duration: '10s', target: 0 },    // Ramp down to 0\n    ],\n    thresholds: {\n        http_req_duration: ['p(95)<500'],  // 95% of requests under 500ms\n        http_req_failed: ['rate<0.01'],    // Less than 1% failure rate\n    },\n};\n\nexport default function () {\n    let response = http.get('https://test-api.example.com/products');\n    \n    check(response, {\n        'status is 200': (r) => r.status === 200,\n        'response time < 200ms': (r) => r.timings.duration < 200,\n    });\n    \n    sleep(1);\n}",
           res: [
-            "Playwright Documentation (playwright.dev)",
-            "k6 Documentation (k6.io)",
-            "JMeter User Manual",
-            "Chaos Engineering (Principles and Practices)"
+            "REST API Design Rulebook (Mark Masse) — systematic REST design conventions",
+            "GraphQL documentation (graphql.org) — read the specification overview",
+            "gRPC documentation (grpc.io) — Protocol Buffers and service definition",
+            "API Design Patterns (JJ Geewax) — comprehensive API design reference from a Google engineer"
           ]
         }
       ]
     },
     {
-      name: "API Design and Integration Patterns",
+      name: "Code Quality and Testing",
       level: "intermediate",
-      tagline: "Contracts between systems",
-      desc: "APIs are the contracts between systems. A well-designed API is a product in itself â€” it should be intuitive to use, hard to misuse, and stable enough that changing it does not break every consumer. This phase covers the three dominant API paradigms: REST (the web standard), GraphQL (flexible queries for complex frontends), and gRPC (high-performance binary RPC for service-to-service communication).",
+      tagline: "The engineers who write tests are not slower — they are faster on a three-month horizon",
+      desc: "Code that is not tested is not complete. Not because tests are required by process, but because without tests you cannot refactor with confidence, cannot verify your understanding of edge cases, and cannot hand the code to someone else without an in-person knowledge transfer. The most important insight about testing is not coverage percentage — it is the distinction between tests that are coupled to implementation (brittle, break on refactoring) and tests that are coupled to behavior (stable, specify what the code must do).",
       topics: [
         {
-          name: "RESTful API Design",
+          name: "Unit Testing and Test Design",
           tag: "core",
-          desc: "REST (Representational State Transfer) is an architectural style, not a protocol. The six constraints: client-server, statelessness, cacheability, layered system, uniform interface, and code-on-demand (optional). Practically: resources are nouns identified by URLs (/users/42/orders), HTTP methods express operations (GET for read, POST for create, PUT/PATCH for update, DELETE for remove), status codes communicate outcomes (200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable Entity, 429 Too Many Requests, 500 Internal Server Error). Versioning strategies: URI versioning (/v1/users) vs Accept header versioning â€” URI versioning is simpler to cache and debug. Pagination: cursor-based (for real-time data that changes), offset-based (for static data), Keyset pagination (for large datasets). HATEOAS: hypermedia links in responses guide clients to valid next actions â€” rarely implemented fully in practice. OpenAPI (Swagger) specification for documentation and code generation. API security: authentication (API keys for service-to-service, OAuth2 + JWT for user-facing), rate limiting, input validation. Idempotency keys: safe retry of POST requests for financial transactions.",
+          desc: "A unit test tests a single unit of behavior in isolation. The definition of 'unit' is a behavior, not a class — a test that describes what a function does, not how it does it, is coupled to the interface and survives refactoring. Tests that test implementation details (internals, private methods, specific call counts on mocks) are brittle and create maintenance overhead without providing confidence. Arrange-Act-Assert: set up the preconditions, execute the code under test, verify the outcome. Test naming should describe the scenario and expected outcome: 'whenUserEmailIsInvalid_shouldReturnValidationError' rather than 'testEmail'. Mocking: replace a dependency with a test double that returns controlled outputs. The risk is that mocks can diverge from the real dependency — a test that passes because the mock returns the 'correct' response does not prove the integration works. Use real objects for fast, in-process dependencies; mock only slow or nondeterministic external services.",
           master: [
-            "Design a RESTful API for a ride-hailing app: model resources, endpoints, status codes, and error responses",
-            "Implement cursor-based pagination that works correctly when new items are inserted during traversal",
-            "Write a complete OpenAPI 3.0 spec for an existing API and generate client SDKs from it",
-            "Implement idempotency keys for a payment endpoint â€” explain exactly how the server uses them",
-            "Design a versioning strategy for a public API and write the migration guide for a breaking change",
-            "Implement rate limiting: fixed window vs sliding window vs token bucket â€” know the tradeoffs",
-            "Write API error responses that include machine-readable error codes, human-readable messages, and a documentation link"
+            "Explain the difference between a unit test that tests behavior versus one that tests implementation — give an example of each",
+            "Describe what makes a test brittle and rewrite a brittle test to be stable",
+            "Explain the difference between mocks, stubs, spies, and fakes — when each is appropriate",
+            "Describe test pyramid structure and explain why inverted pyramids (many E2E, few unit tests) cause slow CI",
+            "Write tests for a function before writing the function — describe what you learn from doing this",
+            "Explain parameterized tests and when they reduce duplication without sacrificing clarity"
           ],
-          deepdive: "The RFC 7807 Problem Details standard (application/problem+json) gives you a consistent, machine-readable error format: type (a URI identifying the error class), title (human-readable summary), status (HTTP status code), detail (specific explanation for this occurrence), instance (URI of the specific request). When every API in your organization uses this format, clients can handle errors generically and log them consistently. Adopt it from day one â€” retrofitting error formats onto existing APIs is painful.",
           res: [
-            "REST API Design Rulebook (Mark MassÃ© â€” O'Reilly)",
-            "HTTP: The Definitive Guide (Gourley & Totty â€” foundational HTTP understanding)",
-            "OpenAPI Specification (spec.openapis.org/oas/v3.1.0)",
-            "API Security in Action (Neil Madden â€” Manning, thorough OAuth2/JWT coverage)"
+            "Working Effectively with Legacy Code (Michael Feathers) — how to add tests to untested code",
+            "Unit Testing Principles, Practices, and Patterns (Vladimir Khorikov) — the best modern testing book",
+            "Test-Driven Development (Kent Beck) — the original TDD book",
+            "Google Testing Blog (testing.googleblog.com) — practical testing guidance from Google's test engineering team"
           ]
         },
         {
-          name: "GraphQL Schema Design",
-          tag: "advanced",
-          desc: "GraphQL is a query language for APIs where the client specifies exactly what data it needs. This eliminates over-fetching (REST returns fields you don't need) and under-fetching (REST requires multiple requests for related data). Core concepts: Schema Definition Language (SDL), types (Object, Input, Enum, Union, Interface), the Query/Mutation/Subscription operation types. Resolvers: functions that return data for each field. The N+1 problem: fetching a list of users and their posts naively issues one SQL query per user â€” DataLoader (batching and caching within a request) solves this. Pagination: Relay cursor connection spec is the standard. Mutations should follow a consistent pattern: input type â†’ payload type with both the changed object and any errors. Subscriptions for real-time data via WebSocket. Schema stitching vs Federation (Apollo Federation) for composing schemas from multiple services. Persisted queries for production performance and security. GraphQL is not always better than REST â€” it adds complexity and requires careful authorization (field-level access control).",
+          name: "Integration Testing and CI/CD",
+          tag: "intermediate",
+          desc: "Integration tests verify that components work together correctly. They are slower than unit tests, harder to parallelize, and more likely to be flaky — but they catch a category of bugs that unit tests cannot: the contract between components. Database tests: test against a real database (in-memory or containerized) rather than mocking the ORM — schema migrations, query behavior, and transaction isolation are not captured by mocks. API integration tests: run the full HTTP stack including middleware, serialization, and authentication. Consumer-driven contract testing (Pact) allows the consumer of an API to define the contract and the provider to verify it independently, without requiring both services to be running simultaneously. Continuous Integration: every push runs the full test suite. A CI pipeline that takes 45 minutes creates 45-minute feedback loops and encourages batching changes, which defeats the purpose. Fast feedback requires separating fast tests (unit, sub-minute) from slow tests (integration, E2E) and running them at different stages.",
           master: [
-            "Design a GraphQL schema for a social platform: users, posts, comments, follows â€” with proper types and relationships",
-            "Implement DataLoader to batch and cache database calls within a request, eliminating N+1 queries",
-            "Implement cursor-based pagination following the Relay specification",
-            "Set up Apollo Federation: split a monolithic GraphQL schema across three separate subgraph services",
-            "Implement field-level authorization: users can only read their own private profile fields",
-            "Use persisted queries to prevent arbitrary query execution in production",
-            "Instrument resolvers with tracing and identify the slow fields in a production query"
+            "Describe the trade-off between test isolation (mocks) and test fidelity (real dependencies) — where each belongs in the test pyramid",
+            "Explain consumer-driven contract testing and the problem it solves versus end-to-end testing",
+            "Design a CI/CD pipeline with test stages appropriate to their execution time and confidence level",
+            "Describe database testing: why integration tests should use a real database and how to manage test data isolation",
+            "Explain what makes a flaky test flaky and describe systematic approaches to fix flakiness",
+            "Design a deployment pipeline with rollback capability and explain what metrics trigger a rollback"
           ],
           res: [
-            "GraphQL specification (spec.graphql.org â€” read the spec, not just tutorials)",
-            "Production Ready GraphQL (Marc-AndrÃ© Giroux â€” the best practical guide)",
-            "Apollo Federation documentation (apollographql.com/docs/federation)",
-            "DataLoader (GitHub: graphql/dataloader â€” read the source, it is 300 lines)"
-          ]
-        },
-        {
-          name: "gRPC and Protocol Buffers",
-          tag: "advanced",
-          desc: "gRPC is a high-performance, open-source RPC framework using HTTP/2 for transport and Protocol Buffers (Protobuf) for serialization. It is 3-10x faster than JSON REST for service-to-service communication due to binary encoding, HTTP/2 multiplexing, and header compression. Protocol Buffers: define your API schema in .proto files with strongly-typed messages and services. The protoc compiler generates client and server stubs in any language. Field numbers (not names) identify fields in the binary format â€” backward compatibility requires never reusing field numbers. Four RPC patterns: unary (one request, one response â€” like REST), server streaming (one request, stream of responses â€” live data), client streaming (stream of requests, one response â€” file upload), bidirectional streaming (both sides stream). Interceptors for cross-cutting concerns (authentication, logging, tracing). gRPC-Gateway: generate a REST/JSON proxy from your proto definitions so REST clients can use the same backend. Buf: modern Protobuf toolchain with linting, breaking change detection, and schema registry.",
-          master: [
-            "Define a .proto file for a user service with CRUD operations and generate client stubs in two languages",
-            "Implement a server-streaming RPC that pushes live stock price updates to clients",
-            "Write a gRPC interceptor for authentication: extract and validate a JWT from the request metadata",
-            "Explain how to make a backward-compatible change to a Protobuf schema vs a breaking change",
-            "Use Buf to lint your .proto files and detect breaking changes in CI before merging",
-            "Set up gRPC-Gateway alongside a gRPC server so the same handlers serve both gRPC and REST clients",
-            "Benchmark gRPC vs JSON REST for a representative payload â€” measure latency and throughput differences"
-          ],
-          deepdive: "Protobuf's backward compatibility rules are what make it safe to evolve APIs without coordinating rollouts across all services. The rules: you can add new fields (old clients ignore unknown fields), you can never delete or renumber existing fields (existing clients will break), you can rename fields (they are identified by number, not name in the binary format). This means your .proto file is a contract: treat field numbers like primary keys in a database â€” once assigned, they exist forever. Use the reserved keyword to prevent field numbers from being accidentally reused.",
-          res: [
-            "gRPC documentation (grpc.io/docs) â€” start with the core concepts",
-            "Protocol Buffers language guide (protobuf.dev/programming-guides/proto3)",
-            "Buf documentation (buf.build/docs) â€” linting and breaking change detection",
-            "Production gRPC (Google Cloud Blog â€” real-world operational advice)"
+            "Continuous Delivery (Jez Humble, David Farley) — the foundational CD book",
+            "Pact contract testing documentation (docs.pact.io) — practical consumer-driven contracts",
+            "Accelerate (Nicole Forsgren, Jez Humble, Gene Kim) — the data-driven argument for CD practices",
+            "GitHub Actions or CircleCI documentation — the practical CI implementation"
           ]
         }
       ]
@@ -340,72 +210,75 @@
     {
       name: "Performance Engineering",
       level: "advanced",
-      tagline: "Find the bottleneck, fix the bottleneck, measure the fix",
-      desc: "Performance problems in production are expensive: they increase infrastructure costs, degrade user experience, and often expose architectural flaws that are painful to fix under pressure. Performance engineering is systematic: measure first, profile second, optimize third. Never optimize without a measurement to prove the problem and a measurement to prove the fix. This phase covers application profiling, database query optimization, and the distributed system patterns that make systems resilient under load.",
+      tagline: "Premature optimization is evil; ignoring performance in production is worse",
+      desc: "Most performance problems are not in the places you expect them. The first step is always measurement — profiling the actual running system to find where time is actually spent, not where you assume it is spent. The second step is understanding the hardware: CPU caches, memory bandwidth, disk I/O characteristics, and network latency. Optimizations that ignore the hardware model often make things worse.",
       topics: [
         {
-          name: "Application Profiling and Optimization",
+          name: "Profiling, Benchmarking, and Finding Bottlenecks",
           tag: "advanced",
-          desc: "Profiling identifies where your program spends its time (CPU profiling) and memory (memory profiling). CPU profiling: sampling profilers periodically record the call stack â€” output is a flame graph. Brendan Gregg's flame graph format is the standard: the x-axis is alphabetical (not time), width represents time spent. Memory profiling: identify allocations, retention paths, and garbage collection pressure. Tools by language: Python (cProfile, py-spy, memory_profiler, Austin), Java (JFR, async-profiler, VisualVM, heap dumps + MAT), Go (pprof â€” built into the standard library, net/http/pprof endpoint), Node.js (--inspect + Chrome DevTools, clinic.js). Algorithmic complexity: O(nÂ²) code hidden in a hot path will destroy performance at scale â€” profile to find it. Big O matters most when n is large; constant factors matter for small n. Common optimizations: reduce allocations (object pooling, reuse buffers), use appropriate data structures (HashMap vs TreeMap, array vs linked list), avoid premature abstraction in hot paths, compile-time vs runtime work.",
+          desc: "You cannot optimize what you have not measured. A profiler samples the call stack at regular intervals and builds a picture of where the program spends its time. Flame graphs visualize profiler output as nested rectangles — the width of each rectangle is proportional to the fraction of time spent in that function. CPU-bound: the bottleneck is in computation. I/O-bound: the bottleneck is in waiting for disk, network, or database. Benchmarking is measuring the performance of a specific code path in isolation. Common mistakes: not warming up the JIT compiler, measuring wall time instead of CPU time, not running enough iterations to average out noise, not controlling for GC pauses. The Linux perf toolkit, async-profiler (JVM), py-spy (Python), and pprof (Go) are the standard profiling tools. Database queries are usually the first place to look in web application performance: N+1 queries, missing indexes, and queries that return far more data than needed are responsible for the majority of application slowness.",
           master: [
-            "Profile a slow Python script with py-spy and generate a flame graph â€” identify and fix the hot path",
-            "Profile a Java application with async-profiler; generate both CPU and allocation flame graphs",
-            "Enable pprof in a Go HTTP server and profile it under load with go tool pprof",
-            "Identify a memory leak in a Node.js application using heap snapshots in Chrome DevTools",
-            "Find an O(nÂ²) algorithm by profiling under increasing data sizes â€” rewrite it in O(n log n)",
-            "Use Linux perf to profile a native application at the syscall level â€” identify kernel time vs user time",
-            "Measure the impact of garbage collection pauses in a JVM application and tune GC settings"
+            "Profile a web application end-to-end and identify the top three contributors to request latency",
+            "Read a flame graph: identify the hottest path and describe what it means for optimization priority",
+            "Write a benchmark and explain the common mistakes that produce misleading results",
+            "Use EXPLAIN ANALYZE to diagnose a slow SQL query and fix it",
+            "Explain the CPU cache hierarchy: L1/L2/L3 sizes and latencies — describe a code pattern that is cache-unfriendly and how to fix it",
+            "Describe the difference between throughput and latency and explain why optimizing for one can hurt the other"
           ],
-          deepdive: "Flame graphs are the most information-dense performance visualization ever invented. Each frame represents a function. Width = time spent in that function (including callees). Height = call stack depth. To read a flame graph: look for the widest frames at the top â€” those are the hottest code paths. Look for plateaus (flat tops with many children) â€” those indicate functions that call many different things. Look for deep, narrow stacks â€” those indicate recursive calls. The visualization was invented by Brendan Gregg at Netflix and is now supported by every major profiling tool.",
           res: [
-            "Systems Performance (Brendan Gregg â€” the definitive performance engineering reference)",
-            "Flame Graphs (brendangregg.com/flamegraphs.html â€” the original documentation)",
-            "Java Performance: In-Depth Advice for Tuning and Programming Java (Scott Oaks)",
-            "go tool pprof documentation (pkg.go.dev/net/http/pprof)"
+            "Systems Performance (Brendan Gregg) — the definitive performance analysis reference",
+            "Flame Graphs (Brendan Gregg blog) — the inventor explains the tool",
+            "The Art of Capacity Planning (John Allspaw) — production performance and capacity management",
+            "High Performance Browser Networking (Ilya Grigorik) — free, network performance for web applications"
+          ]
+        }
+      ]
+    },
+    {
+      name: "Engineering at Scale",
+      level: "advanced",
+      tagline: "Technical leadership is about multiplying the output of your team, not your own",
+      desc: "Senior engineering is not principally about writing better code than junior engineers. It is about reducing the uncertainty that slows teams down, creating leverage that amplifies everyone's output, and making architectural decisions that do not become liabilities at scale. The technical skills are table stakes; the leverage skills are what differentiate senior from mid-level.",
+      topics: [
+        {
+          name: "Technical Debt and Refactoring",
+          tag: "advanced",
+          desc: "Technical debt is the accumulated cost of past decisions that trade short-term speed for long-term complexity. Unlike financial debt, it accrues compound interest — a module that nobody understands accumulates work-arounds, each making it less understandable. Ward Cunningham's original metaphor was about going back and explaining what you did — the debt is the explanation you did not write, not the hack you wrote. The most dangerous form of technical debt is strategic debt: architectural decisions that were correct for the original scale but become bottlenecks at ten times the scale. Refactoring is restructuring existing code without changing its behavior — it is only safe when there are tests, and it is only productive when there is a clear direction. The strangler fig pattern, seam extraction, and characterization tests (tests that describe current behavior even if that behavior is wrong) are the primary tools for refactoring systems without tests.",
+          master: [
+            "Identify technical debt in a codebase: classify it as strategic, tactical, or inadvertent — explain the different remediation approaches",
+            "Refactor a complex function into smaller pieces without changing its behavior — describe your safety net",
+            "Write characterization tests for an untested function before refactoring it",
+            "Describe how to build a business case for paying down technical debt to non-technical stakeholders",
+            "Explain the open/closed principle and describe a design that violates it and one that satisfies it",
+            "Describe the strangler fig pattern at the code level — not just the service level"
+          ],
+          res: [
+            "Working Effectively with Legacy Code (Michael Feathers) — the definitive reference for untested systems",
+            "Refactoring (Martin Fowler) — the catalog of refactoring patterns",
+            "A Philosophy of Software Design (John Ousterhout) — the best recent thinking on software complexity",
+            "Clean Code (Robert Martin) — read critically; many prescriptions are context-dependent"
           ]
         },
         {
-          name: "Database Query Optimization",
-          tag: "advanced",
-          desc: "Database queries are the most common performance bottleneck in web applications. The EXPLAIN/EXPLAIN ANALYZE command shows how the database executes a query â€” read it before optimizing. Indexes are the primary tool: a B-tree index turns an O(n) full table scan into O(log n). Composite indexes: column order matters â€” an index on (a, b, c) can be used for queries on (a), (a, b), or (a, b, c) but not (b) or (c) alone. Covering indexes eliminate the table heap fetch â€” all needed columns are in the index itself. Partial indexes filter rows â€” smaller and faster for queries with WHERE conditions. Index bloat and VACUUM in PostgreSQL. The N+1 query problem: an ORM issues one query to get 100 records, then 100 more queries to get related data â€” fix with joins or eager loading (select_related/prefetch_related in Django, include in ActiveRecord). Connection pooling: databases support a limited number of connections (typically 100-200 for PostgreSQL) â€” PgBouncer pools connections between many application instances and the database. Query planning: understand hash join vs nested loop vs merge join and when each is chosen. Denormalization, materialized views, and read replicas for read-heavy workloads.",
+          name: "System Design for Scale",
+          tag: "expert",
+          desc: "Large-scale system design requires explicit reasoning about: where the single points of failure are and how to eliminate them; what the read-to-write ratio is and how to exploit it (read replicas, caching, CDNs); what the consistency requirements are and where eventual consistency is acceptable; what the latency requirements are at each tier and how to budget latency across service calls; what the data model should be and whether it will still make sense at 100× the current data volume. The most common architectural mistakes at scale: a database that handles both OLTP and analytics queries (these have conflicting access patterns and should be separated); a monolith where one module is being called at 100× the rate of others (the bottleneck constrains the entire system); synchronous service-to-service calls where asynchronous message passing would be more resilient. Event-driven architecture uses message queues (Kafka, SQS) to decouple producers and consumers — producers write events, consumers process them independently, and the queue buffers the difference in throughput.",
           master: [
-            "Run EXPLAIN ANALYZE on a slow query and identify whether it is doing a sequential scan that should be an index scan",
-            "Create a composite index and verify with EXPLAIN that the query planner uses it correctly",
-            "Identify N+1 queries in a Django or Rails application using the query log â€” fix with eager loading",
-            "Set up PgBouncer in transaction pooling mode and measure the improvement in connection handling under load",
-            "Create a partial index for a status column where 95% of rows have status = 'completed' â€” measure the size difference",
-            "Build a materialized view for an expensive aggregation query and schedule its refresh",
-            "Use pg_stat_statements to identify the top 10 slowest queries in a PostgreSQL database"
+            "Design a URL shortener from scratch: data model, read/write path, scale to 100M URLs, 10B redirects/day",
+            "Design a notification system that sends 10M notifications per day across email, SMS, and push — walk through the architecture",
+            "Explain the read replica pattern: what it solves, what it does not solve, and what replication lag means",
+            "Describe CQRS (Command Query Responsibility Segregation): what problem it solves and the operational complexity it introduces",
+            "Design a rate limiter: algorithm choices (token bucket, sliding window), storage (Redis), and edge cases",
+            "Explain the trade-offs between event-driven architecture and synchronous request-response for a specific integration"
           ],
           res: [
-            "Use the Index, Luke (use-the-index-luke.com â€” free, best SQL index reference)",
-            "PostgreSQL documentation: EXPLAIN (postgresql.org/docs/current/using-explain.html)",
-            "High Performance MySQL (Schwartz, Zaitsev â€” the definitive MySQL tuning reference)",
-            "pg_stat_statements documentation (postgresql.org/docs/current/pgstatstatements.html)"
-          ]
-        },
-        {
-          name: "Distributed Systems Patterns",
-          tag: "advanced",
-          desc: "As systems scale horizontally, new failure modes emerge. The fallacies of distributed computing (Peter Deutsch, 1994): the network is reliable, latency is zero, bandwidth is infinite, the network is secure, topology does not change, there is one administrator, transport cost is zero, the network is homogeneous. Every one of these is false. Circuit Breaker pattern: track the failure rate of a downstream service; if it exceeds a threshold, open the circuit and return a fast fallback instead of waiting for timeouts â€” preventing cascading failures. Bulkhead pattern: isolate resources (thread pools, connection pools) for different downstream services so one slow service cannot exhaust all threads. Retry with exponential backoff and jitter: avoid thundering herd after an outage. Timeout everywhere: every network call must have a timeout or you will eventually accumulate blocked threads until the service is dead. The Two Generals Problem and why perfect distributed consensus is impossible (CAP theorem, Byzantine Fault Tolerance). Event-driven architecture and the Outbox pattern for at-least-once delivery with exactly-once business logic. Distributed sagas for long-running transactions without distributed locks.",
-          master: [
-            "Implement a Circuit Breaker with closed/open/half-open states in your preferred language",
-            "Set correct timeouts for every HTTP client in a service: connection timeout, read timeout, write timeout",
-            "Implement retry with exponential backoff and full jitter â€” explain why jitter prevents thundering herd",
-            "Design a saga for a checkout flow: payment, inventory reservation, order creation â€” define compensating transactions for each step",
-            "Implement the Outbox pattern: write an event to a database table in the same transaction as the business operation, then publish it asynchronously",
-            "Explain the CAP theorem with a concrete example: what does your system do during a network partition?",
-            "Implement a bulkhead using separate thread pools for three downstream services in a Java application"
-          ],
-          deepdive: "The Outbox pattern solves the dual-write problem that causes data loss in event-driven systems. The naive approach: update your database and then publish an event to a message broker. Problem: the database write succeeds, the service crashes before publishing the event â€” the event is lost. The Outbox pattern: write both the business record and the event to the same database in a single transaction. A separate process reads the outbox table and publishes events to the broker, marking them as sent. If publishing fails, the poller retries. This guarantees at-least-once delivery without a distributed transaction. Combine with idempotency keys on the consumer side for exactly-once business logic.",
-          res: [
-            "Designing Data-Intensive Applications (Martin Kleppmann â€” the best book on distributed systems for practitioners)",
-            "Release It! (Michael Nygard â€” the original book on circuit breakers, bulkheads, and production patterns)",
-            "Fallacies of Distributed Computing Explained (Arnon Rotem-Gal-Oz â€” free PDF)",
-            "Pattern: Transactional Outbox (microservices.io/patterns/data/transactional-outbox.html)"
+            "System Design Interview Vols. 1 and 2 (Alex Xu) — structured walk-throughs of common problems",
+            "Designing Data-Intensive Applications (Kleppmann) — read the full book",
+            "High Scalability blog (highscalability.com) — real architecture write-ups from production systems",
+            "AWS and Google Cloud architecture documentation — the cloud provider guidance reflects real scale experience"
           ]
         }
       ]
     }
   ]
-};
+}
