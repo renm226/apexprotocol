@@ -1,20 +1,19 @@
 /**
- * ApexProtocol — responsive.js
- * Drop into  js/responsive.js  and load AFTER main.js
+ * Cortaxis — responsive.js
  */
 (function () {
   'use strict';
 
   const AREAS = [
-    { id: 'ai',      name: '◈ AI / ML' },
-    { id: 'net',     name: '⬡ Networking' },
-    { id: 'hack',    name: '⚡ Hacking' },
-    { id: 'soft',    name: '⎄ Software' },
-    { id: 'crypto',  name: '⛓ Blockchain' },
-    { id: 'cloud',   name: '☁ Cloud & DevOps' },
-    { id: 'mobile',  name: '📱 Mobile' },
-    { id: 'devsec',  name: '🛡 DevSecOps' },
-    { id: 'selfdev', name: '🌟 Self Development' },
+    { id: 'ai',      name: 'AI / ML' },
+    { id: 'net',     name: 'Networking' },
+    { id: 'hack',    name: 'Hacking' },
+    { id: 'soft',    name: 'Software' },
+    { id: 'crypto',  name: 'Blockchain' },
+    { id: 'cloud',   name: 'Cloud & DevOps' },
+    { id: 'mobile',  name: 'Mobile' },
+    { id: 'devsec',  name: 'DevSecOps' },
+    { id: 'selfdev', name: 'Self Development' },
   ];
 
   let currentArea = 'ai';
@@ -31,7 +30,7 @@
     trigger.className = 'mob-area-trigger';
     trigger.id = 'mobAreaTrigger';
     trigger.innerHTML = `
-      <span class="mob-trigger-label" id="mobTriggerLabel">◈ AI / ML</span>
+      <span class="mob-trigger-label" id="mobTriggerLabel">AI / ML</span>
       <span class="mob-trigger-arrow">▼</span>
     `;
     trigger.addEventListener('click', toggleDropdown);
@@ -104,7 +103,7 @@
     if (typeof window.switchArea === 'function') window.switchArea(id);
   }
 
-  /* ── SIDEBAR DRAWER ───────────────────────────────────── */
+  /* ── SIDEBAR DRAWER */
   function buildHamburger() {
     const btn = document.createElement('button');
     btn.className = 'mob-menu-btn';
