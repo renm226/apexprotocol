@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { allData, AREA_META, type AreaId } from '@/data/index'
 import type { AreaData, Phase, Topic } from '@/data/types'
+import { APP } from '@/config/app'
 
 const AREAS = Object.entries(AREA_META) as [AreaId, { label: string }][]
 
@@ -125,7 +126,7 @@ export default function RoadmapView({ user }: { user: { email?: string } | null 
   return (
     <>
       <header className="site-header">
-        <a href="/" className="logo">COR<span>Taxis</span></a>
+        <a href="/" className="logo">{APP.name}</a>
         <div className="nav-scroll">
           {AREAS.map(([id, meta]) => (
             <button
@@ -192,6 +193,13 @@ export default function RoadmapView({ user }: { user: { email?: string } | null 
               <PhaseBlock key={i} phase={phase} idx={i} areaId={currentArea} />
             ))}
           </div>
+
+          <footer className="site-footer">
+            <span>© {new Date().getFullYear()} {APP.name}</span>
+            <a href="/terms">Terms of Service</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href={`mailto:${APP.supportEmail}`}>Support</a>
+          </footer>
         </main>
       </div>
     </>

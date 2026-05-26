@@ -5,50 +5,50 @@
    DESIGN TOKENS
    ───────────────────────────────────────────── */
 :root {
-  /* Surfaces */
-  --bg:      #0a0a0a;
-  --surf:    #111111;
-  --surf2:   #181818;
-  --surf3:   #1f1f1f;
+  /* Surfaces — light/white theme */
+  --bg:      #f8f8f8;
+  --surf:    #ffffff;
+  --surf2:   #f3f3f4;
+  --surf3:   #ebebec;
 
   /* Borders */
-  --border:  #1e1e1e;
-  --border2: #2a2a2a;
+  --border:  #e4e4e7;
+  --border2: #d1d1d6;
 
   /* Text */
-  --text:    #efefef;
-  --muted:   #6b6b6b;
-  --dim:     #383838;
+  --text:    #0a0a0b;
+  --muted:   #6b6b78;
+  --dim:     #a0a0ae;
 
   /* Accent — overridden per-area via data-current */
-  --accent:         #4f8ef5;
-  --accent-bg:      rgba(79, 142, 245, 0.07);
-  --accent-border:  rgba(79, 142, 245, 0.22);
+  --accent:         #2563eb;
+  --accent-bg:      rgba(37, 99, 235, 0.06);
+  --accent-border:  rgba(37, 99, 235, 0.18);
 
-  /* Per-area palette — one clean color each, no neon */
-  --c-ai:      #c8963c;
-  --c-net:     #4f8ef5;
-  --c-hack:    #b84d4d;
-  --c-soft:    #5080d0;
-  --c-crypto:  #c08828;
-  --c-cloud:   #3898b8;
-  --c-mobile:  #8858b8;
-  --c-devsec:  #3e9060;
-  --c-selfdev: #a88830;
+  /* Per-area palette — saturated enough for light backgrounds */
+  --c-ai:      #b45309;
+  --c-net:     #2563eb;
+  --c-hack:    #dc2626;
+  --c-soft:    #1d4ed8;
+  --c-crypto:  #d97706;
+  --c-cloud:   #0891b2;
+  --c-mobile:  #7c3aed;
+  --c-devsec:  #16a34a;
+  --c-selfdev: #ca8a04;
 
   --radius: 4px;
 }
 
-/* Area accent cascade — one rule per area, no duplication */
-[data-current="ai"]      { --accent: var(--c-ai);      --accent-bg: rgba(200,150,60,0.07);   --accent-border: rgba(200,150,60,0.22);   }
-[data-current="net"]     { --accent: var(--c-net);     --accent-bg: rgba(79,142,245,0.07);   --accent-border: rgba(79,142,245,0.22);   }
-[data-current="hack"]    { --accent: var(--c-hack);    --accent-bg: rgba(184,77,77,0.07);    --accent-border: rgba(184,77,77,0.22);    }
-[data-current="soft"]    { --accent: var(--c-soft);    --accent-bg: rgba(80,128,208,0.07);   --accent-border: rgba(80,128,208,0.22);   }
-[data-current="crypto"]  { --accent: var(--c-crypto);  --accent-bg: rgba(192,136,40,0.07);   --accent-border: rgba(192,136,40,0.22);   }
-[data-current="cloud"]   { --accent: var(--c-cloud);   --accent-bg: rgba(56,152,184,0.07);   --accent-border: rgba(56,152,184,0.22);   }
-[data-current="mobile"]  { --accent: var(--c-mobile);  --accent-bg: rgba(136,88,184,0.07);   --accent-border: rgba(136,88,184,0.22);   }
-[data-current="devsec"]  { --accent: var(--c-devsec);  --accent-bg: rgba(62,144,96,0.07);    --accent-border: rgba(62,144,96,0.22);    }
-[data-current="selfdev"] { --accent: var(--c-selfdev); --accent-bg: rgba(168,136,48,0.07);   --accent-border: rgba(168,136,48,0.22);   }
+/* Area accent cascade */
+[data-current="ai"]      { --accent: var(--c-ai);      --accent-bg: rgba(180,83,9,0.06);     --accent-border: rgba(180,83,9,0.18);     }
+[data-current="net"]     { --accent: var(--c-net);     --accent-bg: rgba(37,99,235,0.06);    --accent-border: rgba(37,99,235,0.18);    }
+[data-current="hack"]    { --accent: var(--c-hack);    --accent-bg: rgba(220,38,38,0.06);    --accent-border: rgba(220,38,38,0.18);    }
+[data-current="soft"]    { --accent: var(--c-soft);    --accent-bg: rgba(29,78,216,0.06);    --accent-border: rgba(29,78,216,0.18);    }
+[data-current="crypto"]  { --accent: var(--c-crypto);  --accent-bg: rgba(217,119,6,0.06);    --accent-border: rgba(217,119,6,0.18);    }
+[data-current="cloud"]   { --accent: var(--c-cloud);   --accent-bg: rgba(8,145,178,0.06);    --accent-border: rgba(8,145,178,0.18);    }
+[data-current="mobile"]  { --accent: var(--c-mobile);  --accent-bg: rgba(124,58,237,0.06);   --accent-border: rgba(124,58,237,0.18);   }
+[data-current="devsec"]  { --accent: var(--c-devsec);  --accent-bg: rgba(22,163,74,0.06);    --accent-border: rgba(22,163,74,0.18);    }
+[data-current="selfdev"] { --accent: var(--c-selfdev); --accent-bg: rgba(202,138,4,0.06);    --accent-border: rgba(202,138,4,0.18);    }
 
 /* ─────────────────────────────────────────────
    RESET & BASE
@@ -355,10 +355,10 @@ body {
   border-radius: 3px;
   border: 1px solid;
 }
-.lv-foundation   { border-color: #252538; color: #4848a0; }
-.lv-intermediate { border-color: #162a1e; color: #2e8060; }
-.lv-advanced     { border-color: #2e1e08; color: #906030; }
-.lv-expert       { border-color: #2a0808; color: #984040; }
+.lv-foundation   { border-color: #e0e7ff; color: #4338ca; background: #f5f3ff; }
+.lv-intermediate { border-color: #bbf7d0; color: #16a34a; background: #f0fdf4; }
+.lv-advanced     { border-color: #fed7aa; color: #c2410c; background: #fff7ed; }
+.lv-expert       { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
 
 .phase-chevron { color: var(--dim); transition: transform .18s; font-size: 11px; }
 .phase-block.open .phase-chevron { transform: rotate(90deg); }
@@ -412,15 +412,15 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.tt-core     { background: rgba(79,142,245,0.08);  color: #4f8ef5; }
-.tt-theory   { background: rgba(80,128,208,0.08);  color: #5080c8; }
-.tt-hands-on { background: rgba(62,144,96,0.08);   color: #3e9060; }
-.tt-tools    { background: rgba(192,136,40,0.08);  color: #b08030; }
-.tt-advanced { background: rgba(184,77,77,0.08);   color: #b84848; }
-.tt-research { background: rgba(136,88,184,0.08);  color: #8858b0; }
-.tt-systems  { background: rgba(56,152,184,0.08);  color: #3898b0; }
-.tt-mindset  { background: rgba(168,136,48,0.08);  color: #a88830; }
-.tt-optional { background: rgba(80,80,80,0.08);    color: #606060; }
+.tt-core     { background: #eff6ff; color: #1d4ed8; }
+.tt-theory   { background: #eef2ff; color: #4338ca; }
+.tt-hands-on { background: #f0fdf4; color: #16a34a; }
+.tt-tools    { background: #fffbeb; color: #b45309; }
+.tt-advanced { background: #fef2f2; color: #dc2626; }
+.tt-research { background: #faf5ff; color: #7c3aed; }
+.tt-systems  { background: #ecfeff; color: #0891b2; }
+.tt-mindset  { background: #fefce8; color: #a16207; }
+.tt-optional { background: #f4f4f5; color: #71717a; }
 
 .topic-body-inner {
   display: none;
@@ -810,6 +810,74 @@ body {
 .modal h2 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
 .modal p  { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ─────────────────────────────────────────────
+   FOOTER
+   ───────────────────────────────────────────── */
+.site-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px 28px;
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--dim);
+}
+.site-footer a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .1s;
+}
+.site-footer a:hover { color: var(--text); }
+
+/* ─────────────────────────────────────────────
+   LEGAL PAGES (terms, privacy)
+   ───────────────────────────────────────────── */
+.legal-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 28px 80px;
+}
+.legal-page h1 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+.legal-page .legal-meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.legal-page h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 32px 0 10px;
+  color: var(--text);
+}
+.legal-page p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.legal-page ul {
+  margin: 0 0 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.legal-page li {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.legal-page a { color: var(--accent); text-decoration: none; }
+.legal-page a:hover { text-decoration: underline; }
 
 /* ─────────────────────────────────────────────
    ANIMATIONS

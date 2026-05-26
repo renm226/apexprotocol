@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { APP } from '@/config/app'
 
 export default function AuthPage() {
   return (
@@ -12,10 +13,17 @@ export default function AuthPage() {
   )
 }
 
+function safeNext(raw: string | null): string {
+  if (!raw) return '/'
+  if (!raw.startsWith('/') || raw.startsWith('//')) return '/'
+  if (raw.includes('..')) return '/'
+  return raw
+}
+
 function AuthContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const next = searchParams.get('next') || '/'
+  const next = safeNext(searchParams.get('next'))
   const errorParam = searchParams.get('error')
 
   const [email, setEmail] = useState('')
@@ -35,7 +43,7 @@ function AuthContent() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=${next}` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}` },
     })
     if (error) { setError(error.message); setLoading(false) }
   }
@@ -46,7 +54,7 @@ function AuthContent() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=${next}` },
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}` },
     })
     if (error) { setError(error.message); setLoading(false) }
     else { setSent(true); setLoading(false) }
@@ -55,7 +63,7 @@ function AuthContent() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <div className="auth-logo">COR<span>Taxis</span></div>
+        <div className="auth-logo">{APP.name}</div>
 
         {sent ? (
           <>
@@ -66,9 +74,9 @@ function AuthContent() {
           </>
         ) : (
           <>
-            <div className="auth-title">Sign in to Cortaxis</div>
+            <div className="auth-title">Sign in to {APP.name}</div>
             <p className="auth-sub">
-              Access your Pro library, track your progress, and request books.
+              Access your library, track your progress, and request books.
             </p>
 
             {error && <div className="auth-error">{error}</div>}
@@ -104,10 +112,9 @@ function AuthContent() {
 
         <div className="auth-footer">
           By signing in you agree to our{' '}
-          <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.
+          <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
         </div>
       </div>
     </div>
   )
 }
-

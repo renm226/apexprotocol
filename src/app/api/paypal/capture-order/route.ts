@@ -19,8 +19,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { orderId } = await request.json()
-  if (!orderId || typeof orderId !== 'string') {
+  let body: unknown
+  try { body = await request.json() } catch {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+  }
+  const { orderId } = body as Record<string, unknown>
+  if (!orderId || typeof orderId !== 'string' || orderId.length > 64) {
     return NextResponse.json({ error: 'Invalid order ID' }, { status: 400 })
   }
 
@@ -45,6 +49,13 @@ export async function POST(request: Request) {
 
   const amountPaid = parseFloat(captureResult.amount.value)
   const currency = captureResult.amount.currency_code
+  const expectedPrice = parseFloat(process.env.LIBRARY_PRICE_USD || '29.00')
+
+  // Verify the captured amount matches the expected price — reject underpayments
+  if (amountPaid < expectedPrice) {
+    console.error(`PayPal amount mismatch: expected ${expectedPrice}, got ${amountPaid}`)
+    return NextResponse.json({ error: 'Payment amount incorrect. Contact support.' }, { status: 402 })
+  }
 
   // 4. Insert access record using service role.
   //    The UNIQUE constraint on paypal_order_id prevents replay attacks —
