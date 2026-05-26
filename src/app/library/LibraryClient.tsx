@@ -145,9 +145,10 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
         <div className="header-actions">
           {localAccess && (
             <span style={{
-              fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: 1,
-              padding: '3px 8px', borderRadius: 2, background: 'rgba(167,139,250,0.1)',
-              color: 'var(--ai)', border: '1px solid var(--ai-border)'
+              fontSize: 10, fontWeight: 600, letterSpacing: 0.5,
+              padding: '3px 9px', borderRadius: 3,
+              background: 'var(--accent-bg)', color: 'var(--accent)',
+              border: '1px solid var(--accent-border)'
             }}>LIBRARY ACCESS</span>
           )}
           {userInitial
@@ -157,77 +158,77 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
         </div>
       </header>
 
-      <div style={{ overflowY: 'auto', height: 'calc(100vh - 52px)' }}>
+      <div style={{ overflowY: 'auto', height: 'calc(100vh - 46px)' }}>
         <div className="library-page">
 
-          {/* Header */}
-          <div style={{ borderBottom: '1px solid var(--border)', paddingBottom: 28, marginBottom: 36 }}>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
+          {/* Page header */}
+          <div style={{ borderBottom: '1px solid var(--border)', paddingBottom: 24, marginBottom: 32 }}>
+            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>
               Technical Library
             </p>
-            <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 42, letterSpacing: 4, lineHeight: 1, marginBottom: 12 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.3, lineHeight: 1.2, marginBottom: 10 }}>
               Books That Actually Matter
             </h1>
-            <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.7, maxWidth: 580 }}>
+            <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.72, maxWidth: 580 }}>
               Not a curated list of Amazon bestsellers. These are the books that senior engineers and security professionals actually read — referenced by name when they talk to each other. One payment, permanent access to everything here and everything added in the future.
             </p>
           </div>
 
-          {/* Payment gate or access granted */}
+          {/* Payment gate */}
           {!localAccess && (
             <div style={{
               background: 'var(--surf)', border: '1px solid var(--border2)',
-              borderRadius: 4, padding: '32px', maxWidth: 480, marginBottom: 48
+              borderRadius: 5, padding: 28, maxWidth: 460, marginBottom: 44
             }}>
               {paymentStatus === 'done' ? (
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, letterSpacing: 3, color: '#4ade80', marginBottom: 10 }}>
-                    You&apos;re in.
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#4ade80', marginBottom: 8 }}>
+                    Access granted.
                   </div>
                   <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.65 }}>
-                    Library access granted. Scroll down to browse and download.
+                    Scroll down to browse and download.
                   </p>
                 </div>
               ) : (
                 <>
-                  <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 26, letterSpacing: 3, marginBottom: 8 }}>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>
                     Get Library Access
                   </h2>
-                  <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 52, letterSpacing: 2, color: 'var(--text)', lineHeight: 1 }}>
+                  <div style={{ fontSize: 42, fontWeight: 700, color: 'var(--text)', lineHeight: 1, marginBottom: 2 }}>
                     ${priceUSD}
                   </div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--muted)', marginBottom: 20, marginTop: 4 }}>
-                    One-time. Lifetime access. No subscription.
+                  <p style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 18, marginTop: 4 }}>
+                    One-time payment. Lifetime access. No subscription.
                   </p>
 
-                  <ul style={{ listStyle: 'none', marginBottom: 24, display: 'flex', flexDirection: 'column', gap: 7 }}>
+                  <ul style={{ listStyle: 'none', marginBottom: 22, display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {[
                       'Every book in the library, forever',
                       'All future books added at no extra cost',
-                      'Direct PDF download, no DRM nonsense',
+                      'Direct PDF download, no DRM',
                       'Request books — added within 72 hours',
                     ].map((item, i) => (
-                      <li key={i} style={{ fontSize: 12, color: 'var(--muted)', paddingLeft: 16, position: 'relative' }}>
-                        <span style={{ position: 'absolute', left: 0, color: 'var(--ai)' }}>→</span>
+                      <li key={i} style={{ fontSize: 12, color: 'var(--muted)', paddingLeft: 16, position: 'relative', lineHeight: 1.6 }}>
+                        <span style={{ position: 'absolute', left: 0, color: 'var(--dim)' }}>—</span>
                         {item}
                       </li>
                     ))}
                   </ul>
 
                   {paymentStatus === 'error' && (
-                    <div className="auth-error" style={{ marginBottom: 16 }}>{paymentError}</div>
+                    <div className="auth-error" style={{ marginBottom: 14 }}>{paymentError}</div>
                   )}
 
                   {paymentStatus === 'processing' ? (
-                    <div style={{ textAlign: 'center', padding: '20px', color: 'var(--muted)', fontSize: 12 }}>
+                    <div style={{ textAlign: 'center', padding: '18px', color: 'var(--muted)', fontSize: 12 }}>
                       Verifying payment...
                     </div>
                   ) : !user ? (
                     <div>
-                      <p style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 12 }}>
+                      <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 12 }}>
                         Sign in first, then come back to complete the purchase.
                       </p>
-                      <Link href="/auth?next=/library" className="btn-upgrade" style={{ display: 'inline-flex', marginTop: 0 }}>
+                      <Link href="/auth?next=/library" className="btn-upgrade">
                         Sign in to continue
                       </Link>
                     </div>
@@ -242,8 +243,8 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
           {/* Book grid */}
           {books.length > 0 && (
             <>
-              <div style={{ marginBottom: 20 }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--dim)', marginBottom: 12 }}>
+              <div style={{ marginBottom: 18 }}>
+                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: 0.8, textTransform: 'uppercase', color: 'var(--dim)', marginBottom: 10 }}>
                   Browse by discipline
                 </p>
                 <div className="library-filters">
@@ -274,7 +275,7 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
                       <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
                         {book.category && <span className="book-category">{book.category}</span>}
                         {book.page_count && (
-                          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--dim)' }}>
+                          <span style={{ fontSize: 9, color: 'var(--dim)' }}>
                             {book.page_count}p
                           </span>
                         )}
@@ -290,7 +291,7 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
                           {downloading === book.id ? 'Preparing...' : 'Download PDF'}
                         </button>
                       ) : (
-                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--dim)', padding: '7px 0', textAlign: 'center' }}>
+                        <div style={{ fontSize: 10, color: 'var(--dim)', padding: '7px 0', textAlign: 'center' }}>
                           Pay once to unlock
                         </div>
                       )}
@@ -314,21 +315,21 @@ function LibraryContent({ user, hasAccess, books, paypalClientId, priceUSD }: Pr
           )}
 
           {/* Book request */}
-          <div style={{ borderTop: '1px solid var(--border)', marginTop: 56, paddingTop: 36 }}>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>
+          <div style={{ borderTop: '1px solid var(--border)', marginTop: 48, paddingTop: 32 }}>
+            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: 0.8, textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>
               Missing something?
             </p>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, letterSpacing: 3, marginBottom: 10 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
               Request a Book
             </h2>
-            <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.65, maxWidth: 480, marginBottom: 24 }}>
-              If there&apos;s a specific book that belongs here, tell us. If we can source it legitimately, it&apos;ll be in the library within 72 hours.
+            <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7, maxWidth: 480, marginBottom: 22 }}>
+              If there&apos;s a specific book that belongs here, submit a request. If we can source it legitimately, it&apos;ll be in the library within 72 hours.
               {!user && <span> You need to sign in to submit a request.</span>}
             </p>
 
             {requestSent ? (
-              <p style={{ fontSize: 13, color: '#4ade80', padding: '12px 16px', background: 'rgba(74,222,128,0.06)', border: '1px solid rgba(74,222,128,0.2)', borderRadius: 3, maxWidth: 480 }}>
-                Got it. We&apos;ll review and add it within 72 hours.
+              <p style={{ fontSize: 13, color: '#4ade80', padding: '10px 14px', background: 'rgba(74,222,128,0.05)', border: '1px solid rgba(74,222,128,0.18)', borderRadius: 4, maxWidth: 480 }}>
+                Received. We&apos;ll review and add it within 72 hours.
               </p>
             ) : (
               <form style={{ maxWidth: 480 }} onSubmit={handleRequest}>
